@@ -89,7 +89,7 @@
 defineProps({
     to: {type:String, default: '/en/learn'},
     image: {type: String, required:true},
-    logo: {type:String, default: '/images/LingLogo.png'},
+    logo: {type:String, default: '/images/lingLogo.png'},
     lessonNumber: Number,
     newWords: Number,
     lingqs: Number,
