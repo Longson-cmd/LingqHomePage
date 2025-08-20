@@ -11,7 +11,11 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
 
     vite: {
-    plugins: [svgLoader()]
+      
+    plugins: [svgLoader()],
+    optimizeDeps: {
+      exclude: ['form-data'] // 🛠️ This line prevents Vite from bundling Node-only module
+    }
   }
 
 })

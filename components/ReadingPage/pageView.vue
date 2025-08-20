@@ -1,46 +1,54 @@
 <script setup>
-
-import {ref, onBeforeUnmount, onMounted} from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const page = ref(1)
 const total = ref(1)
 const scroller = ref(null)
 
-const updatePage = () => {
+function updatePages() {
   const el = scroller.value
-
   if (!el) return
-
   const view = el.clientHeight || 1
   const totalHeight = el.scrollHeight || view
-  total.value = Math.max(1, Math.ceil(totalHeight/view))
-
-  page.value = Math.main(
-    total.value, Math.max(
-      1, Math.round(el.scrollTop/view) + 1
-    )
-  )
-
+  total.value = Math.max(1, Math.ceil(totalHeight / view))
+  page.value = Math.min(total.value, Math.max(1, Math.round(el.scrollTop / view) + 1))
 }
 
-const goToPage = (n) => {
+function goToPage(n) {
   const el = scroller.value
   if (!el) return
-
   const view = el.clientHeight || 1
-
   const target = Math.min(total.value, Math.max(1, n))
-
-  el.scrollTo({top: ((target -1) * view), behavior: "smooth"})
-
-  page,value = target
+  el.scrollTo({ top: (target - 1) * view, behavior: 'smooth' })
+  page.value = target
 }
 
 const nextPage = () => goToPage(page.value + 1)
 const prevPage = () => goToPage(page.value - 1)
 
-</script>
+let stopWheel, stopTouch
 
+onMounted(() => {
+  const el = scroller.value
+  updatePages()
+  window.addEventListener('resize', updatePages)
+
+  // Block wheel & touch scroll
+  stopWheel = e => e.preventDefault()
+  stopTouch = e => e.preventDefault()
+  el.addEventListener('wheel', stopWheel, { passive: false })
+  el.addEventListener('touchmove', stopTouch, { passive: false })
+})
+
+onBeforeUnmount(() => {
+  const el = scroller.value
+  window.removeEventListener('resize', updatePages)
+  if (el) {
+    el.removeEventListener('wheel', stopWheel)
+    el.removeEventListener('touchmove', stopTouch)
+  }
+})
+</script>
 
 <template>
   <div class="h-screen flex flex-col bg-gray-50">
@@ -61,7 +69,7 @@ const prevPage = () => goToPage(page.value - 1)
         <h1>One Long Flow of Text</h1>
         <p>Manual scrolling is disabled. Use Prev/Next.</p>
         <h2>Content</h2>
-        <p v-for="i in 5" :key="i" class="text-4xl px-32">
+        <p v-for="i in 40" :key="i">
           {{ i }}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur auctor, nunc at
           gravida pharetra, lectus neque pulvinar odio, at ullamcorper mi justo vel tellus. 
           Donec egestas, mi in ultricies facilisis, urna tortor pretium nibh, at fermentum massa nibh a erat.

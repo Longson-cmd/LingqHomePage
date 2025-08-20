@@ -13,7 +13,12 @@ import { faCrown ,faBars, faTimes, faChevronDown,
   faFileCirclePlus, 
   faHeadphones,
   faEllipsisV,
-  faHeart
+  faHeart,
+  faChevronLeft,
+  faEllipsisH,
+  faCircleInfo, faPenToSquare, faPrint, faDownload,
+  faChartLine,faGaugeHigh,
+   faVolumeHigh, faCoins, faCheck
 } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -30,16 +35,27 @@ library.add(
   faQuestionCircle,
   faRightFromBracket,
   faPlus,
-  faHeart
+  faHeart,
+
 )
 
 library.add(faMagnifyingGlass, faFileCirclePlus)
 
 library.add( faHeadphones, faEllipsisV)
 
+library.add(faChevronLeft, faEllipsisH)
+
+library.add(
+  faCircleInfo, faPenToSquare, faPrint, faDownload,
+  faChartLine, faFileLines, faGear, faGaugeHigh,   
+     faVolumeHigh, faCoins, faCheck
+
+)
+
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component('FontAwesomeIcon', FontAwesomeIcon)
 })
+
 
 
 // npm install --save @fortawesome/fontawesome-svg-core
