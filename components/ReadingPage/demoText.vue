@@ -5,27 +5,27 @@
     class="flex p-10 flex-wrap gap-4"
   >
     <span
-  v-for="(word, index) in para.split(' ')"
-  :key="index"
-  class="relative inline-flex items-start leading-none whitespace-nowrap shrink-0
-         cursor-pointer border-2 border-transparent hover:border-gray-200 px-1 rounded"
-  @click.stop="openWordPopup(word, index, paraIndex)"
->
-  <!-- the word box stays the same size -->
-  <span :class="knownwords.includes(word) ? 'bg-yellow-300' : 'bg-transparent'">
-    {{ word }}
-  </span>
+      v-for="(word, index) in para.split(' ')"
+      :key="index"
+      class="relative inline-flex items-start leading-none whitespace-nowrap shrink-0
+            cursor-pointer border-2 border-transparent hover:border-gray-200 px-1 rounded"
+      @click.stop="openWordPopup(word, index, paraIndex)"
+    >
+      <!-- the word box stays the same size -->
+      <span :class="knownwords.includes(word) ? 'bg-yellow-300' : 'bg-transparent'">
+        {{ word }}
+      </span>
 
-  <!-- ABSOLUTE wrapper ensures popup doesn’t resize the word -->
-  <div class="word-popup absolute left-0 top-full mt-2 z-50 pointer-events-none">
-    <WordPopUp
-      v-if="isActive(paraIndex, index)"
-      :new-word="currentword?.word"
-      class="pointer-events-auto"
-      @click.stop
-    />
-  </div>
-</span>
+      <!-- ABSOLUTE wrapper ensures popup doesn’t resize the word -->
+      <div class="word-popup absolute left-0 top-full mt-2 z-50 pointer-events-none">
+        <WordPopUp
+          v-if="isActive(paraIndex, index)"
+          :new-word="currentword?.word"
+          class="pointer-events-auto"
+          @click.stop
+        />
+      </div>
+    </span>
   </div>
 </template>
 

@@ -94,9 +94,7 @@ onBeforeUnmount(() => {
     <!-- No manual scroll -->
     <main ref="scroller" class="flex-1 overflow-y-hidden">
       <article class="prose max-w-none px-6 py-6">
-        <h1>One Long Flow of Text</h1>
-        <p>Manual scrolling is disabled. Use Prev/Next.</p>
-        <h2>Content</h2>
+    
         <p v-for="i in 5" :key="i" class="text-4xl px-32">
           {{ i }}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur auctor, nunc at
           gravida pharetra, lectus neque pulvinar odio, at ullamcorper mi justo vel tellus. 
