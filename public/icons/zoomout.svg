@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 32 32">
+  <path fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M25,22H8c-1.7,0-3-1.3-3-3v-8c0-1.7,1.3-3,3-3h17c1.7,0,3,1.3,3,3v8C28,20.7,26.7,22,25,22z"/>
+  <polyline fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="25,3 30.5,3 30.5,8.5"/>
+  <polyline fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="1.5,22 1.5,28.5 7.5,28.5"/>
+  <line fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="9.5" y1="13" x2="23" y2="13"/>
+  <line fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="9.5" y1="17" x2="17" y2="17"/>
+  <line fill="none" stroke="#050d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="20" y1="17" x2="23" y2="17"/>
+</svg>

@@ -1,0 +1,13 @@
+<!-- Cleaned original version -->
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="33" viewBox="0 0 37 33">
+  <g transform="translate(0.5 0.5)">
+    <rect transform="translate(14.421 5.485)" x="0.5" y="0.5" width="21" height="26" rx="1.5" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+    <path d="M465.874,470.792h0a2.3,2.3,0,0,0-3.239-.23l-10.843,9.411a2.3,2.3,0,0,0-.23,3.239l13.4,15.436" transform="translate(-451 -470)" stroke-miterlimit="10" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M475.111,475.764l-1.182-3.223a2.708,2.708,0,0,0-3.475-1.609l-12.707,4.66a2.706,2.706,0,0,0-1.609,3.473l7.442,20.291" transform="translate(-449.242 -469.73)" stroke-miterlimit="10" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x2="11" transform="translate(20.421 25.985)" stroke-miterlimit="10" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M26.845,0H21.751A3.648,3.648,0,0,0,18.3,3.628v.054A3.6,3.6,0,0,0,19.578,6.44L26.1,13.37a.419.419,0,0,0,.31.145.428.428,0,0,0,.438-.417h0V7.2a3.6,3.6,0,0,0,0-7.2Z" transform="translate(1.121 10.005)" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x2="4" transform="translate(20.421 28.985)" stroke-miterlimit="10" fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
+
+

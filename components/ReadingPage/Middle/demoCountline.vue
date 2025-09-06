@@ -6,9 +6,13 @@ import { ref, onMounted, nextTick } from 'vue';
 // - nextTick() to wait until DOM updates before running code
 
 // Example paragraphs we will render in the template
+
+const scroller = ref(null)
 const paragraphs = [
   "BLeo Babauta, créateur du blog Zen Habits, raconte son parcours personnel : il est passé d’une vie marquée par l’anxiété, les dettes, les mauvaises habitudes et l’insatisfaction, à une existence simple et apaisée.",
-  "Ce « petit livre » est pensé comme un guide pratique et accessible, destiné à être mis en œuvre, pas seulement lu. Babauta invite le lecteur à consacrer un temps réel à la lecture et surtout à appliquer les principes proposés."
+  "Ce « petit livre » est pensé comme un guide pratique et accessible, destiné à être mis en œuvre, pas seulement lu. Babauta invite le lecteur à consacrer un temps réel à la lecture et surtout à appliquer les principes proposés.",
+  "L’auteur insiste sur l’importance de commencer par de petites actions quotidiennes, qui finissent par transformer durablement notre mode de vie.",
+  "Il rappelle également que la simplicité ne consiste pas à se priver, mais à choisir consciemment ce qui compte vraiment pour nous."
 ];
 
 const paraRefs = ref([]); 
@@ -25,6 +29,7 @@ function countFlexLines(container) {
   // Get all child elements inside container
 
   const tops = new Set(kids.map(k => k.offsetTop)); 
+  console.log('lists top :', tops)
   // Collect each child’s top position (offsetTop) → 
   // If text wraps to a new line, offsetTop changes.
   // Using a Set removes duplicates.
@@ -42,9 +47,26 @@ function logLineCounts() {
   });
 }
 
+
+// function logLineCounts() {
+//   for (let i = 0; i < paraRefs.value.length; i++) {
+//     const el = paraRefs.value[i];
+//     const lines = countFlexLines(el); // Count lines for this paragraph
+//     console.log(`Paragraph ${i} lines:`, lines);
+//   }
+// }
+
 onMounted(async () => {
   await nextTick(); 
   // Wait until DOM is rendered before measuring
+
+  const el = scroller.value
+
+  const view = el.clientHeight || 1
+  const totalHeight = el.scrollHeight || 1
+
+  console.log("view: ", view , ' px')
+  console.log("totalHeight: ", totalHeight , ' px')
 
   logLineCounts(); 
   // Measure initial line counts
@@ -56,8 +78,8 @@ onMounted(async () => {
 
 
 <template>
-  <article class="prose max-w-none px-6">
-    <div v-for="i in 5" :key="i" class="text-4xl px-32">
+  <article class="prose max-w-none px-6 h-screen overflow-y-auto" ref="scroller">
+    <div  class="text-4xl px-32">
       <div
         v-for="(para, paraIndex) in paragraphs"
         :key="paraIndex"

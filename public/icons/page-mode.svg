@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 18" width="32" height="18">
+  <path d="M2,.5H15A1.5,1.5,0,0,1,16.5,2V17a.5.5,0,0,1-.5.5H2A1.5,1.5,0,0,1,.5,16V2A1.5,1.5,0,0,1,2,.5Z"
+    fill="none" stroke="#050d18" stroke-width="1.175" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(16)" fill="none" stroke="#050d18" stroke-width="1.175"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2,.5H14A1.5,1.5,0,0,1,15.5,2V16A1.5,1.5,0,0,1,14,17.5H1A.5.5,0,0,1,.5,17V2A1.5,1.5,0,0,1,2,.5Z"/>
+  </g>
+  <line x2="6" transform="translate(8 4.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="11" transform="translate(3 7.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="9" transform="translate(19 4.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="9" transform="translate(19 7.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="9" transform="translate(19 10.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="6" transform="translate(19 13.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="11" transform="translate(3 10.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <line x2="9" transform="translate(3 13.5)" stroke="#050d18" stroke-width="1.175"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
