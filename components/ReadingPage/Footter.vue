@@ -1,13 +1,13 @@
 <template>
-  <div class=" relative py-20 px-10 h-20 flex justify-between items-center bg-gray-50">
+  <div class=" relative p-10 h-20 flex justify-between items-center bg-gray-50">
     <!-- AUDIO PART -->
-    <font-awesome-icon icon='fa-play-circle' class="text-4xl" @click="toggleOpenAudioBox"/>
+    <font-awesome-icon  icon='fa-play-circle' :class="['text-4xl', openAudio? 'invisible' : '']" @click="toggleOpenAudioBox"/>
 
     <!-- AUDIO BOX -->
-    <div v-if="openAudio" class="absolute w-full p-2 max-w-[400px] rounded-xl bg-white shadow-md flex items-center justify-between gap-3">
+    <div v-if="openAudio" class="absolute p-2  w-[400px] -top-10  rounded-3xl bg-white shadow-md flex items-center justify-between gap-3">
       <font-awesome-icon icon="fa-play-circle" class="text-3xl"/>
 
-      <div class="w-full">
+      <div class="w-full ">
          <div class="">
           <AudioSlider v-model:value="progress" :duration="40" />
           <div class="flex justify-between text-xs my-1">
@@ -75,5 +75,4 @@ const toggleOpenAudioBox = () => {
 
 
 </script>
-
 

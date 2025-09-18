@@ -7,8 +7,9 @@
     <span
       v-for="(word, index) in para.split(' ')"
       :key="index"
-      class="relative inline-flex items-start leading-none whitespace-nowrap shrink-0
-            cursor-pointer border-2 border-transparent hover:border-gray-200 px-1 rounded"
+      class="relative inline-flex items-start leading-none 
+      whitespace-nowrap shrink-0 cursor-pointer 
+      border-2 border-transparent hover:border-gray-200 px-1 rounded"
       @click.stop="openWordPopup(word, index, paraIndex)"
     >
       <!-- the word box stays the same size -->
@@ -18,7 +19,7 @@
 
       <!-- ABSOLUTE wrapper ensures popup doesn’t resize the word -->
       <div class="word-popup absolute left-0 top-full mt-2 z-50 pointer-events-none">
-        <WordPopUp
+        <wordPopUp
           v-if="isActive(paraIndex, index)"
           :new-word="currentword?.word"
           class="pointer-events-auto"
@@ -31,7 +32,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import WordPopUp from './ReadingPage/wordPopUp.vue'
+import wordPopUp from './ReadingPage/Middle/wordPopUp.vue'
 
 const paragraphs = [
   "BLeo Babauta, créateur du blog Zen Habits, raconte son parcours personnel : il est passé d’une vie marquée par l’anxiété, les dettes, les mauvaises habitudes et l’insatisfaction, à une existence simple et apaisée.",

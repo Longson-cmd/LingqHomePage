@@ -9,51 +9,47 @@
         </button>
         <!-- upper part -->
         <div class="relative border-b border-b-gray-300 w-full px-4 pt-4 space-y-3 pb-4">
-        <div class="flex items-center gap-3">
-            <font-awesome-icon icon='fa-volume-high' class="h-6 w-6 text-gray-700" />
-            <span class="font-bold text-xl">{{newWord}}</span>
-        </div>
+            <div class="flex items-center gap-3">
+                <font-awesome-icon icon='fa-volume-high' class="h-6 w-6 text-gray-700" />
+                <span class="font-bold text-xl">{{newWord}}</span>
+            </div>
 
-        <div class="flex items-start">
-            <span class="inline-flex items-center gap-1 w-10 border-r border-r-gray-800 mr-2">
-            <img src="/images/game-coin.png" alt="coin" class="h-5 w-5"></img>
-            4
-            </span>
-            <!-- <span class=" inline-block w-[2px] self-stretch bg-black mx-2 " ></span> -->
-            <div class="flex-1  ">
-            <div class="flex flex-wrap gap-2">
-                <div v-for="tag in tags" :key =tag class="bg-gray-300 rounded-md text-xs">{{tag}}</div>
-                <div
-                v-if="!isEditing"
-                @click="startEdit"
-                class="flex items-center mx-2 hover:bg-gray-300 px-1 rounded">
-                <span class="text-sm">Tag+</span>
+            <div class="flex items-start">
+                <span class="inline-flex items-center gap-1 w-10 border-r border-r-gray-800 mr-2">
+                    <img src="/images/game-coin.png" alt="coin" class="h-5 w-5"></img>
+                    4
+                </span>
+                <!-- <span class=" inline-block w-[2px] self-stretch bg-black mx-2 " ></span> -->
+                <div class="flex-1  ">
+                <div class="flex flex-wrap gap-2">
+                    <div v-for="tag in tags" :key =tag class="bg-gray-300 rounded-md text-xs">{{tag}}</div>
+                    <div
+                    v-if="!isEditing"
+                    @click="startEdit"
+                    class="flex items-center mx-2 hover:bg-gray-300 px-1 rounded">
+                    <span class="text-sm">Tag+</span>
+                    </div>
+
+                    <input
+                    v-else
+                    ref="inputEl"
+                    v-model="draft"
+                    type="text"
+                    placeholder="Type tag, press Enter"
+                    class="absolute -bottom-8 left-20 h-8 w-48 rounded border px-3 text-sm"
+                    @keydown.enter.prevent="finishEdit"
+                    @blur="finishEdit"
+                    />
+                </div>
                 </div>
 
-                <input
-                v-else
-                ref="inputEl"
-                v-model="draft"
-                type="text"
-                placeholder="Type tag, press Enter"
-                class="absolute -bottom-8 left-20 h-8 w-48 rounded border px-3 text-sm"
-                @keydown.enter.prevent="finishEdit"
-                @blur="finishEdit"
-                />
             </div>
-            </div>
-
-            
-
-            
-
-        </div>
         </div>
 
         <!-- lower part -->
         <div class="flex flex-col items-center jutify-center py-2 px-4">
-        <input type="text" placeholder="Type a new meaning here" class="w-full border border-gray-300 rounded-lg p-2 ">
-        <font-awesome-icon icon="fa-chevron-down"></font-awesome-icon>
+            <input type="text" placeholder="Type a new meaning here" class="w-full border border-gray-300 rounded-lg p-2 ">
+            <font-awesome-icon icon="fa-chevron-down"></font-awesome-icon>
         </div>
 
     </div>

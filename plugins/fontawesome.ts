@@ -21,7 +21,7 @@ import { faCrown ,faBars, faTimes, faChevronDown,
    faVolumeHigh, faCoins, faCheck, 
    faPlayCircle,
    faUndoAlt, faRedoAlt, faSyncAlt, faCaretUp, faCommentAlt,
-   faPauseCircle, faArrowsRotate
+   faPauseCircle, faArrowsRotate, faCheckCircle, faMagic
 } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -52,7 +52,7 @@ library.add(
   faCircleInfo, faPenToSquare, faPrint, faDownload,
   faChartLine, faFileLines, faGear, faGaugeHigh,   
      faVolumeHigh, faCoins, faCheck,
-  faPlayCircle, faUndoAlt, faRedoAlt, faSyncAlt, faCaretUp, faCommentAlt, faPauseCircle, faArrowsRotate
+  faPlayCircle, faUndoAlt, faRedoAlt, faSyncAlt, faCaretUp, faCommentAlt, faPauseCircle, faArrowsRotate, faCheckCircle, faMagic
 )
 
 export default defineNuxtPlugin((nuxtApp) => {
