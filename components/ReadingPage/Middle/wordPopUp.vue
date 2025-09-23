@@ -1,6 +1,6 @@
 <template>
 
-    <div class="relative border border-gray-400 flex mx-auto  w-[392px] h-[174px] 
+    <div class="relative border border-gray-400 flex w-[320px] h-[174px] 
     bg-white shadow-2xl rounded-3xl flex-col">
         <font-awesome-icon icon='fa-check' class=" absolute top-5 right-10 h-6 w-6 text-green-400" />
         <!-- upper part -->
@@ -84,8 +84,5 @@ defineProps({
 </script>
 
 
- <!-- <font-awesome-icon icon='fa-volume-high' class="h-6 w-6 text-gray-700" />
-  <font-awesome-icon icon='fa-check' class="h-6 w-6 text-gray-700" />
-  <img src="/images/game-coin.png" alt="coin" class="h-10 "> -->
 
 

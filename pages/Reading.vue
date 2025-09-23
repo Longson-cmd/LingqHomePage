@@ -29,7 +29,7 @@ import {ref} from 'vue'
 import Slider from '@vueform/slider'
 import MainSection from '~/components/ReadingPage/MainSection.vue';
 
-import Lessons from "~/components/HomePage/Lessons.vue";
+
 
 const currentPage = ref(1)
 const totalPage = ref(1)

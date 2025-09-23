@@ -76,13 +76,3 @@ onUnmounted(() => {
 </script>
 
 
-<!-- 
-The popup is inside a separate absolute wrapper <div>, so the word’s container never grows.
-
-inline-flex items-start + whitespace-nowrap shrink-0 keep the word box tight and unchanged.
-
-top-full left-0 mt-2 positions the popup just below the word.
-
-pointer-events-none on the wrapper lets you still click outside to close; the popup itself uses pointer-events-auto so it’s clickable.
-
-Keep your outside-click code using .closest('.word-popup')—it will now match the wrapper. -->

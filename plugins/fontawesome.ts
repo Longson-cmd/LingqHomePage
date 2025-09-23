@@ -15,6 +15,7 @@ import { faCrown ,faBars, faTimes, faChevronDown,
   faEllipsisV,
   faHeart,
   faChevronLeft,
+  faChevronRight,
   faEllipsisH,
   faCircleInfo, faPenToSquare, faPrint, faDownload,
   faChartLine,faGaugeHigh,
@@ -38,8 +39,8 @@ library.add(
   faQuestionCircle,
   faRightFromBracket,
   faPlus,
-  faHeart,
-
+      faHeart,
+      faChevronRight
 )
 
 library.add(faMagnifyingGlass, faFileCirclePlus)

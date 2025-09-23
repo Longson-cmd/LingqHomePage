@@ -103,7 +103,6 @@ const paragraphs = [
 ];
 </script>
 
-
 <template>
   <div class="h-screen flex flex-col bg-gray-50">
     <header class="flex items-center justify-between px-4 py-3 border-b bg-white">
@@ -125,7 +124,6 @@ const paragraphs = [
         v-for="(para, paraIndex) in paragraphs"
         :key = 'paraIndex'
         class="flex  flex-wrap gap-4 mb-[72px]  px-32"
-
         >
           <span
             v-for="(word, index) in para.split(' ')" :key="index"
@@ -133,10 +131,8 @@ const paragraphs = [
           </span>
 
         </div>
-
         <div :style="{ height: paddingHeight + 'px' }"></div>
       </article>
-
 
     </main>
 
