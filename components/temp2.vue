@@ -137,19 +137,16 @@ const updatePage = async () => {
   page.value = Math.min(total.value, Math.max(1, Math.round(el.scrollTop / view) + 1))
 }
 
-
 const props = defineProps({
-  boxHeight: {
-    type: Number,
-    default: 0
+  boxHeight : {type : Number,  default: 0}
+})
+
+watch( () => props.boxHeight, async (h) => {
+  if ( h> 0) {
+    await nextTick()
+    updatePage()
   }
 })
-watch(() => props.boxHeight, async (h) => {
-  if (h > 0) {
-    await nextTick()
-    updatePage()  // tính lại view và padding ngay khi nhận height
-  }
-}, { immediate: true })
 
 const goToPage = (n) => {
   const el = scroller.value
@@ -158,18 +155,13 @@ const goToPage = (n) => {
   const target = Math.min(total.value, Math.max(1, n))
   el.scrollTo({ top: (target - 1) * view, behavior: 'smooth' })
   console.log(`top of page ${n} : ${(target - 1) * view}`)
+   page.value = target
 }
 
 const prevPage = () => goToPage(page.value - 1)
 const nextPage = () => goToPage(page.value + 1)
 
-const onScroll = () => {
-  const el = scroller.value
-  if (!el) return
-  const view = getPageHeight(el)
-  page.value = Math.min(total.value, Math.max(1, Math.round(el.scrollTop / view) + 1))
-  placePopup() // giữ popup dính theo chữ khi cuộn
-}
+
 
 /* ---------- lifecycle ---------- */
 let stopWheel, stopTouch
@@ -179,7 +171,7 @@ onMounted(() => {
   const el = scroller.value
   updatePage()
   window.addEventListener('resize', () => { updatePage(); placePopup() })
-  el.addEventListener('scroll', onScroll, { passive: true })
+
 
   // Nếu muốn cấm cuộn tay (pager only) thì bật 2 dòng dưới:
   stopWheel = e => e.preventDefault()
@@ -193,7 +185,7 @@ onBeforeUnmount(() => {
   const el = scroller.value
   window.removeEventListener('resize', () => { updatePage(); placePopup() })
   if (el) {
-    el.removeEventListener('scroll', onScroll)
+
     el.removeEventListener('wheel', stopWheel)
     el.removeEventListener('touchmove', stopTouch)
   }

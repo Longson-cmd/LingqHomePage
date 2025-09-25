@@ -1,10 +1,10 @@
-
 <template>
-  <div class="h-full flex flex-col overflow-hidden">
+  <div class="h-full flex flex-col overflow-hidden bg-gray-50">
+  
     <!-- upperpart -->
-    <div class="flex h-[80px] p-2 justify-between items-end bg-green-100">
+    <div class="flex h-[64px] px-2 pb-5 justify-between items-end">
       <font-awesome-icon icon="fa-times" class="text-4xl" />
-      <readingSlider v-model:value="progress" :duration="40" class="w-[400px]" />
+      <readingSlider v-if="text" v-model:value="currentPage" :duration="totalPage" class="w-[400px]" />
       <div class="flex items-center gap-2">
         <div class="relative group inline-block">
           <span class="h-10 w-10 bg-gray-200 flex items-center justify-center rounded-full">
@@ -31,18 +31,25 @@
     </div>
 
     <!-- lowerpart -->
-    <div class="flex flex-1 overflow-hidden min-h-0">
-      <div ref="leftBox" class="h-full w-[50px] bg-gray-200 flex items-center justify-center">
+    <div class="flex flex-1 overflow-hidden min-h-0 p-2">
+      <button @click="prevPage" ref="leftBox" 
+      :class="['h-full w-[50px] hover:bg-gray-200 rounded-md flex items-center justify-center',
+        currentPage === 1 ? 'invisible' :''
+      ]">
         <font-awesome-icon icon="fa-chevron-left" class="text-4xl"/>
-      </div>
+      </button>
 
       <div class="flex flex-1 overflow-hidden min-h-0">
-        <readingArea v-if="boxHeight > 0" :boxHeight="boxHeight" :key="boxHeight" />
+        <readingArea v-if="boxHeight > 0" :currentPage="currentPage" :boxHeight="boxHeight" :key="boxHeight" @update="handleUpdate" ref="text"/>
       </div>
 
-      <div class="h-full w-[50px] bg-gray-200 flex items-center justify-center">
+      <button @click="nextPage" 
+      :class="['h-full w-[50px] hover:bg-gray-200 rounded-md flex items-center justify-center',
+        currentPage === totalPage ? 'invisible' :''
+      ]"
+      >
         <font-awesome-icon icon="fa-chevron-right" class="text-4xl"/>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -52,7 +59,28 @@ import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import readingSlider from '~/composables/readingSlider.vue'
 import readingArea from './Middle/readingArea.vue'
 
-const progress = ref(10)
+const currentPage = ref(1)
+const totalPage = ref(1)
+const text = ref(null)
+
+const handleUpdate = (data) => {
+  currentPage.value = data.page 
+  totalPage.value = data.total 
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1 && currentPage.value <= totalPage.value) {
+    currentPage.value -=1
+  }
+}
+
+
+const nextPage = () => {
+  if (currentPage.value >= 1 && currentPage.value < totalPage.value) {
+    currentPage.value +=1
+  }
+}
+
 const closeSidbar = ref(true)
 
 const leftBox = ref(null)
@@ -70,6 +98,7 @@ const measure = () => {
 
 onMounted(async () => {
   await nextTick()
+  console.log('totalPage :', totalPage.value)
   measure()                         // initial
   window.addEventListener('resize', measure)
 })

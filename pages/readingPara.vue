@@ -8,9 +8,9 @@
     <!-- Main fills the rest -->
     <main class="flex flex-1 overflow-hidden">
       <!-- Content area -->
-      <div class="flex-1 flex flex-col">
-        <div class="flex-1 overflow-y-auto">
-          <!-- your content here -->
+      <div class=" flex flex-1 flex-col">
+        <div class="flex-1 ">
+          <ReadingMain/>
         </div>
         <Footter class="shrink-0" />
       </div>
@@ -26,5 +26,5 @@
 import HomeHeader from "~/components/HomePage/HomeHeader.vue";
 import sideBar from "~/components/ReadingPage/sideBar.vue";
 import Footter from "~/components/ReadingPage/Footter.vue";
-
+import ReadingMain from "./ReadingPage/ReadingMain.vue";
 </script>

@@ -1,6 +1,6 @@
 
 <template>
-  <div class="h-screen flex flex-col overflow-hidden">
+  <div class="h-full flex flex-col overflow-hidden">
     <!-- upperpart -->
     <div class="flex h-[80px] p-2 justify-between items-end bg-green-100">
       <font-awesome-icon icon="fa-times" class="text-4xl" />
@@ -50,7 +50,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import readingSlider from '~/composables/readingSlider.vue'
-import readingArea from './ReadingPage/Middle/readingArea.vue'
+import readingArea from './Middle/readingArea.vue'
 
 const progress = ref(10)
 const closeSidbar = ref(true)

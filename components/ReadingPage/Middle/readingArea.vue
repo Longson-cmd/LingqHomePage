@@ -24,7 +24,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="flex items-center justify-between px-4 py-3 border-t bg-white">
+    <!-- <footer class="flex items-center justify-between px-4 py-3 border-t bg-white">
       <div class="font-semibold">Viewport Pager</div>
       <div class="flex items-center gap-2">
         <button class="px-3 py-1 rounded border" @click="prevPage">Prev</button>
@@ -33,7 +33,7 @@
         </div>
         <button class="px-3 py-1 rounded border" @click="nextPage">Next</button>
       </div>
-    </footer>
+    </footer> -->
 
     <!-- OVERLAY LAYER (insert) -->
     <div class="fixed inset-0 z-[9999] pointer-events-none" ref="overlayRoot">
@@ -138,14 +138,32 @@ const updatePage = async () => {
 }
 
 const props = defineProps({
-  boxHeight : {type : Number,  default: 0}
+  boxHeight : {type : Number,  default: 0},
+  currentPage : Number
 })
+
+const emit = defineEmits(['update'])
+
+const sendData = () => {
+  emit( 'update', {
+    'total' : total.value,
+    'page' : page.value
+  })
+}
 
 watch( () => props.boxHeight, async (h) => {
   if ( h> 0) {
     await nextTick()
     updatePage()
   }
+})
+
+// watch( () => page.value , (newval) => {
+//   goToPage(newval)
+// })
+
+watch( () => props.currentPage, (currentPage) => {
+  goToPage(currentPage)
 })
 
 const goToPage = (n) => {
@@ -155,18 +173,12 @@ const goToPage = (n) => {
   const target = Math.min(total.value, Math.max(1, n))
   el.scrollTo({ top: (target - 1) * view, behavior: 'smooth' })
   console.log(`top of page ${n} : ${(target - 1) * view}`)
+  page.value = target
+  sendData()
 }
 
 const prevPage = () => goToPage(page.value - 1)
 const nextPage = () => goToPage(page.value + 1)
-
-const onScroll = () => {
-  const el = scroller.value
-  if (!el) return
-  const view = getPageHeight(el)
-  page.value = Math.min(total.value, Math.max(1, Math.round(el.scrollTop / view) + 1))
-  placePopup() // giữ popup dính theo chữ khi cuộn
-}
 
 /* ---------- lifecycle ---------- */
 let stopWheel, stopTouch
@@ -175,8 +187,8 @@ onMounted(() => {
 
   const el = scroller.value
   updatePage()
+
   window.addEventListener('resize', () => { updatePage(); placePopup() })
-  el.addEventListener('scroll', onScroll, { passive: true })
 
   // Nếu muốn cấm cuộn tay (pager only) thì bật 2 dòng dưới:
   stopWheel = e => e.preventDefault()
@@ -190,11 +202,9 @@ onBeforeUnmount(() => {
   const el = scroller.value
   window.removeEventListener('resize', () => { updatePage(); placePopup() })
   if (el) {
-    el.removeEventListener('scroll', onScroll)
+  
     el.removeEventListener('wheel', stopWheel)
     el.removeEventListener('touchmove', stopTouch)
   }
 })
 </script>
-
-

@@ -8,8 +8,8 @@
     <!-- Main fills the rest -->
     <main class="flex flex-1 overflow-hidden">
       <!-- Content area -->
-      <div class=" flex flex-1 flex-col">
-        <div class="flex-1 ">
+      <div class=" flex flex-1 flex-col ">
+        <div class="flex-1 overflow-hidden ">
           <ReadingMain/>
         </div>
         <Footter class="shrink-0" />

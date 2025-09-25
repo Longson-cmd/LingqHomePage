@@ -1,7 +1,7 @@
 
 <!-- max-w-md mx-auto mt-20 -->
 <template>
-  <div class="relative h-10 flex items-center">
+  <div class="relative h-2 flex items-center">
     <input
       type="range"
       min="0"
@@ -40,6 +40,7 @@ const props = defineProps({
 })
 
 const currentTime = ref(props.value)
+const duration = ref(props.duration)
 const showTooltip = ref(false)
 
 
@@ -47,6 +48,13 @@ const showTooltip = ref(false)
 watch(() => props.value, (newVal) => {
   if (newVal !== currentTime.value) {
     currentTime.value = newVal
+  }
+})
+
+watch(() => props.duration, async (newVal) => {
+  // guard and clamp
+    if (newVal !== duration.value) {
+    duration.value = newVal
   }
 })
 
