@@ -16,8 +16,8 @@
 
 
      <!-- Slider field   -->
-    <div class="self-center w-[448px] px-4 relative">
-      <div class="relative  flex items-center space-x-4 z-10">
+    <div class="self-center hidden sm:block  w-[448px] px-4 relative">
+      <div class="relative flex items-center space-x-4 z-10">
         <span class="w-28 text-sm text-right truncate text-gray-600">{{levels[value[0]-1]}}</span>
         <div>
   
