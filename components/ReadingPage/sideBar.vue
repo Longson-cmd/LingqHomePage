@@ -1,6 +1,6 @@
 <template>
   <div class=" h-full  flex flex-col py-1 ">
-    <div class="flex flex-col max-w-[400px] h-full min-h-0 border bg-white shadow-md rounded-2xl p-4">
+    <div class="flex flex-col max-w-[360px] h-full min-h-0 border bg-white shadow-md rounded-2xl p-4">
 
       <!-- UPPER BOX -->
       <div class=" shrink-0 relative border-b border-b-gray-300 w-full space-y-2 pb-2">

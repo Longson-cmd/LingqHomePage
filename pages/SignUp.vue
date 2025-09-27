@@ -45,7 +45,7 @@ const handlesubmit = async () => {
     // })
 
     alert("Signed up successfully")
-    router.push("/.")
+    router.push("/")
   }
   catch (error) {
     console.log("there is an error : ", error)

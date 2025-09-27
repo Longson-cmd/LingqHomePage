@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink class="w-[306px] block items-center justify-center rounded-2xl overflow-hidden  
+  <NuxtLink to="/Reading" class="w-[306px] block items-center justify-center rounded-2xl overflow-hidden  
   border hover:border-gray-400 hover:shadow-lg transition-all duration-200 group"
   :to="to">
     <!-- Top Image / Cover section -->

@@ -46,24 +46,19 @@
             </div>
           </div>
         </div>
-      </div>
-
-      
+      </div>    
     </div>
 
     <!-- import field   -->
 
-    <button @click="showWindow = true" class=" self-center flex w-32 items-center justify-center space-x-2 bg-blue-950 text-white px-2 py-3 rounded-lg shadow-xl font-bold">
+    <button @click="showWindow = true" class="self-center flex w-32 items-center justify-center space-x-2  bg-blue-950 hover:bg-blue-900 text-white px-2 py-3 rounded-lg shadow-xl font-bold">
       <font-awesome-icon icon="fa-solid fa-file-circle-plus" />
       <div>Import</div>
       <font-awesome-icon icon="fa-solid fa-chevron-down" />
     </button>
-
-    
-
   </div>
 
-  <div v-if="showWindow" class="fixed z-50  + top-2/3 left-1/2 translate-x-[-50%] translate-y-[-50%]">
+  <div v-if="showWindow" class="fixed z-50 top-2/3 left-1/2 translate-x-[-50%] translate-y-[-50%]">
     <div class="mx-auto border-2 bg-white w-full max-w-[600px] p-4 rounded-2xl shadow-md" >
   
       <!-- upper part -->

@@ -1,10 +1,13 @@
 <template>
-  <div class="h-full flex flex-col overflow-hidden bg-gray-50">
+  <div class="h-full flex flex-col overflow-hidden bg-gray-50 p-2">
   
     <!-- upperpart -->
-    <div class="flex h-[64px] px-2 pb-5 justify-between items-end">
-      <font-awesome-icon icon="fa-times" class="text-4xl" />
-      <readingSlider v-if="text" v-model:value="currentPage" :duration="totalPage" class="w-[400px]" />
+    <div class="flex h-[80px] px-3 py-2 justify-between items-center ">
+      <NuxtLink to="/HomePage" class="h-10 w-10 hover:bg-gray-200 rounded-md">
+        <font-awesome-icon icon="fa-times" class="text-4xl" />
+      </NuxtLink>
+      
+      <readingSlider  v-model:value="currentPage" :duration="totalPage" class="w-[400px]" />
       <div class="flex items-center gap-2">
         <div class="relative group inline-block">
           <span class="h-10 w-10 bg-gray-200 flex items-center justify-center rounded-full">
@@ -24,8 +27,8 @@
           </div>
         </div>
 
-        <button @click="closeSidbar = !closeSidbar">
-          <img :src="closeSidbar ? '/icons/sidebarOpen.svg' : '/icons/sidebarClose.svg'"/>
+        <button @click="toggleSidebar">
+          <img :src="closeSidebar ? '/icons/sidebarOpen.svg' : '/icons/sidebarClose.svg'"/>
         </button>
       </div>
     </div>
@@ -40,7 +43,7 @@
       </button>
 
       <div class="flex flex-1 overflow-hidden min-h-0">
-        <readingArea v-if="boxHeight > 0" :currentPage="currentPage" :boxHeight="boxHeight" :key="boxHeight" @update="handleUpdate" ref="text"/>
+        <readingArea v-if="boxHeight > 0" :openPopUp="closeSidebar" :currentPage="currentPage" :boxHeight="boxHeight" :key="`area-${boxHeight}-${toggleCount}`" @update="handleUpdate" />
       </div>
 
       <button @click="nextPage" 
@@ -61,7 +64,7 @@ import readingArea from './Middle/readingArea.vue'
 
 const currentPage = ref(1)
 const totalPage = ref(1)
-const text = ref(null)
+
 
 const handleUpdate = (data) => {
   currentPage.value = data.page 
@@ -74,14 +77,15 @@ const prevPage = () => {
   }
 }
 
-
 const nextPage = () => {
   if (currentPage.value >= 1 && currentPage.value < totalPage.value) {
     currentPage.value +=1
   }
+
+    console.log('totalPage :', totalPage.value)
 }
 
-const closeSidbar = ref(true)
+const closeSidebar = ref(false)
 
 const leftBox = ref(null)
 const boxHeight = ref(0)
@@ -92,14 +96,26 @@ const measure = () => {
   // wait a frame so layout is stable
     const h = Math.round(leftBox.value.getBoundingClientRect().height)
     boxHeight.value = h
-    console.log('Left box height:', h)
+    // console.log('Left box height:', h)
+
+}
+
+const emit = defineEmits(['sendtoggleSidebar'])
+
+const toggleCount = ref(1)
+const toggleSidebar =async () => {
+  closeSidebar.value = !closeSidebar.value
+  emit('sendtoggleSidebar', closeSidebar.value)
+  console.log('closeSidebar ', closeSidebar.value)
+  toggleCount.value++            // 👈 force destroy + recreate readingArea
+  await nextTick()
 
 }
 
 onMounted(async () => {
   await nextTick()
-  console.log('totalPage :', totalPage.value)
   measure()                         // initial
+
   window.addEventListener('resize', measure)
 })
 
@@ -107,3 +123,42 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', measure) // ✅ same ref
 })
 </script>
+
+
+<!-- <template>
+  <div class="h-screen flex flex-col overflow-hidden">
+ 
+    <header class="shrink-0">
+      <HomeHeader />
+    </header>
+
+ 
+    <main class="flex flex-1 overflow-hidden">
+  
+      <div class=" flex flex-1 flex-col ">
+        <div class="flex-1 overflow-hidden ">
+          <ReadingMain @sendtoggleSidebar="handleOpenSidebar"/>
+        </div>
+        <Footter class="shrink-0" />
+      </div>
+
+
+      <side-bar v-if="SidebarOpen"  class="w-[400px] overflow-y-auto px-3" />
+    </main>
+  </div>
+</template> -->
+
+<!-- <script setup>
+import {ref} from 'vue'
+import HomeHeader from "~/components/HomePage/HomeHeader.vue";
+import sideBar from "~/components/ReadingPage/sideBar.vue";
+import Footter from "~/components/ReadingPage/Footter.vue";
+import ReadingMain from "./ReadingPage/ReadingMain.vue";
+
+const SidebarOpen = ref(true)
+
+const handleOpenSidebar = (data) => {
+  SidebarOpen.value = !data
+  console.log('sidebarOpen :', SidebarOpen.value)
+}
+</script> -->

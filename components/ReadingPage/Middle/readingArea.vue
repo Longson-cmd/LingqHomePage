@@ -36,9 +36,9 @@
     </footer> -->
 
     <!-- OVERLAY LAYER (insert) -->
-    <div class="fixed inset-0 z-[9999] pointer-events-none" ref="overlayRoot">
+    <div class=" word-popup fixed inset-0 z-[9999] pointer-events-none">
       <div
-        v-if="currentword"
+        v-if="currentword && props.openPopUp"
         class="absolute pointer-events-auto"
         :style="{ left: popupPos.x + 'px', top: popupPos.y + 'px' }"
         @click.stop
@@ -76,7 +76,7 @@ const currentword = ref(null)      // { word, index, paraIndex, el }
 const popupPos = ref({ x: 0, y: 0 })
 
 /* ---------- Calculate where to reder word popup ---------- */
-const overlayRoot = ref(null)
+
 const placePopup = () => {
   const el = currentword.value?.el
   if (!el) return
@@ -85,6 +85,10 @@ const placePopup = () => {
   popupPos.value = { x: r.left, y: r.bottom + 8 }
 }
 
+
+
+
+const emit = defineEmits(['update', 'sendWord'])
 const openWordPopup = (word, index, paraIndex, e) => {
   currentword.value = { word, index, paraIndex, el: e.currentTarget }
   // (tuỳ chọn) toggle đã biết
@@ -93,6 +97,7 @@ const openWordPopup = (word, index, paraIndex, e) => {
   } else {
     knownwords.value.push(word)
   }
+  emit('sendWord', currentword.value.word)
   placePopup()
 }
 
@@ -135,14 +140,15 @@ const updatePage = async () => {
   // console.log('totalHeight :', totalHeight)
   total.value = Math.max(1, Math.ceil(totalHeight / view))
   page.value = Math.min(total.value, Math.max(1, Math.round(el.scrollTop / view) + 1))
+  sendData()
 }
 
 const props = defineProps({
   boxHeight : {type : Number,  default: 0},
-  currentPage : Number
+  currentPage : Number,
+  openPopUp: Boolean
 })
 
-const emit = defineEmits(['update'])
 
 const sendData = () => {
   emit( 'update', {
@@ -158,9 +164,6 @@ watch( () => props.boxHeight, async (h) => {
   }
 })
 
-// watch( () => page.value , (newval) => {
-//   goToPage(newval)
-// })
 
 watch( () => props.currentPage, (currentPage) => {
   goToPage(currentPage)
@@ -177,18 +180,17 @@ const goToPage = (n) => {
   sendData()
 }
 
-const prevPage = () => goToPage(page.value - 1)
-const nextPage = () => goToPage(page.value + 1)
 
 /* ---------- lifecycle ---------- */
-let stopWheel, stopTouch
+let stopWheel, stopTouch, onWinResize;
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
 
   const el = scroller.value
   updatePage()
-
-  window.addEventListener('resize', () => { updatePage(); placePopup() })
+  // console.log('total :', total.value)
+  onWinResize = () => { updatePage(); placePopup(); };
+  window.addEventListener('resize', onWinResize)
 
   // Nếu muốn cấm cuộn tay (pager only) thì bật 2 dòng dưới:
   stopWheel = e => e.preventDefault()
@@ -200,7 +202,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
   const el = scroller.value
-  window.removeEventListener('resize', () => { updatePage(); placePopup() })
+  window.removeEventListener('resize', onWinResize)
   if (el) {
   
     el.removeEventListener('wheel', stopWheel)

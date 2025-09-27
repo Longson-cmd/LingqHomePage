@@ -1,10 +1,10 @@
-<template>
-  <practise></practise>
-</template>
-
-
-
 <!-- <template>
+  <practise></practise>
+</template> -->
+
+
+
+<template>
   <div class="max-w-sm mx-auto border shadow mt-20 p-4 rounded-xl">
 
     <h2 class="text-2xl text-center font-bold py-4">
@@ -65,4 +65,4 @@ const handlesubmit = async () => {
 
 }
 
-</script> -->
+</script>

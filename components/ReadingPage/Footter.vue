@@ -1,5 +1,5 @@
 <template>
-  <div class=" relative p-10 h-20 flex justify-between items-center bg-gray-50">
+  <div class=" relative pl-5 pr-3 py-10 h-20 flex justify-between items-center bg-gray-50">
     <!-- AUDIO PART -->
     <font-awesome-icon  icon='fa-play-circle' :class="['text-4xl', openAudio? 'invisible' : '']" @click="toggleOpenAudioBox"/>
 
@@ -32,7 +32,7 @@
     </div>
 
     <!-- BUTTON VIEW MODE -->
-    <button @click="toggleView" class="p-2 rounded-md text-xl font-semibold"> 
+    <button @click="toggleView" class="p-2 rounded-md hover:bg-gray-200 text-xl font-semibold"> 
       <div v-if="sentenceMode" class="flex flex-col items-center justify-center">
         <img src="/icons/sentence-mode.svg" alt="Sentence Mode Icon" class="w-8 h-4"/>
         <span class="text-xs text-center">Sentence view</span>
@@ -44,7 +44,7 @@
     </button>
 
     <!-- REVIEW MODE -->
-    <button class=" p-2 rounded-md text-xl font-semibold ">
+    <button class=" p-2 rounded-md hover:bg-gray-200  text-xl font-semibold ">
         <img :src="sentenceMode ? '/icons/review-sentence.svg' : '/icons/review-page.svg'"  at="Sentence review" class="h-10 w-10"/> 
     </button>
   </div>

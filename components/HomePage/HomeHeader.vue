@@ -56,12 +56,20 @@
             <div :class="['absolute space-y-3 right-0 p-3 w-64 border shadow rounded-xl z-50 bg-white', isOpenlang ? 'block' : 'hidden']">
               <ul class="space-y-2 border-b border-gray-300 pb-3">
                 <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-xl">
-                  <img src="/images/France.png" class="h-5 w-5 rounded-full"/>
+                  <div  class="flex gap-2">
+                    <img src="/images/France.png" class="h-5 w-5 rounded-full"/>
+                     French
+                  </div>
+                  
                   (0)
                 </li>
 
                 <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-xl">
-                  <img src="/images/England.png" class="h-5 w-5 rounded-full"/>
+                  <div class="flex gap-2">
+                    <img src="/images/England.png" class="h-5 w-5 rounded-full"/>
+                    English
+                  </div>
+                  
                   (0)
                 </li>
               </ul>
