@@ -5,7 +5,7 @@
       <div
         v-for="(para, paraIndex) in paragraphs"
         :key="paraIndex"
-        class="flex flex-wrap gap-x-4 gap-y-4 mb-[76px] px-36"
+        class="flex flex-wrap gap-x-4 gap-y-4 mb-[76px] px-16 "
       >
         <span
           v-for="(word, index) in para.split(' ')"

@@ -8,8 +8,8 @@
     <!-- Main fills the rest -->
     <main class="flex flex-1 overflow-hidden">
       <!-- Content area -->
-      <div class=" flex flex-1 flex-col ">
-        <div class="flex-1 overflow-hidden ">
+      <div class=" flex flex-1 flex-col min-w-0">
+        <div class="flex-1 overflow-hidden min-w-0">
           <!-- TEXT CONTENT -->
           <div class="h-full flex flex-col overflow-hidden bg-gray-50 p-2">
             <!-- upperpart -->
@@ -18,7 +18,7 @@
                 <font-awesome-icon icon="fa-times" class="text-4xl" />
               </NuxtLink>
 
-              <readingSlider v-model:value="currentPage" :duration="totalPage" class="w-[400px]" />
+              <readingSlider v-model:value="currentPage" :duration="totalPage" class=" block sm:w-[300px] md:w-[400px]" />
               <div class="flex items-center gap-2">
                 <div class="relative group inline-block">
                   <span class="h-10 w-10 hover:bg-gray-200 flex items-center justify-center rounded-full">
@@ -38,7 +38,7 @@
                   </div>
                 </div>
 
-                <button @click="toggleSidebar">
+                <button @click="toggleSidebar" class="hidden lg:block">
                   <img :src="closeSidebar ? '/icons/sidebarOpen.svg' : '/icons/sidebarClose.svg'" />
                 </button>
               </div>
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Sidebar with independent scroll -->
-      <side-bar v-if="!closeSidebar" :newWord="Word" class="w-[360px] overflow-y-auto px-2" />
+      <side-bar v-if="!closeSidebar" :newWord="Word" class="w-[360px] shrink-0 hidden lg:flex flex-none overflow-y-auto px-2" />
     </main>
   </div>
 </template>
@@ -140,7 +140,21 @@ const toggleSidebar =async () => {
   await nextTick()
 }
 
+
+onMounted(() => {
+  const mq = window.matchMedia('(min-width: 1024px)') // Tailwind lg
+  const apply = () => {
+    // below lg → component is hidden by CSS → close in state too
+    if (!mq.matches) closeSidebar.value = true
+  }
+  apply()
+  mq.addEventListener?.('change', apply) || mq.addListener(apply)
+  onBeforeUnmount(() => {
+    mq.removeEventListener?.('change', apply) || mq.removeListener(apply)
+  })
+})
 onMounted(async () => {
+  
   await nextTick()
   measure()                         // initial
 
