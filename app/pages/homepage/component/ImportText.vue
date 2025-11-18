@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset h-screen bg-gray-300 px-5 w-full flex items-center justify-center">
+    <div class="fixed inset-0 h-screen bg-gray-500/10 z-10  px-5 w-full flex flex-col items-center justify-center">
       <div class=" max-w-[600px] md:w-[600px] px-3 border bg-white p-5 rounded-2xl">
 
         <!-- upper part -->
@@ -9,16 +9,16 @@
             <span class="font-bold text-lg">Import ebook</span>
           </span>
 
-          <button class="h-10 w-10 hover:bg-gray-300 rounded-full flex items-center justify-center"><font-awesome icon="fa-times"/></button>
+          <button @click="sendToParent" class="h-10 w-10 hover:bg-gray-300 rounded-full flex items-center justify-center"><font-awesome icon="times"/></button>
         </div>
-        <span class="text-lg inline-block mt-5">
+        <span class="text-lg inline-block my-5">
           Import your digital copy of your favourite book here! Just drag and drop in the selected area or choose a file from your computer. All imported books are private and only visible to you.
         </span>
 
-        <label class="cursor-pointer mt-5" >
+        <label class="cursor-pointer " >
           <input type="file" accept="application/.pdf, .docx, .txt, .epub" @change="handleFile" class="sr-only">
           <div class="border border-dashed w-full h-20 border-blue-300 p-2 flex min-h-60 rounded-md">
-            <div class="  border-8 border-blue-300 flex-1 flex items-center justify-center gap-2">
+            <div class="  border-8 border-blue-300 flex-1 flex items-center justify-center gap-2 px-3">
               <span class="text-xl">Drag and drop your file here or </span>
               <span class="bg-[#0B1B32] text-white px-3 py-3 text-xl font-semibold rounded-lg">Select file</span>
             </div>
@@ -38,6 +38,11 @@ import {ref} from "vue"
 const uploadFile = ref(null)
 const message = ref("")
 
+const emit = defineEmits(["send-message"])
+const sendToParent = () => {
+  emit("send-message", "closeUpload")
+}
+
 const handleFile = async (e) => {
   message.value = ""
   uploadFile.value = e.target.files[0]
@@ -52,13 +57,17 @@ const handleFile = async (e) => {
     body : formData
   })
 
-  message.value = "uploaded" + uploadFile.value.filename
+  message.value = "uploaded " + result.filename
 
   }
 
   catch (error) {
     console.error(error)
-    message.value = "Failed to upload" + uploadFile.value.filename
+    message.value = "Failed to upload " + uploadFile.value.name 
+  }
+
+  finally {
+    sendToParent()
   }
 
 }

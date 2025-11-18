@@ -4,7 +4,7 @@
 
     <div class="flex items-center px-2">
       <button @click="handleToggleLeftSide" class="md:hidden">
-        <font-awesome :icon="isOpen? 'fa-times' : 'bars'" class="h-5 w-5"/>
+        <font-awesome :icon="isOpen? 'times' : 'bars'" class="h-5 w-5"/>
       </button>
 
       <div class="hidden md:flex items-center font-semibold">

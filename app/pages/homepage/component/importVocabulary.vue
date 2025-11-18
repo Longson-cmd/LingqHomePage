@@ -1,15 +1,15 @@
 <template>
-    <div class="fixed inset h-screen bg-gray-300 px-5 w-full flex items-center justify-center">
+    <div class="fixed inset-0 h-screen bg-gray-500/10 z-10  px-5 w-full flex flex-col items-center justify-center">
       <div class=" max-w-[600px] md:w-[600px] px-3 border bg-white p-5 rounded-2xl">
 
         <!-- upper part -->
         <div class="flex justify-between">
           <span class="inline-flex gap-5 whitespace-nowrap items-center">
             <img src="/icons/header/importText.svg" alt="importText" class="inline-block h-5 w-5">
-            <span class="font-bold text-lg">Import ebook</span>
+            <span class="font-bold text-lg">Vocabulary</span>
           </span>
 
-          <button class="h-10 w-10 hover:bg-gray-300 rounded-full flex items-center justify-center"><font-awesome icon="fa-times"/></button>
+          <button @click="sendToParent" class="h-10 w-10 hover:bg-gray-300 rounded-full flex items-center justify-center"><font-awesome icon="fa-times"/></button>
         </div>
         <span class="text-lg inline-block mt-5">
           Import your digital copy of your favourite book here! Just drag and drop in the selected area or choose a file from your computer. All imported books are private and only visible to you.
@@ -38,6 +38,11 @@ import {ref} from "vue"
 const uploadFile = ref(null)
 const message = ref("")
 
+const emit = defineEmits(["send-message"])
+const sendToParent = () => {
+  emit("send-message", "closeUpload")
+}
+
 const handleFile = async (e) => {
   message.value = ""
   uploadFile.value = e.target.files[0]
@@ -52,13 +57,17 @@ const handleFile = async (e) => {
     body : formData
   })
 
-  message.value = "uploaded" + uploadFile.value.filename
+  message.value = "uploaded " + result.filename
 
   }
 
   catch (error) {
     console.error(error)
-    message.value = "Failed to upload" + uploadFile.value.filename
+    message.value = "Failed to upload " + uploadFile.value.name 
+  }
+
+  finally {
+    sendToParent()
   }
 
 }
