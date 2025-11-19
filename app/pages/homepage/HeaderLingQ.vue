@@ -14,7 +14,7 @@
         <NuxtLink class="hover:bg-gray-200 h-16 inline-flex justify-center items-center px-1">Community</NuxtLink>
       </div>
     </div>
-    <headerLingq class="ml-auto px-2"/>
+    <RightSide class="ml-auto px-2"/>
 
 
     <div  v-if="isOpen" class="absolute w-full top-full mt-2  text-lg gap-1 md:hidden">
@@ -47,12 +47,19 @@
 </template>
 
 <script setup>
-import headerLingq from '~/pages/homepage/component/RightSide.vue';
+import RightSide from '~/pages/homepage/component/RightSide.vue';
 import {ref} from "vue"
 
-const isOpen = ref(true)
+
+const emit = defineEmits(['sending-toggle'])
+
+const props = defineProps({
+  showMain : Boolean
+})
+const isOpen = ref(!props.showMain)
 
 const handleToggleLeftSide = () => {
   isOpen.value = !isOpen.value
+  emit('sending-toggle', !isOpen.value)
 }
 </script>

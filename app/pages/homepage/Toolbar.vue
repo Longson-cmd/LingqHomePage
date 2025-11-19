@@ -1,5 +1,11 @@
 <template>
-  <div class="w-full my-10 h-72 lg:h-20 border p-3 md:p-[56px] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 lg:gap-3">
+
+  <div class="px-3 py-5 md:px-[56px] bg-gray-50 flex gap-3 items-center flex-wrap">
+    <button  @click="moveToOtherPage('library')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'library' ? 'bg-gray-200' : '']" >Library</button>
+    <button  @click="moveToOtherPage('playlists')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'playlists' ? 'bg-gray-200' : '']">Playlists</button>
+    <button  @click="moveToOtherPage('vocabulary')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'vocabulary' ? 'bg-gray-200' : '']">Vocabulary</button>
+  </div>
+  <div class="w-full mb-5 bg-gray-50  px-3 md:px-[56px] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 lg:gap-3">
     <div class="border  rounded-lg border-gray-300 w-full  lg:w-[250px] flex inline-block">
       <input type="text" placeholder="Search Library" class="placeholder-black  p-2 flex-1 focus:outline-none  border border-transparent hover:border-gray-900 rounded-l-lg">
       <button class="border border-transparent  hover:border-gray-800 hover:text-lg rounded-r-lg flex w-10  items-center justify-center"><font-awesome icon="search" /></button>
@@ -33,7 +39,7 @@
     </div>
 
     <div class="relative  self-end lg:self-center ">
-      <button @click="openImport=!openImport"  class="flex gap-2 border px-3 py-2  rounded-xl items-center justify-center w-36 text-white font-semibold text-lg bg-[#0B1B32]">
+      <button @click="openImport=!openImport"  class="flex gap-2 border px-3 py-2  rounded-xl items-center justify-center w-36 text-white font-semibold text-lg bg-[#0B1B32] hover:bg-black">
         <img src="/icons/header/import.svg" alt="import icon"/>
         <span>Import</span>
         <font-awesome icon="chevron-down"/>
@@ -69,6 +75,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Slider from '@vueform/slider'
 import '@vueform/slider/themes/default.css'
 import ImportText from '~/pages/homepage/component/ImportText.vue'
@@ -77,6 +84,13 @@ import ImportVocabulary  from '~/pages/homepage/component/importVocabulary.vue'
 const range = ref([3, 5])
 const Levels = ["Beginner 1", "Beginner 2", "Intermediate 1", "Intermediate 2", "Advanced 1", "Advanced 2"]
 
+const currentPage = ref("library")
+const router = useRouter()
+
+const moveToOtherPage = (pageName) => {
+  currentPage.value = pageName
+  // router.push(`/${pageName}`)
+}
 
 const openImport = ref(false)
 const uploadObject = ref("")
