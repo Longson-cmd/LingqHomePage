@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import RightSide from '~/pages/homepage/component/RightSide.vue';
+import RightSide from "./component/RightSide.vue"
 import {ref} from "vue"
 
 

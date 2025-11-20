@@ -55,7 +55,7 @@
 
 <script setup>
 import {ref} from "vue"
-import Spiner from "~/pages/homepage/component/Spiner.vue"
+import Spiner from "./Spiner.vue"
 const vocabularyFile = ref("")
 const message = ref(null)
 const importing = ref(false)

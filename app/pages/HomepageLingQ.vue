@@ -11,9 +11,8 @@
 <script setup>
 import { useBreakpoints } from '@vueuse/core'
 import {ref} from 'vue'
-import HeaderLingQ from '~/pages/homepage/HeaderLingQ.vue';
-import Toolbar from '~/pages/homepage/Toolbar.vue';
-
+import HeaderLingQ from '~/components/homepage/HeaderLingQ.vue'
+import Toolbar from '~/components/homepage/Toolbar.vue'
 
 const breakpoints = useBreakpoints({
   md: 768

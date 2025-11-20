@@ -61,7 +61,7 @@
 
 <script setup>
 import { ref } from "vue"
-import Spiner from "~/pages/homepage/component/Spiner.vue"
+import Spiner from "./Spiner.vue"
 
 const uploadFile = ref(null)
 const message = ref("")
