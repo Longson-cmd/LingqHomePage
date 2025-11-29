@@ -5,7 +5,7 @@
     <button  @click="moveToOtherPage('playlists')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'playlists' ? 'bg-gray-200' : '']">Playlists</button>
     <button  @click="moveToOtherPage('vocabulary')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'vocabulary' ? 'bg-gray-200' : '']">Vocabulary</button>
   </div>
-  <div class="w-full mb-5 bg-gray-50  px-3 md:px-[56px] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 lg:gap-3">
+  <div class="w-full pb-5 bg-gray-50 px-3 md:px-[56px] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 lg:gap-3">
     <div class="border  rounded-lg border-gray-300 w-full  lg:w-[250px] flex inline-block">
       <input type="text" placeholder="Search Library" class="placeholder-black  p-2 flex-1 focus:outline-none  border border-transparent hover:border-gray-900 rounded-l-lg">
       <button class="border border-transparent  hover:border-gray-800 hover:text-lg rounded-r-lg flex w-10  items-center justify-center"><font-awesome icon="search" /></button>
@@ -38,7 +38,7 @@
       <span class="hidden md:inline md:w-[120px] whitespace-nowrap  py-1">{{ Levels[range[1] -1] }}</span>
     </div>
 
-    <div class="relative  self-end lg:self-center ">
+    <div ref="importElement" class="relative  self-end lg:self-center ">
       <button @click="openImport=!openImport"  class="flex gap-2 border px-3 py-2  rounded-xl items-center justify-center w-36 text-white font-semibold text-lg bg-[#0B1B32] hover:bg-black">
         <img src="/icons/header/import.svg" alt="import icon"/>
         <span>Import</span>
@@ -74,16 +74,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref , onMounted, onBeforeMount} from 'vue'
 import { useRouter } from 'vue-router'
 import Slider from '@vueform/slider'
 import '@vueform/slider/themes/default.css'
-import ImportText from '~/pages/homepage/component/ImportText.vue'
-import ImportAudio from '~/pages/homepage/component/ImportAudio.vue'
-import ImportVocabulary  from '~/pages/homepage/component/importVocabulary.vue'
+import ImportText from './component/ImportText.vue'
+import ImportAudio from './component/ImportAudio.vue'
+import importVocabulary from './component/importVocabulary.vue'
 const range = ref([3, 5])
 const Levels = ["Beginner 1", "Beginner 2", "Intermediate 1", "Intermediate 2", "Advanced 1", "Advanced 2"]
-
+const importElement = ref(null)
 const currentPage = ref("library")
 const router = useRouter()
 
@@ -98,6 +98,22 @@ const OpenUpload = (item) => {
     uploadObject.value = item
     openImport.value = false
 }
+
+const handleClickOutside = (e) => {
+  if (importElement.value && !importElement.value.contains(e.target)) {
+    openImport.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside)
+})
+
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside)
+})
+
 </script>
 
 

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   fontawesome: {
       // component: 'font-awesome',
       icons: {
-         solid: ['chevron-down', 'plus', 'bars', 'times', "search", ] // 👈 add here
+         solid: ['chevron-down', "chevron-left", "chevron-right", 'plus', 'bars', 'times', "search", "chevron-left", "chevron-right", "play-circle", "pause-circle", "ellipsis-h", "ellipsis-v", "play"] // 👈 add here
       }
     }
 

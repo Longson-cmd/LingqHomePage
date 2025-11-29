@@ -1,10 +1,14 @@
 <template>
-  <div class="sticky top-0 bg-white">
-    <header-ling-q :show-main="showMain" @sending-toggle="showMain = $event"/>
-    <div v-show="!(isMobile && !showMain)"><Toolbar/></div>
-
+  <div class="min-h-screen">
+    <div class="sticky top-0 bg-white z-10 ">
+      <header-ling-q :show-main="showMain" @sending-toggle="showMain = $event"/>
+      <div  v-show="!(isMobile && !showMain)"><Toolbar /></div>
+  
+    </div>
+    <div v-show="!(isMobile && !showMain)" class="">
+      <LessonParts  />
+    </div>
   </div>
-  <div v-show="!(isMobile && !showMain)" class="bg-green-200 h-screen"></div>
 </template>
 
 
@@ -13,6 +17,7 @@ import { useBreakpoints } from '@vueuse/core'
 import {ref} from 'vue'
 import HeaderLingQ from '~/components/homepage/HeaderLingQ.vue'
 import Toolbar from '~/components/homepage/Toolbar.vue'
+import LessonParts from '~/components/homepage/LessonParts.vue'
 
 const breakpoints = useBreakpoints({
   md: 768
@@ -22,11 +27,5 @@ const isMobile = breakpoints.smaller('md')
 const showMain = ref(true)
 
 
-watch(isMobile, (newValue) => {
-  console.log('isMobile.value : ', newValue)
-},  1000)
 
-watch(showMain, (newValue) => {
-  console.log('showMain : ', newValue)
-})
 </script>

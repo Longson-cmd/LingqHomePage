@@ -1,30 +1,94 @@
 <template>
-  <div class="fixed inset-0 h-screen bg-gray-500/10 z-10  px-5 w-full flex flex-col items-center justify-center">
-    <div class=" max-w-sm md:max-w-4xl px-3  border bg-white p-5 rounded-2xl">
-      <div class="flex justify-between">
-          <span class="inline-flex gap-5 whitespace-nowrap items-center">
-            <img src="/icons/header/importText.svg" alt="importText" class="inline-block h-5 w-5">
-            <span class="font-bold text-lg">Import ebook</span>
-          </span>
-
-          <button @click="sendToParent" class="h-10 w-10 hover:bg-gray-300 rounded-full flex items-center justify-center"><font-awesome icon="times"/></button>
+    <div class="p-3 md:px-[56px] text-lg flex flex-col sm:flex-row sm:items-center justify-start gap-3 mt-2">
+        <span class="font-medium">Continue Studying <font-awesome icon="play" class="font-light"/></span>
+        
+        <div class="flex gap-3">
+          <span>Lesson</span>
+          <span>Courses</span>
+          <span>Imported Lesson</span>
         </div>
-        <span class="text-lg inline-block ">
-          Your file is importing. Once the first lesson is ready it will open additionall parts continue to import.
-        </span>
-        <span class="text-lg inline-block mb-5">
-          Depending on the speed of your connection and the size fo the file, this could take a few minutes.
-        </span >
 
-        <spiner/>
     </div>
-  </div>
+    <div class="flex flex-row items-center w-full mb-2">
+      <button :disabled="trendingStartIndex===0" @click="getNewLessons('left')" class="w-[56px] flex items-center justify-center flex-shrink-0 text-4xl hover:text-5xl "><font-awesome icon="chevron-left" v-show="trendingStartIndex!==0 && breakpoints.greater('sm').value"/></button> 
+      <div class="flex flex-row w-max overflow-x-auto sm:max-w-full sm:grid sm:flex-grow gap-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <LessonCard v-for="i in numberLessonShow" :key="i" :lesson-number="(i + trendingStartIndex)"/>
+      </div>
+      <button :disabled="trendingStartIndex===10" @click="getNewLessons('right')" class="w-[56px] flex items-center justify-center flex-shrink-0 text-4xl hover:text-5xl "><font-awesome icon="chevron-right" v-show="trendingStartIndex!==10 && breakpoints.greater('sm').value"/></button> 
+    </div>
+
+    <div v-for="content in contents" class="my-2">
+      <div class="p-3 md:px-[56px] text-lg flex flex-row items-center justify-start gap-3">
+          <span class="font-medium">{{content}}</span>
+          <font-awesome icon="play" class="font-light"/>
+          
+          <span>Lesson</span>
+          <span>Courses</span>
+  
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <button :disabled="trendingStartIndex===0" @click="getNewLessons('left')" class="w-[56px] flex items-center justify-center flex-shrink-0 text-4xl hover:text-5xl "><font-awesome icon="chevron-left" v-show="trendingStartIndex!==0 && breakpoints.greater('sm').value"/></button> 
+        <div class="flex flex-row w-max overflow-x-auto sm:max-w-full sm:grid sm:flex-grow gap-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <LessonCard v-for="i in numberLessonShow" :key="i" :lesson-number="(i + trendingStartIndex)"/>
+        </div>
+        <button :disabled="trendingStartIndex===10" @click="getNewLessons('right')" class="w-[56px] flex items-center justify-center flex-shrink-0 text-4xl hover:text-5xl "><font-awesome icon="chevron-right" v-show="trendingStartIndex!==10 && breakpoints.greater('sm').value"/></button> 
+      </div>
+    </div>
 </template>
 
 
 <script setup>
-import {ref} from "vue"
-import Spiner from "~/pages/homepage/component/Spiner.vue";
+import LessonCard from './homepage/component/LessonCard.vue';
+import {ref, computed} from 'vue'
+import { useBreakpoints} from '@vueuse/core'
+
+const breakpoints = useBreakpoints({
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280
+})
+
+
+const trendingStartIndex = ref(0)
+
+const numberLessonShow = computed(() => {
+  if(breakpoints.smaller('sm').value) {return 10}
+  else if (breakpoints.between('sm' , 'md').value ) {return 2}
+  else if (breakpoints.between('md' , 'lg').value ) {return 3}
+  else if (breakpoints.between('lg' , 'xl').value ) {return 4}
+  else {return 5}
+})
+
+
+const getNewLessons = (direction) => {
+  if (direction === 'left') {
+    trendingStartIndex.value = trendingStartIndex.value- 4
+  }
+
+  else {
+      trendingStartIndex.value = trendingStartIndex.value + 4
+  }
+
+  if (trendingStartIndex .value < 0) trendingStartIndex.value = 0
+  if (trendingStartIndex .value >  10) trendingStartIndex.value = 10
+
+}
+
+
+const contents = ["Postcard", 'News',  'Health', 'Sports',  'Kids']
+
+const podcastsStartIndex = ref(1)
+const newsStartIndex = ref(1)
+const foodStartIndex = ref(1)
+const travalStartIndex = ref(1)
 
 
 </script>
+
+
+<!-- const isMobile = breakpoints.smaller('sm')
+const istablets = breakpoints.between('sm' , 'md')
+const islaptops = breakpoints.between('md' , 'lg') 
+const isdesktops = breakpoints.between('lg' , 'xl') 
+const large_desktop = breakpoints.greater('xl') -->

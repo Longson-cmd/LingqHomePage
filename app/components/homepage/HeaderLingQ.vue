@@ -14,7 +14,7 @@
         <NuxtLink class="hover:bg-gray-200 h-16 inline-flex justify-center items-center px-1">Community</NuxtLink>
       </div>
     </div>
-    <RightSide class="ml-auto px-2"/>
+    <RightSide class="ml-auto px-2 z-10 self-center"/>
 
 
     <div  v-if="isOpen" class="absolute w-full top-full mt-2  text-lg gap-1 md:hidden">

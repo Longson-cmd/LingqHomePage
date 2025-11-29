@@ -1,6 +1,6 @@
 <template>
    <div class="bg-gray-50">
-        <div class="p-3 md:px-[56px] text-lg flex flex-col sm:flex-row sm:items-center justify-start gap-3 mt-2">
+        <div class="p-3 md:px-[56px] text-lg flex flex-col sm:flex-row sm:items-center justify-start gap-3 ">
             <span class="font-medium">Continue Studying <font-awesome icon="play" class="font-light"/></span>
             
             <div class="flex gap-3">
@@ -40,7 +40,8 @@
 
 
 <script setup>
-import LessonCard from './homepage/component/LessonCard.vue'
+
+import LessonCard from './component/LessonCard.vue'
 import {ref, computed} from 'vue'
 import { useBreakpoints} from '@vueuse/core'
 
