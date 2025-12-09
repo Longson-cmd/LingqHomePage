@@ -1,11 +1,37 @@
+
+
 <template>
-    <div class="max-w-md mx-auto mt-20 ">
-        <div class="border flex flex-col rounded-3xl w-[390px]  pt-3 h-[500px]">
+   
+        <div class="border z-20 flex flex-col rounded-3xl w-[390px] pt-3 h-[500px] pb-1" :class="expand? 'h-[500px]' : 'h-auto'">
             <!-- word and tags -->
-            <div class="px-5 pb-2 ">
-                <div class="flex flex-row gap-2 items-center">
-                    <img src="/icons/reader/volume.svg" alt="volume" class=""/>
-                    <span>{{ word }}</span>
+            <div class="px-5 pb-2 relative">
+                <div class="flex justify-between items-center pr-5">
+                    <div class="flex flex-row gap-2 items-center font-bold text-xl my-3">
+                        <img src="/icons/reader/volume.svg" alt="volume" class=""/>
+                        <span>{{ word }}</span>
+                    </div>
+
+                     <div v-show="wordStatus !== 6 && expand ===false" class="relative " @mouseenter="openSelectStatus = true" @mouseleave="openSelectStatus = false">
+                        <div  class="  h-10 w-10 border border-gray-300 rounded-full flex items-center justify-center" :class="listColors[wordStatus]">
+                            <img v-if="wordStatus === 0" src="/icons/reader/trash.svg" alt="trash">
+                            <font-awesome v-else-if="wordStatus === 5" icon="check" class="text-green-500"/>
+                            <span v-else>{{wordStatus}}</span>
+                        </div>
+                        <div v-if="openSelectStatus" class="absolute -translate-y-1/3 -translate-x-1/2 w-52 rounded-2xl  border border-gray-300 shadow-md p-3 z-10  bg-white flex flex-col gap-2">
+                            <button @click="wordStatus = i ; openSelectStatus = false " v-for="(status, i) in listStatus" class="flex  justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <span :class="['h-8 w-8 rounded-full border border-gray-300  flex items-center justify-center' , `hover:${listColors[i]}`, wordStatus === i && listColors[i]]">
+                                        <img v-if="i === 0" src="/icons/reader/trash.svg" alt="trash">
+                                        <font-awesome v-else-if="i === 5" icon="check" class="text-green-500"/>
+                                        <span v-else>{{i}}</span>
+                                    </span>
+                                    <span>{{status}}</span>
+                                </div>
+                                <span class=" h-6 w-6 border flex items-center justify-center rounded border-gray-400 border-r-[2px] border-b-[2px] shadow-[2px_2px_1px_rgba(0,0,0,0.50)]">{{ i ===0 ? 'x' : i === 5? 'k' : `${i}` }}</span>
+                            </button>
+                                                      
+                        </div>
+                    </div>
                 </div>
                 <div class="flex ">
                     <div class="flex self-start items-center  shrink-0  w-10">
@@ -25,9 +51,12 @@
                         <input v-else type="text" @keyup.enter="addTag" v-model="newTag" class=" focus:outline-none focus:ring-0 px-2 p-0.5 rounded-md border border-gray-300 ">
                     </div>
                 </div>
+
+                <button @click="$emit('closePopup', false)" class="absolute top-1 right-2 h-6 w-6 border border-gray-500 rounded-full flex items-center justify-center hover:bg-gray-300"><font-awesome icon="times" class="h-3"/></button>
+               
             </div>
 
-            <div class="p-5 border-y border-y-gray-300 flex flex-col gap-1 flex-1 min-h-0 overflow-auto custom-scrollbar">
+            <div v-if="expand" class="p-5 border-y border-y-gray-300 flex flex-col gap-1 flex-1 min-h-0 overflow-auto custom-scrollbar">
                 <span class="font-medium">Saved Meaning</span>
                 <div v-for="(meaning, i) in listMeanings"  :key="i" class="relative group mt-2">
                     <textarea                      
@@ -49,7 +78,7 @@
                 </div>
 
                 <textarea 
-                v-show="openAddMeaning"
+                v-if="openAddMeaning"
                 placeholder="Enter new meaning, then press 'Enter'"
                 v-model="newMeaning"
                 @input="(e) => {
@@ -57,8 +86,8 @@
                     e.target.style.height = e.target.scrollHeight + 'px'
                     
                 }"
-                @keydown.enter.prevent="addMeaning"
-                class="border inline-block w-full leading-none text-start pt-2 px-2  rounded-lg focus:outline-none focus:ring-0 "
+                @keydown.enter.prevent="addMeaning  "
+                class="border inline-block w-full min-h-10 text-start pt-2 px-2  rounded-lg focus:outline-none focus:ring-0 "
                 />
 
                 <span class="inline-block mt-5 mb-1 font-medium">Dictionaries</span>
@@ -82,37 +111,124 @@
                </button>
             </div>
 
-            <div class="px-4 py-2 flex justify-between">
-                <button @click="wordStatus=0" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-red-100 flex items-center justify-center', wordStatus === 0 && 'bg-red-100']" ><img src="/icons/reader/trash.svg" alt=""/></button>
+            <div v-if="expand" class="px-4 py-1 flex justify-between">
+                <button @click="wordStatus=0" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-red-200 flex items-center justify-center', wordStatus === 0 && 'bg-red-200']" ><img src="/icons/reader/trash.svg" alt=""/></button>
                 <button @click="wordStatus=1" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-300 flex items-center justify-center',  wordStatus === 1 && 'bg-yellow-300', wordStatus === 6 && 'bg-blue-200']">1</button>
                 <button @click="wordStatus=2" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-200 flex items-center justify-center' , wordStatus === 2 && 'bg-yellow-200']">2</button>
                 <button @click="wordStatus=3" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-100 flex items-center justify-center' , wordStatus === 3 && 'bg-yellow-100']">3</button>
                 <button @click="wordStatus=4" :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-gray-200 flex items-center justify-center' , wordStatus === 4 && 'bg-gray-200']">4</button>
-                <button @click="wordStatus=5" :class="['h-10 w-10 rounded-full border border-green-200 hover:bg-green-100 flex items-center justify-center' , wordStatus === 5 && 'bg-green-200']"><font-awesome icon="check" class="text-green-500"/></button>
+                <button @click="wordStatus=5" :class="['h-10 w-10 rounded-full border border-green-200 hover:bg-green-200 flex items-center justify-center' , wordStatus === 5 && 'bg-green-200']"><font-awesome icon="check" class="text-green-500"/></button>
             </div>
+
+            <div v-else class="px-5 py-2 shrink-0 border-t border-t-gray-300 flex flex-col gap-1">
+                <div v-if="wordStatus === 0">
+                    <span class="font-medium">Saved Meaning</span>
+                    <textarea 
+                    
+                    placeholder="Enter new meaning, then press 'Enter'"
+                    v-model="newMeaning"
+                    @input="(e) => {
+                        e.target.style.height = 'auto',
+                        e.target.style.height = e.target.scrollHeight + 'px'
+                        
+                    }"
+                    @keydown.enter.prevent="addMeaning ; wordStatus=1"
+                    class="border inline-block w-full leading-none text-start pt-2 px-2  rounded-lg focus:outline-none focus:ring-0 "
+                    />
+                </div>
+
+                <div v-else-if="wordStatus ===6">
+                    <span class="block  text-start font-medium">Popular Meanings</span>
+                    <button
+                    @click="selectTranslations(1)"
+                    class="w-full text-blue-600 px-3 py-2 mt-1 bg-gray-100 hover:bg-gray-200 flex items-center justify-between rounded-md"
+                    >
+                        <span>{{usersTranslation[0]}}</span>
+                        <div class="flex  gap-1 justify-end ">
+                            <img  src="/icons/reader/chatgpt.svg" class="inline-block h-5" alt="chatgpt">
+                            <font-awesome icon="plus" class="h-4"/>
+                        </div>
+
+                    </button>
+                </div>
+
+                <textarea v-else
+                    @click="expand=true"
+                    class="border inline-block shrink-0  w-full leading-none text-start py-2 px-2  rounded-lg focus:outline-none focus:ring-0 overflow-hidden resize-none"
+                    v-model= "meaningsText"
+                    ref="meaningsBox" 
+                    @input="autoResize"      
+                />
+
+                
+            </div>
+
+          
+
+            <button @click="toggleExpand" class="hover:bg-gray-200 w-80 self-center h-4 rounded-full flex items-center justify-center"><font-awesome :icon="expand ? 'chevron-up' : 'chevron-down'" /></button>
         </div>
-    </div>
+ 
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, watch, nextTick, onMounted} from 'vue'
 const props = defineProps({
     word: {type: String, default: 'New word'},
-    wordStatus : {type: Number, default: 6}
+    wordStatus : {type: Number, default: 1}
 })
 
+const emit = defineEmits(['closePopup'])
 
+const meaningsBox = ref(null)
+
+const expand = ref(false)
 const wordStatus = ref(props.wordStatus)
+const listStatus = ['Ignore', 'New', 'Recognized', 'Familiar', 'Learned', 'Know']
+const listColors = ['bg-red-200', 'bg-yellow-300' , 'bg-yellow-200' , 'bg-yellow-100' ,'bg-gray-200', 'bg-green-200']
+const openSelectStatus = ref(false)
+
 const frequent = 1
 const listTags = ref(['Noun', 'Verb', 'Food', 'Health'])
 const newTag = ref('')
 const openAddtag = ref(false)
 
 const openAddMeaning = ref(false)
-const listMeanings = ref(['Good luck', 'Fortunate', 'Blessing in disguise'])
+const listMeanings = ref(['Good luck', 'Fortunate', 'Blessing in disguise', 'aaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'])
+const meaningsText = ref(listMeanings.value.join('; '))
 const newMeaning = ref('')
 
 const usersTranslation = ref(['In mood', 'energetic', "peaseful" , "calm"])
+
+
+const autoResize = () => {
+    const el = meaningsBox.value
+    if (!el) return
+
+    el.style.height  = 'auto'
+    el.style.height = el.scrollHeight + 'px'
+}
+
+watch(listMeanings, async (newVal) => {
+    meaningsText.value = newVal.join('; ')
+    await nextTick()
+    autoResize()
+    
+}, {deep: true})
+
+watch(wordStatus, (newVal) => {
+    if (newVal === 0) {
+        listMeanings.value = []
+    }
+})
+
+const toggleExpand = async () => {
+  expand.value = !expand.value
+  await nextTick()
+  if (!expand.value) {
+    autoResize()
+  }
+}
+
 
 const clearTag = (tag) => {
     listTags.value = listTags.value.filter(item => item !== tag)
@@ -140,7 +256,7 @@ const addMeaning = () => {
     if (!textNewMeaning) return
 
     if (!listMeanings.value.includes(textNewMeaning)) {
-        listMeanings.value.push(textNewMeaning)
+        listMeanings.value.unshift(textNewMeaning)
     }
     newMeaning.value = ''
    openAddMeaning.value = false
@@ -152,6 +268,11 @@ const selectTranslations = (idx) => {
     console.log('listMeanings :', listMeanings.value)
     usersTranslation.value.splice(idx, 1)
 }
+
+onMounted(async() => {
+    await nextTick()
+    autoResize()
+})
 
 </script>
 
