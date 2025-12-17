@@ -13,18 +13,17 @@ const originalSentenceData = (lessondata, paraIdx, sentenceIdx) => {
 }
 
 //  createData of newPhrase
-const createNewPhrase= (flatSentencesData, startRange, endRange) => {
-    const newPhraseData = flatSentencesData.slice(startRange, endRange + 1).map(w => ({...w, 'visible_in_phrase' : true}))
-
+const createNewPhrase= (flatSentencesData, startRange, endRange, paraIdx,  status) => {
+    const newPhraseData = flatSentencesData.slice(startRange, endRange + 1).map(w => ({...w}))
     const newPhrase = {
         "phrase": newPhraseData,
-        "status": 6,
-        "p_idx": 3,
+        "status": status,
+        "p_idx": paraIdx,
         "s_idx": newPhraseData[0]["s_idx"],
         "type": "phrase",
         "visible": true
 }
-    // console.log("newPhrase ", newPhrase)
+    
     return newPhrase
 }
 
@@ -42,19 +41,6 @@ const getAllexsistingPhrases = (copySentenceData) => {
 }
 
 
-const changeStatus = (listPhrases, startRange, endRange) => {
-
-    for (let i = 0; i < listPhrases.length; i ++) {
-    const indexWordStart = listPhrases[i]['phrase'][0]["idx_w_in_s"]
-    for (let k =0; k < listPhrases[i]['phrase'].length; k++) {  
-        if (startRange <=k + indexWordStart && k + indexWordStart <=endRange) {
-        listPhrases[i]['phrase'][k]['visible_in_phrase'] = false
-        }
-    }
-
-    listPhrases[i].visible = listPhrases[i].phrase.some(w => w.visible_in_phrase === true)
-
-}}
 
 
 const insertNewPhrase = (listPhrases, newPhrase, startRange) => {
@@ -68,8 +54,12 @@ const insertNewPhrase = (listPhrases, newPhrase, startRange) => {
         listPhrases[indexForNewPhrase] = newPhrase
        }
 
-    else {
-      if (listPhrases[indexForNewPhrase]['phrase'].length > newPhrase.phrase.length) {
+    else if (listPhrases[indexForNewPhrase]['phrase'][0]['idx_w_in_s'] > startRange) {
+      listPhrases.splice(indexForNewPhrase , 0, newPhrase)
+    }
+
+    else  {
+      if (listPhrases[indexForNewPhrase]['phrase'].length < newPhrase.phrase.length) {
         listPhrases.splice(indexForNewPhrase, 0, newPhrase)
       }
       else {
@@ -78,7 +68,30 @@ const insertNewPhrase = (listPhrases, newPhrase, startRange) => {
       
     }
 
-    console.log('list phrase :', listPhrases)
+}
+
+
+const changeStatus = (listPhrases) => {
+    let listPreviousPhraseIndexs = []
+    for (let i = 0; i < listPhrases.length; i ++) {
+    const indexWord = listPhrases[i]['phrase'][0]["idx_w_in_s"]
+    for (let k =0; k < listPhrases[i]['phrase'].length; k++) {
+        const indexWord = listPhrases[i]['phrase'][k]['w_idx']  
+        if (
+          listPreviousPhraseIndexs.includes(indexWord)
+        ) {
+        listPhrases[i]['phrase'][k]['visible_in_phrase'] = false
+        }
+
+        else {
+          listPreviousPhraseIndexs.push(indexWord)
+          listPhrases[i]['phrase'][k]['visible_in_phrase'] = true
+        }
+    }
+
+    listPhrases[i].visible = listPhrases[i].phrase.some(w => w.visible_in_phrase === true)
+    } 
+
 }
 
 const buildSentence = (listPhrases, flatSentencesData) => {
