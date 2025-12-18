@@ -9,23 +9,6 @@ const currentPointer = ref(null)
 const isDraging = ref(false)
 
 
-const getWordData = (e) => {
-
-  const target = e.target
-
-  if (!target instanceof HTMLElement) return null
-  const el = target.closest('.word-item')
-
-  if (!el) return
-
-  return {
-    w_idx : Number(el.dataset.wIdx),
-    s_idx : Number(el.dataset.sIdx),
-    idx_w_in_s : Number(el.dataset.idxWInS),
-    p_idx : Number(el.dataset.pIdx)
-  }
-}
-
 
 const onPointerdown = (indexWord, indexSentence, indexWordInSentence, indexPara) => {
   isDraging.value = true
@@ -45,30 +28,93 @@ const onPointerEnter = (indexWord, indexSentence, indexWordInSentence, indexPara
 
 }
 
+
+const getitemData = (e) => {
+
+  const target = e.target
+
+  if (!(target instanceof HTMLElement)) return null
+  const WordEl = target.closest('.word-item')
+
+  if (WordEl) {
+      return {
+      w_idx : Number(WordEl.dataset.wIdx),
+      s_idx : Number(WordEl.dataset.sIdx),
+      idx_w_in_s : Number(WordEl.dataset.idxWInS),
+      p_idx : Number(WordEl.dataset.pIdx)
+    }
+  }
+
+  else {
+    const phraseEl = target.closest('.phrase-item')
+
+    if (!phraseEl) return
+    const itemData = {
+      first_w_idx : Number(phraseEl.dataset.firstWIdx),
+      first_s_idx : Number(phraseEl.dataset.firstSIdx),
+      first_idx_w_in_s : Number(phraseEl.dataset.firstIdxWInS),
+      first_p_idx : Number(phraseEl.dataset.firstPIdx),
+      end_w_idx : Number(phraseEl.dataset.endWIdx),
+      end_s_idx : Number(phraseEl.dataset.endSIdx),
+      end_idx_w_in_s : Number(phraseEl.dataset.endIdxWInS),
+      end_p_idx : Number(phraseEl.dataset.endPIdx)
+    }
+    return itemData
+  }
+ 
+}
+
+
+
 const handlePointerDown = (e) => {
-  const wordData = getWordData(e)
+  const itemData = getitemData(e)
 
-  if (!wordData) return
 
-  onPointerdown(
-    wordData.w_idx,
-    wordData.s_idx,
-    wordData.idx_w_in_s,
-    wordData.p_idx,
-  )
+  if (!itemData) return
+
+  if (Object.keys(itemData).length === 4) {
+    onPointerdown(
+      itemData.w_idx,
+      itemData.s_idx,
+      itemData.idx_w_in_s,
+      itemData.p_idx,
+    )
+  }
+
+  else {
+    startPointer.value = [
+      itemData.first_w_idx,
+      itemData.first_s_idx,
+      itemData.first_idx_w_in_s,
+      itemData.first_p_idx,
+    ]
+    currentPointer.value = [
+      itemData.end_w_idx,
+      itemData.end_s_idx,
+      itemData.end_idx_w_in_s,
+      itemData.end_p_idx,
+    ]
+  }
+
+
 }
 
 const handlePointerEnter = (e) => {
-   const wordData = getWordData(e)
-  
 
-  if (!wordData) return
+  if (!isDraging.value) return;
+  
+  if (e.buttons !== 1) return
+
+
+  const itemData = getitemData(e)
+
+  if (!itemData) return
 
   onPointerEnter(
-    wordData.w_idx,
-    wordData.s_idx,
-    wordData.idx_w_in_s,
-    wordData.p_idx,
+    itemData.w_idx,
+    itemData.s_idx,
+    itemData.idx_w_in_s,
+    itemData.p_idx,
   )
 }
 

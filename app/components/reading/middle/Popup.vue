@@ -2,7 +2,7 @@
 
 <template>
    
-        <div class="border z-20 flex flex-col rounded-3xl w-[390px] pt-3 h-[500px] pb-1" :class="expand? 'h-[500px]' : 'h-auto'">
+        <div class="border bg-white flex flex-col rounded-3xl w-[390px] pt-3 h-[500px] pb-1" :class="expand? 'h-[500px]' : 'h-auto'">
             <!-- word and tags -->
             <div class="px-5 pb-2 relative">
                 <div class="flex justify-between items-center pr-5">

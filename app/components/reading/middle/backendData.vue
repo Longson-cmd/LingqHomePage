@@ -1,30 +1,52 @@
 <template>
-  <div class="max-w-3xl mx-auto  mt-20 flex flex-wrap gap-y-7">
+  <div class="max-w-3xl mx-auto  mt-20 flex flex-wrap gap-y-7"
+  @pointerdown.prevent="handlePointerDown"
+  @pointermove="handlePointerEnter"
+  >
     <div v-for="(para, idPara) in lessondata" :key="idPara"
-      class="text-3xl flex flex-wrap gap-y-7 px-2 gap-x-1 text-start">
+      class="text-3xl flex flex-wrap gap-y-7 px-2  text-start">
 
-      <span v-for="(item, idItem) in para" :key="idItem">
+      <span v-for="(item, idItem) in para" :key="idItem" class="h-[44px] flex items-center">
         <span v-if="item['type'] === 'phrase'"
           v-show="item['visible']"
-          class="flex px-1 gap-y-7 h-[35px] items-center gap-x-1 rounded  border border-transparent hover:border-yellow-300 "
-          :class="['status-' + item['status'], item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']">
-          <span v-for="(word) in item['phrase']">
+          class="phrase-item flex  gap-y-7 h-full  items-center  rounded  ring-2 ring-inset ring-transparent hover:ring-yellow-400"
+          :class="['status-' + item['status']]"
+          :data-first-w-idx="item['phrase'][0]['w_idx']"
+          :data-first-s-idx="item['phrase'][0]['s_idx']"
+          :data-first-idx-w-in-s="item['phrase'][0]['idx_w_in_s']"
+          :data-first-p-idx="item['phrase'][0]['p_idx']"
+          :data-end-w-idx="item['phrase'][item['phrase'].length -1]['w_idx']"
+          :data-end-s-idx="item['phrase'][item['phrase'].length -1]['s_idx']"
+          :data-end-idx-w-in-s="item['phrase'][item['phrase'].length -1]['idx_w_in_s']"
+          :data-end-p-idx="item['phrase'][item['phrase'].length -1]['p_idx']"
+          >
+          <span v-for="(word) in item['phrase']" 
+          :class="['inline-flex items-center h-[35px]  px-1', isActice(word['w_idx']) && 'bg-red-400']"
+          v-show="word['visible_in_phrase']"
+          >
+
             <span 
-              v-if="word['visible_in_phrase']"
+              
               :class="['status-' + word['status'], word['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
-              class="word-item" :id="`w-${word['w_idx']}`"
-              @pointerdown.prevent="onPointerdown(word['w_idx'], word['s_idx'], word['idx_w_in_s'], word['p_idx'])"
-              @pointerenter="onPointerenter(word['w_idx'], word['s_idx'], word['idx_w_in_s'], word['p_idx'])">
+              class="  word-item " :id="`w-${word['w_idx']}`"
+              :data-w-idx="word['w_idx']"
+              :data-s-idx="word['s_idx']"
+              :data-idx-w-in-s="word['idx_w_in_s']"
+              :data-p-idx="word['p_idx']">
               {{ word['word'] }}
             </span>
+          
           </span>
         </span>
 
-        <span v-else class="flex  h-[35px]  items-center">
+        <span v-else :class="['flex  h-[35px]  items-center px-1 -blue-400 ', isActice(item['w_idx']) && 'bg-red-400']">
           <span :id="`w-${item['w_idx']}`"
             :class="['status-' + item['status'], 'word-item', item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
-            @pointerdown.prevent="onPointerdown(item['w_idx'], item['s_idx'], item['idx_w_in_s'], item['p_idx'])"
-            @pointerenter="onPointerenter(item['w_idx'], item['s_idx'], item['idx_w_in_s'], item['p_idx'])">
+            :data-w-idx="item['w_idx']"
+            :data-s-idx="item['s_idx']"
+            :data-idx-w-in-s="item['idx_w_in_s']"
+            :data-p-idx="item['p_idx']"
+            >
             {{ item['word'] }}
           </span>
         </span>
@@ -32,159 +54,60 @@
 
     </div>
 
-    <div> Selected phase : {{ selected }}</div>
+    <div>
+      <div> Selected phase : {{ selected }}</div>
+      <div>Current Sentence : {{ currentSentence }}</div>
+    </div>
   </div>
 </template>
 
 <script setup>
 
 
+import { text } from '@fortawesome/fontawesome-svg-core';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const lessondata = ref(useLesson());
 const { listSentence } = useSentences();
 
+const {
+  startPointer, 
+  currentPointer,
+  isDraging,
+  handlePointerDown,
+  handlePointerEnter
+} = useEventDelegation()
+
+const {
+    originalSentenceData,
+    createNewPhrase,
+    getAllexsistingPhrases,
+    changeStatus,
+    insertNewPhrase, 
+    buildSentence,
+} = useCreateNewPhrase ();
+
 
 const currentSentence = ref('')
-const startPointer = ref(null)
-const currentPointer = ref(null)
-const isDraging = ref(false)
-
-
-const onPointerdown = (indexWord, indexSentence, indexWordInSentence, indexPara) => {
-  isDraging.value = true
-
-  startPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
-  currentPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
-
-  // console.log('startPointer', startPointer.value[0])
-}
-
-const onPointerenter = (indexWord, indexSentence, indexWordInSentence, indexPara) => {
-  if (!isDraging.value) return
-
-  currentPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
-
-
-}
-
-
 
 const pointerUp = () => {
   isDraging.value = false
-  // console.log('currentPointer', currentPointer.value[0])
 
-  if (!startPointer.value || !currentPointer.value) return
+}
 
-  if (startPointer.value[1] !== currentPointer.value[1]) return
+const isActice = (wordIndex) => {
+  if (!startPointer.value || !currentPointer.value) return false
+  const a = Math.min(startPointer.value[0], currentPointer.value[0])
+  const b = Math.max(startPointer.value[0], currentPointer.value[0])
 
-  const a = Math.min(startPointer.value[2], currentPointer.value[2])
-  const b = Math.max(startPointer.value[2], currentPointer.value[2])
+  if (wordIndex >= a && wordIndex <=b) {
+    return true
+  }
+  else {
+    return false
+  }
 
-  if (currentPointer.value[3] === 3 && a !== b) {
-
-    const start = lessondata.value[3].findIndex(item => item['s_idx'] === currentPointer.value[1])
-    const end = lessondata.value[3].findLastIndex(item => item['s_idx'] === currentPointer.value[1])
-
-    const copy3 = JSON.parse(JSON.stringify(lessondata.value[3]))
-    const dataCurrentSentences = copy3.filter(item => item['s_idx'] === currentPointer.value[1])
-
-    const listPhrases = []
-    dataCurrentSentences.forEach((item, idx) => {
-      if (dataCurrentSentences[idx]['type'] === "phrase") {
-        const phrase = dataCurrentSentences[idx]['phrase']
-
-        listPhrases.push(item)
-      }
-    })
-
-    const flatSentencesData = dataCurrentSentences.flatMap(item =>item['type'] === 'phrase' ? item['phrase'].filter(w => w.visible_in_phrase === true) : [item])
-
-    const newPhraseData = flatSentencesData.slice(a, b + 1).map(w => ({...w, 'visible_in_phrase' : true}))
-
-    const newPhrase = {
-      "phrase": newPhraseData,
-      "status": 6,
-      "p_idx": 3,
-      "s_idx": newPhraseData[0]["s_idx"],
-      "type": "phrase",
-      "visible": true
-    }
-
-    // Change status of invisble in phrase
-
-
-
-    if (listPhrases.length > 0) {
-      for (let i = 0; i < listPhrases.length; i ++) {
-        const indexWordStart = listPhrases[i]['phrase'][0]["idx_w_in_s"]
-        for (let k =0; k < listPhrases[i]['phrase'].length; k++) {  
-          if (a <=k + indexWordStart && k + indexWordStart <=b) {
-            listPhrases[i]['phrase'][k]['visible_in_phrase'] = false
-          }
-        }
-
-        let visible = false
-        for (let k = 0; k < listPhrases[i]['phrase'].length; k++) {
-          
-          if (listPhrases[i]['phrase'][k]['visible_in_phrase']  === true) {
-            visible = true
-            break
-          }   
-          
-        }
-
-        if (visible === false) {
-            listPhrases[i]['visible'] = false
-          }
-
-
-      }
-
-    }
-
-
-    const indexForNewPhrase = listPhrases.findIndex(item => item['phrase'][0]["idx_w_in_s"] >=a)
-
-    console.log('indexForNewPhrase' , indexForNewPhrase)
-    if (indexForNewPhrase === -1) { listPhrases.push(newPhrase)}
-    else if (listPhrases[indexForNewPhrase]['phrase'].length === newPhraseData.length
-      && listPhrases[indexForNewPhrase]['phrase'][0]['idx_w_in_s'] === a) 
-      { 
-   
-        return
-       }
-
-    else {
-      if (listPhrases[indexForNewPhrase]['phrase'].length > newPhraseData.length) {
-        listPhrases.splice(indexForNewPhrase, 0, newPhrase)
-      }
-      else {
-        listPhrases.splice(indexForNewPhrase + 1, 0, newPhrase)
-      }
-      
-    }
-
-    console.log("listPhrases ," , listPhrases)
- 
-    const newDataSentence = []
-
-    let indexLastItem = -1
-    for (let i = 0; i < listPhrases.length; i ++) {
-      const listWords = flatSentencesData.filter(item => item['idx_w_in_s'] < listPhrases[i]['phrase'][0]['idx_w_in_s'] && item['idx_w_in_s'] > indexLastItem)
-      newDataSentence.push(...listWords)
-      indexLastItem = Math.max(listPhrases[i]['phrase'][0]['idx_w_in_s'] + listPhrases[i]['phrase'].length -1, indexLastItem)
-      newDataSentence.push(listPhrases[i])
-    }
-   
-
-    const listWords = flatSentencesData.filter(item =>item['idx_w_in_s'] > indexLastItem)
-    newDataSentence.push(...listWords)
-
-   
-    lessondata.value[3].splice(start, end - start + 1, ...newDataSentence)
-    //  console.log("lessondata.value[3] :",  lessondata.value[3])
-}}
+}
 
 const selected = computed(() => {
   if (!startPointer.value || !currentPointer.value) return
@@ -210,9 +133,80 @@ const selected = computed(() => {
   return selected_phrase.join(" ")
 })
 
+const changePhraseStatus = (e) => {
+  const listKeys = ['x' ,'1', '2', '3', '4', '5']
 
-onMounted(() => window.addEventListener('pointerup', pointerUp))
-onBeforeUnmount(() => window.removeEventListener('pointerup', pointerUp))
+
+  if (!listKeys.includes(e.key)) return
+
+  if (!startPointer.value || !currentPointer.value) return
+
+  if (startPointer.value[1] !== currentPointer.value[1]) return
+
+  const a = Math.min(startPointer.value[2], currentPointer.value[2])
+  const b = Math.max(startPointer.value[2], currentPointer.value[2])
+
+  if (a === b) return
+  // GET PARA INDEX AND SENTENCE INDEX 
+  
+  const paraIdx = currentPointer.value[3]
+  const sentenceIdx = currentPointer.value[1]
+  // get data of the sentence needed to modify, (start and end are the index of first and final words according to the paragraph, not whole the prose)
+  const {start, end, copySentenceData} = originalSentenceData(lessondata, paraIdx, sentenceIdx)
+
+  // flat copySentenceData to words level
+   const flatSentencesData = copySentenceData.flatMap(item =>item['type'] === 'phrase' ? item['phrase'].filter(w => w.visible_in_phrase === true) : [item])
+
+  // GET ALL PHRASES IN THE SENTENCE
+  const listPhrases = getAllexsistingPhrases(copySentenceData)
+
+  if (e.key === 'x') {
+      // --------------REMOVE PHRASE----------------
+    const indexForNewPhrase = listPhrases.findIndex(item => item['phrase'][0]["idx_w_in_s"] === a)
+
+    if (indexForNewPhrase === -1 || listPhrases[indexForNewPhrase]['phrase'].length !== b- a+ 1) {
+      return
+    }
+
+    else {
+      listPhrases.splice(indexForNewPhrase, 1)
+    }
+  }
+
+  else {
+    // --------------CREATE NEW PHRASE----------------
+  
+    //  createData of newPhrase
+    const newPhrase = createNewPhrase(flatSentencesData, a, b, paraIdx, e.key);
+
+    insertNewPhrase(listPhrases, newPhrase, a);
+  }
+
+  
+
+  // Change status of invisble in phrase
+  changeStatus(listPhrases);
+
+
+  // Create new data for the sentence
+  const newDataSentence = buildSentence(listPhrases, flatSentencesData)
+
+  // update newData
+  lessondata.value[paraIdx].splice(start, end - start + 1, ...newDataSentence)
+
+  
+  
+}
+
+
+onMounted(() => {
+  window.addEventListener('pointerup', pointerUp),
+  window.addEventListener('keydown', changePhraseStatus)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('pointerup', pointerUp)
+  window.removeEventListener('keydown', changePhraseStatus)
+})
 </script>
 
 

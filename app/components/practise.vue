@@ -1,5 +1,6 @@
 <template>
-  <div class="max-w-3xl mx-auto  mt-20 flex flex-wrap gap-y-7"
+  <div class="max-w-3xl border mx-auto  mt-20 flex flex-wrap gap-y-7"
+  ref="textArea"
   @pointerdown.prevent="handlePointerDown"
   @pointermove="handlePointerEnter"
   >
@@ -10,14 +11,26 @@
         <span v-if="item['type'] === 'phrase'"
           v-show="item['visible']"
           class="phrase-item flex  gap-y-7 h-full  items-center  rounded  ring-2 ring-inset ring-transparent hover:ring-yellow-400"
-          :class="['status-' + item['status']]">
-          <span v-for="(word) in item['phrase']" :class="['inline-flex items-center h-[35px]  px-1', isActice(word['w_idx']) && 'bg-red-400']">
-         
+          :class="['status-' + item['status']]"
+          :data-first-w-idx="item['phrase'][0]['w_idx']"
+          :data-first-s-idx="item['phrase'][0]['s_idx']"
+          :data-first-idx-w-in-s="item['phrase'][0]['idx_w_in_s']"
+          :data-first-p-idx="item['phrase'][0]['p_idx']"
+          :data-end-w-idx="item['phrase'][item['phrase'].length -1]['w_idx']"
+          :data-end-s-idx="item['phrase'][item['phrase'].length -1]['s_idx']"
+          :data-end-idx-w-in-s="item['phrase'][item['phrase'].length -1]['idx_w_in_s']"
+          :data-end-p-idx="item['phrase'][item['phrase'].length -1]['p_idx']"
+          >
+          <span v-for="(word) in item['phrase']" 
+          :class="['inline-flex items-center h-[35px]  px-1', isActice(word['w_idx']) && 'bg-red-400']"
+          v-show="word['visible_in_phrase']"
+          >
+
             <span 
-              v-if="word['visible_in_phrase']"
+              
               :class="['status-' + word['status'], word['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
               class="  word-item " :id="`w-${word['w_idx']}`"
-               :data-w-idx="word['w_idx']"
+              :data-w-idx="word['w_idx']"
               :data-s-idx="word['s_idx']"
               :data-idx-w-in-s="word['idx_w_in_s']"
               :data-p-idx="word['p_idx']">
@@ -42,6 +55,16 @@
 
     </div>
 
+    <div class="fixed inset-0 pointer-events-none z-10">
+      <div 
+      v-if="startPointer"
+      :class="['absolute pointer-events-auto', (!popupCoordinates.downward ) && '-translate-y-full']"
+      :style="{left: popupCoordinates.x + 'px', top: popupCoordinates.y + 'px'}"
+      >
+        <Popup :word="selected"/>
+      </div>
+    </div>
+
     <div>
       <div> Selected phase : {{ selected }}</div>
       <div>Current Sentence : {{ currentSentence }}</div>
@@ -52,8 +75,9 @@
 <script setup>
 
 
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import Popup from './reading/middle/Popup.vue';
 const lessondata = ref(useLesson());
 const { listSentence } = useSentences();
 
@@ -74,7 +98,34 @@ const {
     buildSentence,
 } = useCreateNewPhrase ();
 
+const textArea = ref(null)
 
+const popupCoordinates = ref({x: 0, y: 0, downward: true})
+
+// PLACE POPUP
+watch(startPointer, (newVal) => {
+  // check if startPointer = null
+  if (!newVal) return
+
+
+  const wordIndex = newVal[0]
+  popupCoordinates.value.downward = true
+  const wordEl = document.getElementById(`w-${wordIndex}`)
+  console.log('id', `w-${wordIndex}`)
+  const textAreaRight = textArea.value.getBoundingClientRect().right
+  const textAreaBottom = textArea.value.getBoundingClientRect().bottom
+
+  console.log("textAreaBottom ", textAreaBottom)
+  popupCoordinates.value.x = wordEl.getBoundingClientRect().left -10
+  popupCoordinates.value.y = wordEl.getBoundingClientRect().bottom + 10
+
+  if (popupCoordinates.value.x + 400 > textAreaRight) {popupCoordinates.value.x = textAreaRight -400}
+  if (popupCoordinates.value.y + 300 > textAreaBottom) {
+    popupCoordinates.value.downward = false
+    popupCoordinates.value.y -= 50
+  }
+
+})
 const currentSentence = ref('')
 
 const pointerUp = () => {
