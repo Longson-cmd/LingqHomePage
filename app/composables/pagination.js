@@ -3,7 +3,7 @@ import {ref, nextTick} from 'vue'
 export function pagination () {
 
 
-const LINE_HEIGHT = 56
+const LINE_HEIGHT = 72
 const totalPage = ref(1)
 const currentPage = ref(1)
 const remaining = ref(0)
@@ -27,12 +27,16 @@ const updateTotalPages = async () => {
     proseEl.style.height = view.value + 'px'
     await nextTick()
 
+    console.log("view ", view.value )
+
     const totalHeight = proseEl.scrollHeight
     const remainder = totalHeight % view.value
     remaining.value = remainder === 0 ? 0 : (view.value - remainder)
 
     totalPage.value = Math.max(Math.ceil(totalHeight / view.value), 1)
 
+    console.log('totalHeight ', totalHeight)
+    console.log('totalPage ', totalPage.value)
     currentPage.value = Math.min( currentPage.value, totalPage.value)
 
     proseEl.scrollTo({top: (currentPage.value -1) * view.value, behavior: 'smooth'})

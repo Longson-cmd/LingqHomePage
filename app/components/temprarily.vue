@@ -1,264 +1,236 @@
 <template>
-  <div class="max-w-3xl mx-auto  mt-20 flex flex-wrap gap-y-7"
-  @pointerdown.prevent="handlePointerDown"
-  @pointermove="handlePointerEnter"
-  >
-    <div v-for="(para, idPara) in lessondata" :key="idPara"
-      class="text-3xl flex flex-wrap gap-y-7 px-2  text-start">
-
-      <span v-for="(item, idItem) in para" :key="idItem" class="h-[44px] flex items-center">
-        <span v-if="item['type'] === 'phrase'"
-          v-show="item['visible']"
-          class="phrase-item flex  gap-y-7 h-full  items-center  rounded  ring-2 ring-inset ring-transparent hover:ring-yellow-400"
-          :class="['status-' + item['status']]"
-          :data-first-w-idx="item['phrase'][0]['w_idx']"
-          :data-first-s-idx="item['phrase'][0]['s_idx']"
-          :data-first-idx-w-in-s="item['phrase'][0]['idx_w_in_s']"
-          :data-first-p-idx="item['phrase'][0]['p_idx']"
-          :data-end-w-idx="item['phrase'][item['phrase'].length -1]['w_idx']"
-          :data-end-s-idx="item['phrase'][item['phrase'].length -1]['s_idx']"
-          :data-end-idx-w-in-s="item['phrase'][item['phrase'].length -1]['idx_w_in_s']"
-          :data-end-p-idx="item['phrase'][item['phrase'].length -1]['p_idx']"
-          >
-          <span v-for="(word) in item['phrase']" 
-          :class="['inline-flex items-center h-[35px]  px-1', isActice(word['w_idx']) && 'bg-red-400']"
-          v-show="word['visible_in_phrase']"
-          >
-
-            <span 
-              
-              :class="['status-' + word['status'], word['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
-              class="  word-item " :id="`w-${word['w_idx']}`"
-              :data-w-idx="word['w_idx']"
-              :data-s-idx="word['s_idx']"
-              :data-idx-w-in-s="word['idx_w_in_s']"
-              :data-p-idx="word['p_idx']">
-              {{ word['word'] }}
-            </span>
-          
-          </span>
-        </span>
-
-        <span v-else :class="['flex  h-[35px]  items-center px-1 -blue-400 ', isActice(item['w_idx']) && 'bg-red-400']">
-          <span :id="`w-${item['w_idx']}`"
-            :class="['status-' + item['status'], 'word-item', item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
-            :data-w-idx="item['w_idx']"
-            :data-s-idx="item['s_idx']"
-            :data-idx-w-in-s="item['idx_w_in_s']"
-            :data-p-idx="item['p_idx']"
-            >
-            {{ item['word'] }}
-          </span>
-        </span>
-      </span>
-
-    </div>
-
-    <div class="fixed inset-0 pointer-event-none z-10">
-      <div 
-      v-if="startPointer"
-      class="absolute pointer-events-auto"
-      :style="{left: popupCoordinates.x + 'px', top: popupCoordinates.y}"
-      >
-        <Popup/>
+ <div class="max-w-xl mx-auto mt-80 ">
+    <div class="fixed top-5 left-96 w-60 bg-black rounded-lg p-2 ">
+      <div id="yt-player" class=" w-full h-full rounded "></div>
+  
+      <div  class="text-white">
+          current time {{ currentTime.toFixed(2) }} s
       </div>
     </div>
 
-    <div>
-      <div> Selected phase : {{ selected }}</div>
-      <div>Current Sentence : {{ currentSentence }}</div>
+    <div class="border h-40 p-4">
+      <div class="w-96  border bg-white rounded-3xl shadow-md px-2 pb-1 flex items-center justify-between">
+        <button @click="playAudio" class="h-10 w-10 rounded-full bg-black/80 shawdow-md flex items-center justify-center whitespace-nowrap shrink-0">
+              <img :src="!isPlaying? '/icons/reader/play.svg' : '/icons/reader/pause.svg'" alt="play or pause">
+          </button>
+  
+        <div class="flex flex-col w-full px-2">
+              <div
+                @mousedown="onSeekStart"
+                @mouseup="onSeekEnd"
+              >         
+                  <AudioSlider :input-max="duration" v-model:input-value="currentTime"/>
+                  <span class="flex text-sm justify-between px-2 ">
+                      <span>{{minutesSeconds(Math.round(currentTime))}}</span>
+                      <span>{{minutesSeconds(Math.round(duration))}} </span>
+                  </span>
+              </div>
+  
+              <div class="w-full flex justify-between gap-1 mt-1">
+                  <button @click="back" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondback.svg" alt="fiveSecondback"/></button>
+                  <button @click="next" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondnext.svg" alt="fiveSecondnext"/></button>
+                  <button @click="isLoop = !isLoop ; console.log('isLoop', isLoop)" :class="isLoop && 'bg-gray-300'" class="h-8 px-1 rounded-lg flex items-center justify-center"><img src="/icons/reader/repeat.svg" alt="repeat"/></button>
+                  <div ref="speedOptionsRef" class="relative">
+                      <button @click="openAudioOptions = !openAudioOptions" class="w-16 h-8 px-1 hover:bg-gray-300 rounded-lg italic flex items-center justify-center gap-1 text">{{`${audioSpeed}x`}}  <font-awesome icon="chevron-up"  class="text-xs mt-1"/></button>
+                      <div v-if="openAudioOptions"
+                      class="absolute w-36  bg-white border shadow z-10 right-0 top-0 rounded-xl -translate-y-full
+                      flex flex-col overflow-hidden">
+                          <button
+                           v-for="speed in speedLists" 
+                           class="" 
+                           :class="[' w-full text-start py-1 px-5 text-lg hover:bg-gray-100', (speed === audioSpeed) && 'bg-gray-100']"
+                           @click="changeAudioSpeed(speed)"           
+                           >
+                              {{speed}}
+                          </button>
+                      </div>
+                  </div>
+                  <NuxtLink class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/zoomIn.svg" alt="zoomIn"/></NuxtLink>
+              </div>
+  
+        </div>
+      </div>
     </div>
-  </div>
+ </div>
+
 </template>
 
 <script setup>
+import {ref, onMounted, watch, onBeforeUnmount} from 'vue'
+import AudioSlider from './UI/AudioSlider.vue'
 
-import { ref, watch,  computed, onMounted, onBeforeUnmount } from 'vue';
-import Popup from './reading/middle/Popup.vue';
-const lessondata = ref(useLesson());
-const { listSentence } = useSentences();
-// const openPopup = ref(false)
-// const popupCoordinates = ref({x: 0, y: 0})
+const {minutesSeconds} = useTime()
 
+let player = null
+let timer = null
 
-
-const {
-  startPointer, 
-  currentPointer,
-  isDraging,
-  handlePointerDown,
-  handlePointerEnter
-} = useEventDelegation()
-
-const {
-    originalSentenceData,
-    createNewPhrase,
-    getAllexsistingPhrases,
-    changeStatus,
-    insertNewPhrase, 
-    buildSentence,
-} = useCreateNewPhrase ();
-
-// PLACE POPUP
-// watch(startPointer, (newVal) => {
-//   // check if startPointer = null
-//   if (!newVal) return
-
-//   const wordIndex = newVal[0]
-
-//   const wordEl = document.getElementById(`w-${wordIndex}`)
-
-//   const r = wordEl.getBoundingClientRect()
-
-//   popupCoordinates.value = {x: r.left, y: r.bottom}
-
-// })
-const currentSentence = ref('')
-
-const pointerUp = () => {
-  isDraging.value = false
-
-}
-
-const isActice = (wordIndex) => {
-  if (!startPointer.value || !currentPointer.value) return false
-  const a = Math.min(startPointer.value[0], currentPointer.value[0])
-  const b = Math.max(startPointer.value[0], currentPointer.value[0])
-
-  if (wordIndex >= a && wordIndex <=b) {
-    return true
-  }
-  else {
-    return false
-  }
-
-}
-
-const selected = computed(() => {
-  if (!startPointer.value || !currentPointer.value) return
-
-  if (startPointer.value[1] !== currentPointer.value[1]) return
+const currentTime = ref(0)
+const duration = ref(100)
+const isPlaying = ref(false)
+const isUserSeeking = ref(false)
+const isLoop = ref(false)
 
 
+const speedLists = [2, 1.5, 1.25, 1, 0.85, 0.75, 0.6, 0.5]
+const openAudioOptions = ref(false)
+const audioSpeed = ref(speedLists[3])
 
-  const a = Math.min(startPointer.value[2], currentPointer.value[2])
-  const b = Math.max(startPointer.value[2], currentPointer.value[2])
+const loadYoutubeAPI = () =>
+  new Promise((resolve) => {
+    if (window.YT?.Player) return resolve()
 
-  currentSentence.value = listSentence[currentPointer.value[1]]
+    const tag = document.createElement('script')
+    tag.src = 'https://www.youtube.com/iframe_api'
+    document.body.appendChild(tag)
 
-  const listWordInSentence = currentSentence.value.split(" ")
-
-  // console.log("currentSentence" , currentSentence.value) 
-
-  const selected_phrase = listWordInSentence.slice(a, b + 1)
-
-  // console.log('selected_phrase', selected_phrase)
-
-
-  return selected_phrase.join(" ")
+    window.onYouTubeIframeAPIReady = () => resolve()
 })
 
-const changePhraseStatus = (e) => {
-  const listKeys = ['x' ,'1', '2', '3', '4', '5']
+onMounted( async () => {
+  await loadYoutubeAPI()
+ 
+  player = new YT.Player('yt-player', {
+    videoId: 'dQw4w9WgXcQ', 
+
+    playerVars : {
+      controls: 1,// Hiện thanh điều khiển
+      modestbranding: 1, // Giảm logo YouTube
+      rel:0 // Không gợi ý video liên quan
+    },
+
+    events: {
+      onReady: () => {
+        duration.value = player.getDuration ()
+      },
+
+      onStateChange: handleStateChange
+    }
+  })
+})
 
 
-  if (!listKeys.includes(e.key)) return
+const stopTracking = () => {
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+}
 
-  if (!startPointer.value || !currentPointer.value) return
+const startTracking = () => {
+  stopTracking()
 
-  if (startPointer.value[1] !== currentPointer.value[1]) return
+  timer = setInterval(() => {
+    if (player?.getCurrentTime && !isUserSeeking.value) {
+      currentTime.value = player.getCurrentTime()
+    }
+  }, 200)
+}
 
-  const a = Math.min(startPointer.value[2], currentPointer.value[2])
-  const b = Math.max(startPointer.value[2], currentPointer.value[2])
+const handleEnd = () => {
+  if (!player) return
 
-  if (a === b) return
-  // GET PARA INDEX AND SENTENCE INDEX 
-  
-  const paraIdx = currentPointer.value[3]
-  const sentenceIdx = currentPointer.value[1]
-  // get data of the sentence needed to modify, (start and end are the index of first and final words according to the paragraph, not whole the prose)
-  const {start, end, copySentenceData} = originalSentenceData(lessondata, paraIdx, sentenceIdx)
+  stopTracking()
+  player.seekTo(0, true)
 
-  // flat copySentenceData to words level
-   const flatSentencesData = copySentenceData.flatMap(item =>item['type'] === 'phrase' ? item['phrase'].filter(w => w.visible_in_phrase === true) : [item])
+  player.pauseVideo()
 
-  // GET ALL PHRASES IN THE SENTENCE
-  const listPhrases = getAllexsistingPhrases(copySentenceData)
+  if (isLoop.value) {
+    player.playVideo()
+  }
 
-  if (e.key === 'x') {
-      // --------------REMOVE PHRASE----------------
-    const indexForNewPhrase = listPhrases.findIndex(item => item['phrase'][0]["idx_w_in_s"] === a)
+  else {
+    isPlaying.value = false
+  }
+}
 
-    if (indexForNewPhrase === -1 || listPhrases[indexForNewPhrase]['phrase'].length !== b- a+ 1) {
+const handleStateChange = (e)=> {
+    if (e.data === YT.PlayerState.ENDED) {
+      handleEnd()
       return
     }
 
-    else {
-      listPhrases.splice(indexForNewPhrase, 1)
+    isPlaying.value = (e.data === YT.PlayerState.PLAYING)
+
+    if (
+      e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.PAUSED
+    ) {
+      startTracking()
     }
+
+    else {
+      stopTracking()
+    }
+}
+
+
+// PAUSD AND PLAY
+
+const playAudio = () => {
+  if (isPlaying.value) {
+    player?.pauseVideo?.()
   }
 
   else {
-    // --------------CREATE NEW PHRASE----------------
-  
-    //  createData of newPhrase
-    const newPhrase = createNewPhrase(flatSentencesData, a, b, paraIdx, e.key);
-
-    insertNewPhrase(listPhrases, newPhrase, a);
+    player?.playVideo?.()
   }
 
-  
+  isPlaying.value = !isPlaying.value
+}
 
-  // Change status of invisble in phrase
-  changeStatus(listPhrases);
+const back = () => {
+  if (!player) return
 
-  // Create new data for the sentence
-  const newDataSentence = buildSentence(listPhrases, flatSentencesData)
+  const t = player.getCurrentTime()
 
-  // update newData
-  lessondata.value[paraIdx].splice(start, end - start + 1, ...newDataSentence)
+  console.log("player.currentTime", t - 5)
 
-  
-  
+  player.seekTo(Math.max(0, t-5), true)
+}
+
+const next = () => {
+  if (!player) return
+
+  const t = player.getCurrentTime()
+
+  player.seekTo(Math.min(duration.value, t +5), true)
+}
+
+watch(currentTime , (newVal) =>  {
+  if (!isUserSeeking.value) return
+  if (player ) {
+    player.seekTo(newVal, true)
+  }
+
+})
+
+const onSeekStart = () => {
+  isUserSeeking.value = true
+}
+
+const onSeekEnd = () => {
+  isUserSeeking.value = false
+
+  if (isPlaying.value) {
+    player.playVideo()
+  }
+
+  else {
+    player.pauseVideo()
+  }
 }
 
 
-onMounted(() => {
-  window.addEventListener('pointerup', pointerUp),
-  window.addEventListener('keydown', changePhraseStatus)
-})
+const changeAudioSpeed = (newSpeed) => {
+  if (!player) return
+
+  audioSpeed.value = newSpeed
+  openAudioOptions.value = false
+  player.setPlaybackRate(newSpeed)
+}
+
 onBeforeUnmount(() => {
-  window.removeEventListener('pointerup', pointerUp)
-  window.removeEventListener('keydown', changePhraseStatus)
+  stopTracking();
+  player?.destroy?.()
+  player = null
 })
 </script>
-
-
-
-<style>
-.status-1 {
-  @apply bg-yellow-300;
-}
-
-.status-2 {
-  @apply bg-yellow-200
-}
-
-.status-3 {
-  @apply bg-yellow-100
-}
-
-/* .status-4 { @apply underline decoration-dashed decoration-2 underline-offset-4 decoration-gray-500} */
-/* instead of underline */
-.status-4 {
-  @apply border-b border-dashed border-b-gray-300;
-}
-
-.status-6 {
-  @apply bg-blue-300
-}
-
-.word-item {
-  @apply flex rounded h-[30px] cursor-pointer px-2 items-center border border-transparent
-}
-</style>

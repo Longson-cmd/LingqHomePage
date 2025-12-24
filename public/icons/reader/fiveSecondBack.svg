@@ -1,0 +1,42 @@
+<svg
+  width="25"
+  height="25"
+  viewBox="0 0 32 32"
+  xmlns="http://www.w3.org/2000/svg"
+  class="stroke-current fill-current"
+>
+  <!-- Circle -->
+  <path
+    d="M16,4c7.2,0,13,5.8,13,13s-5.8,13-13,13S3,24.2,3,17"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Arrow -->
+  <polyline
+    points="16.5,1.5 13.5,4.5 16.5,7.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Number -->
+  <text
+    x="16"
+    y="23"
+    text-anchor="middle"
+    font-size="18"
+    font-weight="400"
+    fill="currentColor"
+    stroke="currentColor"
+    stroke-width="0.8"
+    paint-order="stroke fill"
+  >
+    5
+  </text>
+</svg>
