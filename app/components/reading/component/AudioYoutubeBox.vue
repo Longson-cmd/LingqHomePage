@@ -1,5 +1,5 @@
 <template>
- <div class="max-w-xl mx-auto mt-80 ">
+
     <div 
     ref = 'boxRef'
     class="fixed flex flex-col min-w-64  resize w-72 aspect-video border rounded-xl shadow-lg overflow-hidden"
@@ -12,7 +12,7 @@
           <span v-for="i in 9" :key="i" class="w-1 h-1 bg-black "></span>
         </div>
 
-        <button>
+        <button @click="emit('closeAudioBox', false)" class="h-8 w-8 hover:bg-gray-300 rounded-full">
           <font-awesome icon="times" />
         </button>
 
@@ -24,57 +24,60 @@
 
     </div>
 
-    <div class="border h-40 p-4">
-      <div class="w-96  border bg-white rounded-3xl shadow-md px-2 pb-1 flex items-center justify-between">
-        <button @click="playAudio" class="h-10 w-10 rounded-full bg-black/80 shawdow-md flex items-center justify-center whitespace-nowrap shrink-0">
-              <img :src="!isPlaying? '/icons/reader/play.svg' : '/icons/reader/pause.svg'" alt="play or pause">
-          </button>
-  
-        <div class="flex flex-col w-full px-2">
-              <div
-                @mousedown="onSeekStart"
-                @mouseup="onSeekEnd"
-              >         
-                  <AudioSlider :input-max="duration" v-model:input-value="currentTime"/>
-                  <span class="flex text-sm justify-between px-2 ">
-                      <span>{{minutesSeconds(Math.round(currentTime))}}</span>
-                      <span>{{minutesSeconds(Math.round(duration))}} </span>
-                  </span>
-              </div>
-  
-              <div class="w-full flex justify-between gap-1 mt-1">
-                  <button @click="back" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondback.svg" alt="fiveSecondback"/></button>
-                  <button @click="next" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondnext.svg" alt="fiveSecondnext"/></button>
-                  <button @click="isLoop = !isLoop ; console.log('isLoop', isLoop)" :class="isLoop && 'bg-gray-300'" class="h-8 px-1 rounded-lg flex items-center justify-center"><img src="/icons/reader/repeat.svg" alt="repeat"/></button>
-                  <div ref="speedOptionsRef" class="relative">
-                      <button @click="openAudioOptions = !openAudioOptions" class="w-16 h-8 px-1 hover:bg-gray-300 rounded-lg italic flex items-center justify-center gap-1 text">{{`${audioSpeed}x`}}  <font-awesome icon="chevron-up"  class="text-xs mt-1"/></button>
-                      <div v-if="openAudioOptions"
-                      class="absolute w-36  bg-white border shadow z-10 right-0 top-0 rounded-xl -translate-y-full
-                      flex flex-col overflow-hidden">
-                          <button
-                           v-for="speed in speedLists" 
-                           class="" 
-                           :class="[' w-full text-start py-1 px-5 text-lg hover:bg-gray-100', (speed === audioSpeed) && 'bg-gray-100']"
-                           @click="changeAudioSpeed(speed)"           
-                           >
-                              {{speed}}
-                          </button>
-                      </div>
-                  </div>
-                  <NuxtLink class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/zoomIn.svg" alt="zoomIn"/></NuxtLink>
-              </div>
-  
-        </div>
+
+    <div class="w-96  border bg-white rounded-3xl shadow-md px-2 pb-1 flex items-center justify-between">
+      <button @click="playAudio" class="h-10 w-10 rounded-full bg-black/80 shawdow-md flex items-center justify-center whitespace-nowrap shrink-0">
+            <img :src="!isPlaying? '/icons/reader/play.svg' : '/icons/reader/pause.svg'" alt="play or pause">
+        </button>
+
+      <div class="flex flex-col w-full px-2">
+            <div
+              @mousedown="onSeekStart"
+              @mouseup="onSeekEnd"
+            >         
+                <AudioSlider :input-max="duration" v-model:input-value="currentTime"/>
+                <span class="flex text-sm justify-between px-2 ">
+                    <span>{{minutesSeconds(Math.round(currentTime))}}</span>
+                    <span>{{minutesSeconds(Math.round(duration))}} </span>
+                </span>
+            </div>
+
+            <div class="w-full flex justify-between gap-1 mt-1">
+                <button @click="back" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondback.svg" alt="fiveSecondback"/></button>
+                <button @click="next" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondnext.svg" alt="fiveSecondnext"/></button>
+                <button @click="isLoop = !isLoop ; console.log('isLoop', isLoop)" :class="isLoop && 'bg-gray-300'" class="h-8 px-1 rounded-lg flex items-center justify-center"><img src="/icons/reader/repeat.svg" alt="repeat"/></button>
+                <div ref="speedOptionsRef" class="relative">
+                    <button @click="openAudioOptions = !openAudioOptions" class="w-16 h-8 px-1 hover:bg-gray-300 rounded-lg italic flex items-center justify-center gap-1 text">{{`${audioSpeed}x`}}  <font-awesome icon="chevron-up"  class="text-xs mt-1"/></button>
+                    <div v-if="openAudioOptions"
+                    class="absolute w-36  bg-white border shadow z-10 right-0 top-0 rounded-xl -translate-y-full
+                    flex flex-col overflow-hidden">
+                        <button
+                          v-for="speed in speedLists" 
+                          class="" 
+                          :class="[' w-full text-start py-1 px-5 text-lg hover:bg-gray-100', (speed === audioSpeed) && 'bg-gray-100']"
+                          @click="changeAudioSpeed(speed)"           
+                          >
+                            {{speed}}
+                        </button>
+                    </div>
+                </div>
+                <NuxtLink class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/zoomIn.svg" alt="zoomIn"/></NuxtLink>
+            </div>
+
       </div>
+
+      <button @click="emit('closeAudioBox', false)" class="h-10 w-10 hover:bg-gray-300 rounded-full shrink-0">
+          <font-awesome icon="times"/>
+      </button>
     </div>
- </div>
+
+
 
 </template>
 
 <script setup>
 import {ref, onMounted, watch, onBeforeUnmount} from 'vue'
-import AudioSlider from './UI/AudioSlider.vue'
-
+import AudioSlider from '~/components/UI/AudioSlider.vue'
 const {minutesSeconds} = useTime()
 
 let player = null
@@ -92,6 +95,12 @@ const isLoop = ref(false)
 const speedLists = [2, 1.5, 1.25, 1, 0.85, 0.75, 0.6, 0.5]
 const openAudioOptions = ref(false)
 const audioSpeed = ref(speedLists[3])
+
+const emit = defineEmits(['closeAudioBox'])
+
+const props = defineProps({
+    videoId : {type : String}
+})
 
 const loadYoutubeAPI = () =>
   new Promise((resolve) => {
@@ -204,7 +213,7 @@ const back = () => {
 
   const t = player.getCurrentTime()
 
-  console.log("player.currentTime", t - 5)
+
 
   player.seekTo(Math.max(0, t-5), true)
 }
@@ -269,8 +278,6 @@ const startDragging = (e) => {
     startX = e.clientX
     startY = e.clientY
 
-    console.log('startX  ', startX)
-    console.log('startY  ', startY)
 
     window.addEventListener('pointermove', handleDragging)
     window.addEventListener('pointerup', handlePointerUp)
@@ -293,7 +300,6 @@ const handlePointerUp = () => {
     window.removeEventListener('pointermove', handleDragging)
     window.removeEventListener('pointerup', handlePointerUp)
 }
-
 
 
 onBeforeUnmount(() => {
