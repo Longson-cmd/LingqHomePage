@@ -1,14 +1,16 @@
 import {ref, nextTick} from 'vue'
 
-export function pagination () {
+export function pagination (currentPage, totalPage, sendPages) {
 
 
 const LINE_HEIGHT = 72
-const totalPage = ref(1)
-const currentPage = ref(1)
+
 const remaining = ref(0)
 const view = ref(LINE_HEIGHT)
 const prose = ref(null)
+
+
+
 
 const calculateClientHight = () => {
     const rawView = prose.value.clientHeight
@@ -40,21 +42,29 @@ const updateTotalPages = async () => {
     currentPage.value = Math.min( currentPage.value, totalPage.value)
 
     proseEl.scrollTo({top: (currentPage.value -1) * view.value, behavior: 'smooth'})
-
+    sendPages()
 }
 
-const prePage = () => {
-    if (currentPage.value <=1 ) return 
-    currentPage.value --
-    prose.value.scrollTo({top : (currentPage.value - 1) * view.value, behavior: "smooth"})
+const scrollNewPage = (n) => {
+    const target = Math.min(totalPage.value, Math.max(1, n))
+
+    prose.value.scrollTo({top : (target -1 ) * view.value, behavior: "smooth"})
 }
 
-const nextPage = () => {
-    if (currentPage.value >= totalPage.value) return
-    currentPage.value ++
-    prose.value.scrollTo({top : (currentPage.value - 1) * view.value,  behavior: 'smooth'})
-    
-}
+// const prePage = () => {
+//     if (currentPage.value <=1 ) return 
+//     currentPage.value --
+//     prose.value.scrollTo({top : (currentPage.value - 1) * view.value, behavior: "smooth"})
+//     sendPages()
+// }
+
+// const nextPage = () => {
+//     if (currentPage.value >= totalPage.value) return
+//     currentPage.value ++
+//     prose.value.scrollTo({top : (currentPage.value - 1) * view.value,  behavior: 'smooth'})
+ 
+//     sendPages()
+// }
 
     return {
         prose, 
@@ -62,7 +72,6 @@ const nextPage = () => {
         totalPage,
         remaining,
         updateTotalPages,
-        prePage,
-        nextPage
+        scrollNewPage,
     }
 }

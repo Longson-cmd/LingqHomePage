@@ -1,39 +1,60 @@
 <template>
-  <div class=" relative flex justify-between items-center py-80 px-10 h-screen">
-    <button @click="openAudioBox = true" :class="openAudioBox && 'invisible pointer-events-none'" class="h-12 w-12 rounded-full bg-black/80 flex items-center justify-center">
-        <img src="/icons/reader/play.svg" alt="play"/>
-    </button>
+    <div class="flex flex-col h-screen">
+        <HeaderLing />
+        <div class="flex flex-1 h-full min-h-0  ">
+            <div class="flex flex-1 flex-col">
+                <HeaderReader v-model:currentValue="current" v-model:totalValue="total"/>
+                <div ref="mainRef" class="flex-1 min-h-0 flex px-3 ">
+                    <button @click="current = Math.max(1, current -1)" :class="(current === 1) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
+                        <font-awesome icon="chevron-left" />
+                    </button>
+                    <div class="flex-1 min-h-0">
+                        <Reader  :readerHeight="boxHeight" v-model:current-value="current" @send-total-page="total = $event"/>
+                    </div>
+                    <button @click="current = Math.min(total, current + 1)" :class="(current === total) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
+                        <font-awesome icon="chevron-right" />
+                    </button>
+                </div>
+                <FooterReader />
+            </div>
 
-    <div v-if="openAudioBox " class="absolute left-20 z-10  bg-white">
-        <AudioYoutubeBox v-if="haveVideoId" @close-audio-box="openAudioBox = $send" :video-id="videoId"/>
-        <AudioBox v-else @close-audio-box="openAudioBox = $send" :audioURL="audioURL"/>
+            <Sidebar />
+
+        </div>
     </div>
-    
-
-    <button @click="isSentenceView = !isSentenceView; console.log('openAudioBox ', openAudioBox)" class="hover:bg-gray-300 h-8 w-12 rounded-md flex items-center justify-center">
-        <img  :src="isSentenceView ? '/icons/reader/sentenceView.svg' : '/icons/reader/lessonView.svg'" alt="viewMode">
-    </button>
-
-    <NuxtLink :to="isSentenceView? '/gameSentence' : '/gameLesson'"  class="hover:bg-gray-300 h-10 w-12 rounded-md flex items-center justify-center">
-        <img :src="isSentenceView ? '/icons/reader/reviewSentence.svg' : '/icons/reader/reviewLesson.svg'" alt="reviewMode">
-    </NuxtLink>
-
-
-  </div>
 </template>
 
-
 <script setup>
-import {ref, onMounted, onBeforeUnmount} from 'vue'
+import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import HeaderLing from './reading/HeaderLing.vue';
+import FooterReader from './reading/FooterReader.vue';
+import HeaderReader from './reading/HeaderReader.vue';
+import Sidebar from './reading/middle/Sidebar.vue';
+import Reader from './reading/middle/Reader.vue';
 
-import AudioYoutubeBox from './reading/component/AudioYoutubeBox.vue';
-import AudioBox from './reading/component/AudioBox.vue';
-const openAudioBox = ref(false)
-const isSentenceView = ref(false)
 
-const haveVideoId = true
-const audioURL = ref('http://localhost:3000/sounds/demo.mp3')
-const videoId = 'sRXnme3pD9M'
+const mainRef = ref(null)
+const boxHeight = ref(0)
+
+const selected = ref('')
+const current = ref(1)
+const total = ref(1)
+
+const messure = () => {
+    boxHeight.value = Math.round(mainRef?.value.getBoundingClientRect().height)
+}
+
+onMounted(async () => {
+    messure();
+    await nextTick();
+   
+    window.addEventListener('resize', messure)
+
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', messure)
+})
 
 
 </script>

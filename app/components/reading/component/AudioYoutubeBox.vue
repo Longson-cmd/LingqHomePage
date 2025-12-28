@@ -2,7 +2,7 @@
 
     <div 
     ref = 'boxRef'
-    class="fixed flex flex-col min-w-64  resize w-72 aspect-video border rounded-xl shadow-lg overflow-hidden"
+    class="fixed flex flex-col min-w-64 z-10 bg-white resize w-72 aspect-video border rounded-xl shadow-lg overflow-hidden"
     :style="{left : videoPosition.x + 'px', top : videoPosition.y + 'px'}"
     >
       <div class="h-10 shrink-0 px-3 py-1 cursor-move select-none touch-none w-full flex items-center justify-between"
@@ -208,14 +208,26 @@ const playAudio = () => {
   isPlaying.value = !isPlaying.value
 }
 
+
+// this funtionc is needed because 'seekTo' tend to play youtube video
+const keepIsPlayingState = () => {
+    if (isPlaying.value) {
+     player.playVideo()
+    }
+
+    else {
+        player.pauseVideo()
+    }
+}
+
 const back = () => {
   if (!player) return
 
   const t = player.getCurrentTime()
 
-
-
   player.seekTo(Math.max(0, t-5), true)
+
+ keepIsPlayingState()
 }
 
 const next = () => {
@@ -224,6 +236,8 @@ const next = () => {
   const t = player.getCurrentTime()
 
   player.seekTo(Math.min(duration.value, t +5), true)
+
+    keepIsPlayingState()
 }
 
 watch(currentTime , (newVal) =>  {
@@ -241,13 +255,7 @@ const onSeekStart = () => {
 const onSeekEnd = () => {
   isUserSeeking.value = false
 
-  if (isPlaying.value) {
-    player.playVideo()
-  }
-
-  else {
-    player.pauseVideo()
-  }
+  keepIsPlayingState()
 }
 
 

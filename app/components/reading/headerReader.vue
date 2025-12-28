@@ -1,5 +1,5 @@
 <template>
-  <div class="  mt-20 h-40 border flex justify-between">
+  <div class=" h-14  flex justify-between items-end px-3">
     <NuxtLink class="h-10 w-10 hover:hover:bg-gray-300 rounded-full flex items-center justify-center">
       <font-awesome icon="times" class="text-xl"/>
     </NuxtLink>
@@ -24,11 +24,38 @@
 
 <script setup>
 import {ref} from 'vue'
-import readingSiler from './reading/component/readingSiler.vue';
+import readingSiler from './component/readingSiler.vue';
+
 const openSidebar = ref(false)
 
+const props = defineProps({
+  currentValue: {type: Number, default: 1},
+  totalValue : {type: Number, default: 1}
+})
 
-const currentPage = ref(1)
-const totalPage = ref(20)
+const emit = defineEmits([
+  'update:currentValue',
+  'update:totalValue'
+])
+
+
+const currentPage = computed({
+  get: () => props.currentValue,
+  set: (v) => {
+    if (v !== props.currentValue) {
+      emit('update:currentValue', v)
+    }
+  }
+})
+
+const totalPage = computed({
+  get: () => props.totalValue,
+  set: (v) => {
+    if (v !== props.totalValue) {
+      emit('update:totalValue', v)
+    }
+  }
+})
+
 
 </script>
