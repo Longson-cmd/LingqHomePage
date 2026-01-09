@@ -1,12 +1,13 @@
 
 import {ref} from 'vue'
 
-export function useEventDelegation() {
+export function useEventDelegation(isOpenPopup) {
 
 
 const startPointer = ref(null)
 const currentPointer = ref(null)
 const isDraging = ref(false)
+
 
 
 
@@ -70,8 +71,12 @@ const handlePointerDown = (e) => {
   const itemData = getitemData(e)
 
 
-  if (!itemData) return
+  if (!itemData) {
+     isOpenPopup.value =false
+     return
+  }
 
+  isOpenPopup.value = true
   if (Object.keys(itemData).length === 4) {
     onPointerdown(
       itemData.w_idx,
@@ -118,11 +123,31 @@ const handlePointerEnter = (e) => {
   )
 }
 
+
+const pointerUp = (e) => {
+  isDraging.value = false
+
+ 
+  if (!(e.target instanceof HTMLElement)) return
+
+  const wordEl = e.target.closest('.word-item')
+  const phraseEl = e.target.closest('.phrase-item')
+  const popupEl = e.target.closest('.popup-item')
+
+  if (!wordEl && !phraseEl && !popupEl) {
+      isOpenPopup.value =false
+  }
+
+}
+
+
+
   return {
     startPointer,
     currentPointer,
-    isDraging,
     handlePointerDown,
-    handlePointerEnter
+    handlePointerEnter,
+    pointerUp,
+    isDraging,
   }
 }

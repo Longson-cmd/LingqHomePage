@@ -19,7 +19,7 @@
             :data-end-idx-w-in-s="item['phrase'][item['phrase'].length - 1]['idx_w_in_s']"
             :data-end-p-idx="item['phrase'][item['phrase'].length - 1]['p_idx']">
             <span v-for="(word) in item['phrase']"
-              :class="['inline-flex items-center h-[35px]  px-1', isActice(word['w_idx']) && 'bg-red-400']"
+              :class="['inline-flex items-center h-[35px]  px-1', (isActice(word['w_idx']) && isOpenPopup) && 'bg-red-400']"
               v-show="word['visible_in_phrase']">
 
               <span
@@ -33,7 +33,7 @@
           </span>
 
           <span v-else
-            :class="['flex  h-[35px]  items-center px-1 -blue-400 ', isActice(item['w_idx']) && 'bg-red-400']">
+            :class="['flex  h-[35px]  items-center px-1 -blue-400 ', (isActice(item['w_idx']) && isOpenPopup) && 'bg-red-400']">
             <span :id="`w-${item['w_idx']}`"
               :class="['status-' + item['status'], 'word-item', item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
               :data-w-idx="item['w_idx']" :data-s-idx="item['s_idx']" :data-idx-w-in-s="item['idx_w_in_s']"
@@ -46,16 +46,18 @@
       </div>
 
 
-      <div :style="{ height: remaining + 'px' }"></div>
+      <div :style="{ height: remaining + 'px' }">
+        <span>selected : {{selected.text}}</span>
+      </div>
     </div>
 
-    <div class="fixed inset-0 pointer-events-none z-10">
+    <!-- <div class="fixed inset-0 pointer-events-none z-10">
       <div v-if="startPointer"
         :class="['absolute pointer-events-auto', (!popupCoordinates.downward) && '-translate-y-full']"
         :style="{ left: popupCoordinates.x + 'px', top: popupCoordinates.y + 'px' }">
-        <Popup :word="selected" class="popup-item" />
+        <Popup :word="selected.text" v-if="isOpenPopup && !isDraging" @close-popup="isOpenPopup = $send" class="popup-item" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -66,29 +68,24 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 
 import Popup from './Popup.vue'
+
 /* =========================================================
    Composables / Data Sources
    - Keep these near the top so readers know “where data comes from”
 ========================================================= */
-const lessondata = ref(useLesson())
-const { listSentence } = useSentences()
+
+const isOpenPopup = ref(false)
 
 const {
   startPointer,
   currentPointer,
-  isDraging,
   handlePointerDown,
-  handlePointerEnter
-} = useEventDelegation()
+  handlePointerEnter,
+  pointerUp,
+  isDraging
+} = useEventDelegation(isOpenPopup)
 
-const {
-  originalSentenceData,
-  createNewPhrase,
-  getAllexsistingPhrases,
-  changeStatus,
-  insertNewPhrase,
-  buildSentence
-} = useCreateNewPhrase()
+const {cleanWord} = useConvert()
 
 
 
@@ -97,10 +94,13 @@ const {
 ========================================================= */
 const props = defineProps({
   readerHeight: {type: Number, default: 500},
-  currentValue : {type :Number, default: 1}
+  currentValue : {type :Number, default: 1},
+  lessonData: {type: Array, default : () => []},
+  listSentence : {type: Array, default : () => []}
 })
+const lessondata = ref(props.lessonData)
 
-const emit = defineEmits(['update:currentValue', 'sendTotalPage'])
+const emit = defineEmits(['update:currentValue', 'sendTotalPage', 'selected', 'status'])
 
 const currentPage = computed({
   get: () => props.currentValue,
@@ -113,21 +113,21 @@ const totalPage = ref(1)
 
 
 const sendPages = () => {
-
-  
   emit('sendTotalPage', totalPage.value)
 }
-
-
 
 const {
   prose,
   remaining,
   updateTotalPages,
   scrollNewPage,
-} = pagination(currentPage, totalPage, sendPages)
+} = pagination(props.readerHeight , currentPage, totalPage, sendPages)
 
 
+const emitStatus = (keyboard) => {
+  emit('status', keyboard)
+}
+const {changePhraseStatus, moveNextPrevious} = useKeyboard(startPointer, currentPointer, lessondata, currentPage, totalPage, emitStatus)
 
 /* =========================================================
    Local UI State
@@ -141,20 +141,26 @@ const currentSentence = ref('')
 ========================================================= */
 const selected = computed(() => {
   // Guard: selection not started or not updated
-  if (!startPointer.value || !currentPointer.value) return ''
+  if (!startPointer.value || !currentPointer.value) return {text: '', valid: false, error: 'empty'}
 
   // Guard: do not allow cross-sentence selection
-  if (startPointer.value[1] !== currentPointer.value[1]) return ''
+  if (startPointer.value[1] !== currentPointer.value[1]) return {text: '', valid: false, error: 'cross-sentence'}
 
   const a = Math.min(startPointer.value[2], currentPointer.value[2])
   const b = Math.max(startPointer.value[2], currentPointer.value[2])
 
-  currentSentence.value = listSentence[currentPointer.value[1]]
-  const listWordInSentence = currentSentence.value.split(' ')
+  const sentence = props.listSentence[currentPointer.value[1]]
+  const listWordInSentence = sentence.split(' ')
   const selected_phrase = listWordInSentence.slice(a, b + 1)
-
-  return selected_phrase.join(' ')
+  const cleaned_selected_phrase = selected_phrase.map( item => cleanWord(item))
+  if (selected_phrase.length > 8) return {text: '', valid: false, error: 'too-long'}
+  return {text: selected_phrase.join(' '), valid: true}
 })
+
+watch(selected, (newVal) => {
+    emit('selected', newVal)
+})
+
 
 /* =========================================================
    Watchers
@@ -189,22 +195,13 @@ watch(startPointer, (newVal) => {
   }
 })
 
-/* =========================================================
-   Event Handlers / Helpers
-========================================================= */
-
-/**
- * Global pointerup handler: ends dragging selection mode.
- */
-const pointerUp = () => {
-  isDraging.value = false
-}
-
 /**
  * Returns true if a word is in the active selection range (UI highlight).
  * Note: name kept as-is to avoid breaking template usage.
  */
 const isActice = (wordIndex) => {
+
+  
   if (!startPointer.value || !currentPointer.value) return false
 
   const a = Math.min(startPointer.value[0], currentPointer.value[0])
@@ -214,92 +211,9 @@ const isActice = (wordIndex) => {
 }
 
 /**
- * Keyboard handler:
- * - 'x' removes an existing phrase
- * - '1'..'5' assigns status and creates/updates phrase
+ * Move next or previous page by keyborad.
+ * Move next or previous page by keyborad.
  */
-const changePhraseStatus = (e) => {
-  const listKeys = ['x', '1', '2', '3', '4', '5']
-  if (!listKeys.includes(e.key)) return
-
-  // Guard: need a valid selection
-  if (!startPointer.value || !currentPointer.value) return
-  if (startPointer.value[1] !== currentPointer.value[1]) return
-
-  const a = Math.min(startPointer.value[2], currentPointer.value[2])
-  const b = Math.max(startPointer.value[2], currentPointer.value[2])
-
-  // Guard: ignore single-word selections (based on your current rule)
-  if (a === b) return
-
-  // Identify paragraph and sentence for data mutation
-  const paraIdx = currentPointer.value[3]
-  const sentenceIdx = currentPointer.value[1]
-
-  /**
-   * originalSentenceData returns:
-   * - start/end: slice range inside lessondata[paraIdx]
-   * - copySentenceData: a copy of sentence items (word/phrase objects)
-   */
-  const { start, end, copySentenceData } = originalSentenceData(lessondata, paraIdx, sentenceIdx)
-
-  // Flatten sentence into visible words only (phrases -> visible words)
-  const flatSentencesData = copySentenceData.flatMap((item) =>
-    item.type === 'phrase'
-      ? item.phrase.filter((w) => w.visible_in_phrase === true)
-      : [item]
-  )
-
-  // Extract all phrase blocks in this sentence
-  const listPhrases = getAllexsistingPhrases(copySentenceData)
-
-  if (e.key === 'x') {
-    /* ---------------- Remove phrase ---------------- */
-    const indexForNewPhrase = listPhrases.findIndex(
-      (item) => item.phrase[0].idx_w_in_s === a
-    )
-
-    // Only remove if selection matches phrase length exactly
-    if (
-      indexForNewPhrase === -1 ||
-      listPhrases[indexForNewPhrase].phrase.length !== b - a + 1
-    ) {
-      return
-    }
-
-    listPhrases.splice(indexForNewPhrase, 1)
-  } else {
-    /* ---------------- Create / update phrase ---------------- */
-    const newPhrase = createNewPhrase(flatSentencesData, a, b, paraIdx, e.key)
-    insertNewPhrase(listPhrases, newPhrase, a)
-  }
-
-  // Synchronize visibility/status flags after phrase changes
-  changeStatus(listPhrases)
-
-  // Rebuild sentence data (word/phrase structure) from current state
-  const newDataSentence = buildSentence(listPhrases, flatSentencesData)
-
-  // Commit updated sentence back into lessondata
-  lessondata.value[paraIdx].splice(start, end - start + 1, ...newDataSentence)
-}
-
-/**
- * Click-outside handler: clears selection if user clicks outside relevant UI.
- */
-const handleClickOutside = (e) => {
-  if (isDraging.value) return
-  if (!(e.target instanceof HTMLElement)) return
-
-  const wordEl = e.target.closest('.word-item')
-  const phraseEl = e.target.closest('.phrase-item')
-  const popupEl = e.target.closest('.popup-item')
-
-  if (!wordEl && !phraseEl && !popupEl) {
-    startPointer.value = null
-    currentPointer.value = null
-  }
-}
 
 
 /* =========================================================
@@ -313,14 +227,14 @@ onMounted(async () => {
   window.addEventListener('resize', updateTotalPages)
   window.addEventListener('pointerup', pointerUp)
   window.addEventListener('keydown', changePhraseStatus)
-  window.addEventListener('click', handleClickOutside)
+  window.addEventListener('keydown', moveNextPrevious)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateTotalPages)
   window.removeEventListener('pointerup', pointerUp)
   window.removeEventListener('keydown', changePhraseStatus)
-  window.removeEventListener('click', handleClickOutside)
+  window.removeEventListener('keydown', moveNextPrevious)
 })
 </script>
 
@@ -353,4 +267,3 @@ onBeforeUnmount(() => {
 }
 </style>
 
-// RESIZE + PROPS + EMITS

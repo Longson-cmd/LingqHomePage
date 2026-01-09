@@ -4,10 +4,8 @@
         <!-- word and tags -->
         <div class="px-5 pb-2 ">
             <div class="flex flex-row gap-2 items-center font-bold text-xl my-3">
-               <button @click=" speakEnglish(currentPhraseData.phrase)" class="h-8 w-8 hover:bg-gray-300 rounded-full flex items-center justify-center">
-                    <img src="/icons/reader/volume.svg" alt="volume" class="h-6 w-6" />
-                </button>
-                <span>{{ currentPhraseData.phrase }}</span>
+                <img src="/icons/reader/volume.svg" alt="volume" class="" />
+                <span>{{ sidebarData.phrase }}</span>
             </div>
             <div class="flex ">
                 <div class="flex self-start items-center  shrink-0  w-10">
@@ -58,7 +56,7 @@
                     e.target.style.height = 'auto',
                         e.target.style.height = e.target.scrollHeight + 'px'
 
-                }" @keydown.enter.stop @keyup.enter="addMeaning"
+                }" @keydown.enter.prevent="addMeaning"
                 class="border min-h-10 inline-block w-full leading-none text-start pt-2 px-2  rounded-lg focus:outline-none focus:ring-0 " />
 
             <span class="inline-block mt-5 mb-1 font-medium">Dictionaries</span>
@@ -71,15 +69,13 @@
                         src="/icons/reader/report.svg" alt="report" class="inline-block" /></button>
             </div>
 
-            
-
             <button v-for="(traslattion, i) in usersTranslation" :key="i" @click="selectTranslations(i)"
                 class=" text-blue-600 px-3 py-2 mt-1 bg-gray-100 hover:bg-gray-200 flex items-center justify-between rounded-md"
                 :class="i === focusTranslationIndex && 'bg-gray-200'"
                 >
                 <span>{{ traslattion }}</span>
                 <div class="flex  gap-1 justify-end ">
-                    <img v-if="traslattion === translateAi" src="/icons/reader/chatgpt.svg" class="inline-block h-5" alt="chatgpt">
+                    <img v-if="i === 0" src="/icons/reader/chatgpt.svg" class="inline-block h-5" alt="chatgpt">
                     <font-awesome icon="plus" class="h-4" />
                 </div>
             </button>
@@ -106,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted,watch, computed, onBeforeUnmount } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 
 
 const props = defineProps({
@@ -131,15 +127,34 @@ const props = defineProps({
                 "điểm tâm"
             ],
             status: 1
-        })}
+            })}
 })
 
 const emit = defineEmits(['update:sidebarData'])
 
-const currentPhraseData = computed({
-    get: () => props.sidebarData,
-    set: (v) => emit('update:sidebarData', v)
-})
+
+const currentPhraseData = ref({
+            phrase: 'breakfast',
+             tags: [
+                "demo"
+            ],
+            your_meanings: [
+                "bữa sáng"
+            ],
+            global_tags: [
+                "v",
+                "n",
+                "s", 
+                'r'
+            ],
+            global_meanings: [
+                "bữa",
+                "sáng",
+                "ăn",
+                "điểm tâm"
+            ],
+            status: 1
+            })
 
 
 const wordStatus = computed(() => currentPhraseData.value.status)
@@ -154,51 +169,26 @@ const POS_MAP = {
 
 const inputTag = ref(null)
 const listGlobalTags = computed(() => currentPhraseData.value.global_tags.map(p => POS_MAP[p]))
-const listTags = computed(() => Array.from(
-    new Set([
-        ...listGlobalTags.value,
-        ...currentPhraseData.value.tags
-    ])
-))
+const listTags = computed(() =>[
+    ...listGlobalTags.value,
+    ...currentPhraseData.value.tags?? []
+])
 const newTag = ref('')
 const openAddtag = ref(false)
 
-const translateAi = ref('')
+
 const openAddMeaning = ref(false)
 const listMeanings = computed(() => currentPhraseData.value.your_meanings)
 const newMeaning = ref('')
 
-const playAudio = ref(true)
-
-
-watch(() => currentPhraseData.value?.phrase,
-    async (phrase) => {
-        const { onTranslate,
-            speakEnglish} = useGooleTranslate(currentPhraseData.value.phrase)
-        const translated = await onTranslate(phrase)
-        translateAi.value = translated
-
-       
-    }, 
-    {immediate: true}
-)
-
-
-
-const usersTranslation = computed(() => {
-    if (!translateAi.value )
-        return currentPhraseData.value.global_meanings
-    else {
-        const globalFilterTranslatleAi = currentPhraseData.value.global_meanings.filter(item => item != translateAi.value)
-        return [
-            translateAi.value,
-            ...globalFilterTranslatleAi
-        ]
-    }
-})
+const usersTranslation = computed(() => currentPhraseData.value.global_meanings)
 const focusTranslationIndex = ref(0)
 
 const clearTag = (tag) => {
+    console.log( currentPhraseData.value.tags)
+    // if (listGlobalTags.value.includes(tag)) return
+  
+    console.log('tag', tag)
   
     currentPhraseData.value.tags = currentPhraseData.value.tags.filter(item => item !== tag)
 }
@@ -207,11 +197,12 @@ const addTag = () => {
     
     const textNewTag = newTag.value.trim()
     if (!textNewTag) {
+    //  console.log(currentPhraseData.value.tags)
         openAddtag.value = false
         return
     }
 
-    // console.log(currentPhraseData.value.tags)
+    console.log(currentPhraseData.value.tags)
     if (currentPhraseData.value.tags.includes(textNewTag)) {
 
         return
@@ -226,7 +217,6 @@ const addTag = () => {
 const removeMeaning = (meaning) => {
     const arr = currentPhraseData.value.your_meanings
     currentPhraseData.value.your_meanings = arr.filter(w => w !== meaning)
-    // console.log('currentPhraseData.value.your_meanings', currentPhraseData.value.your_meanings)
 }
 
 const addMeaning = () => {
@@ -241,32 +231,15 @@ const addMeaning = () => {
 }
 
 const selectTranslations = (idx) => {
-
-    const selected = usersTranslation.value[idx]
-
-    if (!currentPhraseData.value.your_meanings.includes(selected)) {
-        currentPhraseData.value.your_meanings.unshift(selected)
-        }
-
-    if (!translateAi.value) {
-        
-        currentPhraseData.value.global_meanings.splice(idx, 1)
+    if (!currentPhraseData.value.your_meanings.includes(currentPhraseData.value.global_meanings[idx])) {
+        currentPhraseData.value.your_meanings.unshift(currentPhraseData.value.global_meanings[idx])
     }
-    else {  
-        const arrGolabMeaning = currentPhraseData.value.global_meanings
-        if (arrGolabMeaning.includes(selected)) {
-            currentPhraseData.value.global_meanings = arrGolabMeaning.filter(item => item !== selected)
-        }
-        
-        if (translateAi.value === selected) {
-            translateAi.value = ''
-        }
-    }
-
+    
+    currentPhraseData.value.global_meanings.splice(idx, 1)
 }
 
 const onKeydown = (e) => {
-    const listkeys = ['ArrowDown', 'ArrowUp','ArrowRight', 'ArrowLeft', 'Enter', 's']
+    const listkeys = ['ArrowDown', 'ArrowUp', 'Enter']
     if (!listkeys.includes(e.key)) return
 
     const tag = e.target?.tagName
@@ -289,6 +262,7 @@ const onKeydown = (e) => {
 
     }
     
+
     if (e.key === 'ArrowDown') {
         focusTranslationIndex.value = findNewIndex(focusTranslationIndex.value + 1)
     }
@@ -298,30 +272,7 @@ const onKeydown = (e) => {
         focusTranslationIndex.value = findNewIndex(focusTranslationIndex.value - 1)
     }
 
-    if (e.key === 'ArrowLeft' ) {
-        setTimeout(() => {
-            speakEnglish(currentPhraseData.value.phrase)
-        }, 100) 
-        
-    }
-
-    if (e.key === 'ArrowRight') {
-        setTimeout(() => {
-            speakEnglish(currentPhraseData.value.phrase)
-        }, 100)
-
-        if (currentPhraseData.value.status === 6 && currentPhraseData.value.phrase.split(' ').length === 1) {
-         
-            currentPhraseData.value.your_meanings.push(translateAi.value)
-            console.log("translateAi.value" , translateAi.value)
-            currentPhraseData.value.status = 1
-            console.log('currentPhraseData.value.status', currentPhraseData.value.status)
-        }
-    }
-
-    if (e.key === 's') {
-        speakEnglish(currentPhraseData.value.phrase)
-    }
+    console.log('focusTranslationIndex ', focusTranslationIndex.value)
  
 }
 
@@ -330,38 +281,17 @@ const handleClickOutside = (e) => {
         addTag()
        
     }
-}   
-
-const onPointerDown = () => {
-    playAudio.value = false; console.log('playAudio.value', playAudio.value)
-}
-
-const onPointerUp = (e) => {
-    playAudio.value = true
-    const target = e.target
-    if (!(target instanceof HTMLElement)) return
-    const WordEl = target.closest('.word-item')
-    const PhraseEl = target.closest('.phrase-item')
-    if (!WordEl && !PhraseEl) return
-    
-    console.log('playAudio after', playAudio.value)
-    speakEnglish(currentPhraseData.value.phrase)
-}
-
+}       
 
 onMounted(() => {
     window.addEventListener('keydown', onKeydown),
     window.addEventListener('click', handleClickOutside)
-    window.addEventListener('pointerdown', onPointerDown)
-    window.addEventListener('pointerup', onPointerUp)
 })
 
 
 onBeforeUnmount(() => {
     window.removeEventListener('keydown', onKeydown);
     window.removeEventListener("click", handleClickOutside)
-    window.removeEventListener('pointerdown',  onPointerDown )
-    window.removeEventListener('pointerup', onPointerUp)
 })
 </script>
 

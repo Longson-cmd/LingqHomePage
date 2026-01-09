@@ -25,16 +25,14 @@
                 <FooterReader />
             </div>
 
-                <Sidebar
-                    v-model:sidebar-data="currentPhraseData"
-                />
+            <Sidebar :word="currentPhrase"/>
 
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 
 import HeaderLing from '~/components/reading/HeaderLing.vue';
 import FooterReader from '~/components/reading/FooterReader.vue';
@@ -45,8 +43,8 @@ import Reader from '~/components/reading/middle/Reader.vue';
 
 const mainRef = ref(null)
 const boxHeight = ref(0)
-
-
+const currentPhrase = ref('')
+const valided = ref(true)
 
 const lessonName = 'lesson 0'
 const current = ref(1)
@@ -59,82 +57,45 @@ const messure = () => {
 
 }
 
-const {dataBackend} = useLesson()
-console.log("dataBackend", dataBackend)
-
-const lessondata = ref(dataBackend?.lesson_data?? [])
-const listSentence = ref(dataBackend?.list_sentences?? [])
-const statusTagsMeanings = ref(dataBackend?.Tags_Meanings?? [])
+const lessondata = ref([])
+const listSentence = ref([])
 const audioURL = ref('')
 
+const getLesson = async () => {
+     await $fetch('http://localhost:8000/login/', {
+      method: 'POST', 
+      body: {
+        email: 'test@example.com',
+        password: '1234abcd'
+      },
+      credentials: 'include'
+    })
+
+    const {data} = await useFetch(
+      'http://localhost:8000/get_lesson/', 
+      {
+        params: {lesson_name : lessonName},
+        credentials: 'include',
+        server: false
+      }
+    )
+
+    lessondata.value = data.value?.lesson_data ?? []
+    listSentence.value = data.value?.list_sentences ?? []
 
 
-
-// const getLesson = async () => {
-//      await $fetch('http://localhost:8000/login/', {
-//       method: 'POST', 
-//       body: {
-//         email: 'test@example.com',
-//         password: '1234abcd'
-//       },
-//       credentials: 'include'
-//     })
-
-//     const {data} = await useFetch(
-//       'http://localhost:8000/get_lesson/', 
-//       {
-//         params: {lesson_name : lessonName},
-//         credentials: 'include',
-//         server: false
-//       }
-//     )
-
-//     lessondata.value = data.value?.lesson_data ?? []
-//     listSentence.value = data.value?.list_sentences ?? []
-//     statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
-
-
-//     audioURL.value = data.value.audios?.[0]?.audio_url
-//       ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
-//       : ''
-// }
-
-const currentPhraseData = ref({
-    phrase: 'breakfast',
-    tags: ["demo"],
-    your_meanings: [],
-    global_tags : [],
-    global_meanings: [],
-    status: 6
-})
-
-watch(currentPhraseData, (newVal) => {
-    statusTagsMeanings.value[newVal.phrase] = {
-        "tags": newVal.tags,
-        "your_meanings": newVal.your_meanings,
-        "global_tags": newVal.global_tags,
-        "global_meanings": newVal.global_meanings,
-        "status": newVal.status,
-    }
-})
+    audioURL.value = data.value.audios?.[0]?.audio_url
+      ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
+      : ''
+}
 
 const onSelected = (data) => {
-    currentPhraseData.value = statusTagsMeanings.value[data.text] ?? {
-        phrase: data.text,
-        your_meanings: [],
-        global_tags : [],
-        global_meanings: [],
-        status: 6
-    }
-
-    // console.log(data.text, Object.prototype.hasOwnProperty.call(statusTagsMeanings.value, data.text))
-
-    
+    currentPhrase.value = data.text
 } 
 
 
 onMounted(async () => {
-    // await getLesson()
+    await getLesson()
     messure();
     
     await nextTick();

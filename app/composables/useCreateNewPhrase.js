@@ -111,6 +111,9 @@ const buildSentence = (listPhrases, flatSentencesData) => {
 
     return newDataSentence
 }
+
+
+
     return {
         originalSentenceData,
         createNewPhrase,

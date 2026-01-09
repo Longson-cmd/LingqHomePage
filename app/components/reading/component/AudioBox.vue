@@ -60,7 +60,7 @@ import {ref,  watch, onMounted, onBeforeUnmount} from 'vue'
 
 import AudioSlider from '~/components/UI/AudioSlider.vue';
 const isPlaying = ref(false)
-const {minutesSeconds} = useTime()
+const {minutesSeconds} = useConvert()
 
 const duration = ref(100)
 const currentTime = ref(0)

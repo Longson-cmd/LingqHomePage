@@ -1,6 +1,6 @@
 <template>
   <div class=" h-14  flex justify-between items-end px-3">
-    <NuxtLink class="h-10 w-10 hover:hover:bg-gray-300 rounded-full flex items-center justify-center">
+    <NuxtLink class="h-10 w-10 shrink-0 hover:hover:bg-gray-300 rounded-full flex items-center justify-center">
       <font-awesome icon="times" class="text-xl"/>
     </NuxtLink>
 

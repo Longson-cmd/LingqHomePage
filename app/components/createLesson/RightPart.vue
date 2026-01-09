@@ -80,7 +80,7 @@ import AudioSlider from '~/components/homepage/component/AudioSlider.vue';
 import ImportAudioInLesson from '../homepage/component/ImportAudioInLesson.vue';
 import { ref , watch} from 'vue'
 
-const { minutesSeconds, seconds } = useTime()
+const { minutesSeconds, seconds } = useConvert()
 
 const openWindow = ref("")
 const audioRef = ref(null)
