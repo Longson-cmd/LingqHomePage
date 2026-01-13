@@ -10,11 +10,19 @@ const {
 } = useCreateNewPhrase()
 
 
-export function useKeyboard(startPointer, currentPointer, lessondata,currentPage, totalPage,  emitStatus)  {
+export function yseKey(startPointer, currentPointer, lessondata,currentPage, totalPage, emitStatus)  {
 
+/**
+ * Keyboard handler:
+ * - 'x' removes an existing phrase
+ * - '1'..'5' assigns status and creates/updates phrase
+ */
+const changePhraseStatus = (e) => {
+  const listKeys = ['x', '1', '2', '3', '4', '5']
+  if (!listKeys.includes(e.key)) return
 
-const changePhraseStatus = (newStatus) => {
- 
+  const newStatus = (e.key === 'x') ? 0 : Number(e.key)
+  emitStatus(newStatus)
   // Guard: need a valid selection
   if (!startPointer.value || !currentPointer.value) return
   if (startPointer.value[1] !== currentPointer.value[1]) return
@@ -75,8 +83,8 @@ const changePhraseStatus = (newStatus) => {
     return
   }
 
-  if (newStatus ===6) return
-  if (newStatus === 0) {
+
+  if (e.key === 'x') {
     /* ---------------- Remove phrase ---------------- */
     const indexForNewPhrase = listPhrases.findIndex(
       (item) => item.phrase[0].idx_w_in_s === a
@@ -93,7 +101,7 @@ const changePhraseStatus = (newStatus) => {
     listPhrases.splice(indexForNewPhrase, 1)
   } else {
     /* ---------------- Create / update phrase ---------------- */
-    const newPhrase = createNewPhrase(flatSentencesData, a, b, paraIdx, newStatus)
+    const newPhrase = createNewPhrase(flatSentencesData, a, b, paraIdx, e.key)
     insertNewPhrase(listPhrases, newPhrase, a)
   }
 
@@ -106,24 +114,6 @@ const changePhraseStatus = (newStatus) => {
   // Commit updated sentence back into lessondata
   lessondata.value[paraIdx].splice(start, end - start + 1, ...newDataSentence)
 }
-
-/**
- * Keyboard handler:
- * - 'x' removes an existing phrase
- * - '1'..'5' assigns status and creates/updates phrase
- */
-
-
-const changePhraseStatusByKeyborad = (e) => {
-  const listKeys = ['x', '1', '2', '3', '4', '5']
-  if (!listKeys.includes(e.key)) return
-
-  const newStatus = (e.key === 'x') ? 0 : Number(e.key)
-  emitStatus(newStatus)
-  // Guard: need a valid selection
-  changePhraseStatus(newStatus)
-  }
-
 
 
 const moveNextPrevious = (e) => {
@@ -229,7 +219,6 @@ const moveNextPrevious = (e) => {
 
     return {
         changePhraseStatus,
-        changePhraseStatusByKeyborad,
         moveNextPrevious
     }
 }

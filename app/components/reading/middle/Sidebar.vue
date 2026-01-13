@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <textarea v-show="openAddMeaning" placeholder="Enter new meaning, then press 'Enter'" v-model="newMeaning"
+            <textarea v-show="openAddMeaning || currentPhraseData.your_meanings.length ===0" placeholder="Enter new meaning, then press 'Enter'" v-model="newMeaning"
                 @input="(e) => {
                     e.target.style.height = 'auto',
                         e.target.style.height = e.target.scrollHeight + 'px'
@@ -86,10 +86,10 @@
         </div>
 
         <div class="px-4 py-2 flex justify-between">
-            <button @click="currentPhraseData.status = 0 ;console.log('currentPhraseData.value.status' , currentPhraseData.value.status)"
+            <button @click="currentPhraseData.status = 0 ; currentPhraseData.tags = []; currentPhraseData.your_meanings = []"
                 :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-red-100 flex items-center justify-center', wordStatus === 0 && 'bg-red-100']"><img
                     src="/icons/reader/trash.svg" alt="" /></button>
-            <button @click="currentPhraseData.status = 1"
+            <button @click="  currentPhraseData.status = 1"
                 :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-300 flex items-center justify-center', wordStatus === 1 && 'bg-yellow-300', wordStatus === 6 && 'bg-blue-200']">1</button>
             <button @click="currentPhraseData.status = 2"
                 :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-200 flex items-center justify-center', wordStatus === 2 && 'bg-yellow-200']">2</button>
@@ -106,7 +106,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted,watch, computed, onBeforeUnmount } from 'vue'
+
+import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue'
 
 
 const props = defineProps({
@@ -134,11 +135,99 @@ const props = defineProps({
         })}
 })
 
-const emit = defineEmits(['update:sidebarData'])
+const emit = defineEmits(['update:sidebarData', 'updatePrevious'])
 
 const currentPhraseData = computed({
-    get: () => props.sidebarData,
-    set: (v) => emit('update:sidebarData', v)
+  get: () => props.sidebarData,
+  set: (newVal) => {
+    emit('update:sidebarData', newVal)
+  }
+})
+
+
+import debounce from "lodash/debounce";
+const syncPhrase = debounce(async(playLoad) => {
+    try {
+        await $fetch("http://localhost:8000/update_word/", {
+            method: "PUT",
+            body: playLoad,
+            credentials: "include"
+        })
+    }
+
+    catch(error) {
+        console.log('error with update currentphrase data ', playLoad)
+    }
+}, 500)
+
+
+
+watch(() => props.sidebarData, async (newVal, oldVal) => {
+    if (
+        oldVal.phrase !== newVal.phrase &&
+        oldVal.status === 6 &&
+        oldVal.phrase.split(' ').length === 1
+    ) {
+        const translated = await onTranslate(oldVal.phrase)
+
+        emit('updatePrevious', {
+            phrase: oldVal.phrase,
+            your_meanings: [translated],
+            status: 1
+        })
+    }
+  
+  
+}, {deep : true})
+
+
+
+
+watch(
+  () => {
+    const v = currentPhraseData.value
+    return {
+      phrase: v.phrase,
+      status: v.status,
+      tags: [...(v.tags || [])],
+      your_meanings: [...(v.your_meanings || [])],
+      global_tags: [...(v.global_tags || [])],
+      global_meanings: [...(v.global_meanings || [])],
+    }
+  },
+  (newVal, oldVal) => {
+
+    if (newVal.phrase !== oldVal.phrase) return
+    if (newVal.phrase.split(' ').length > 1 && newVal.status === 6) return
+
+    const isEqualArray = (a = [], b = []) =>
+      a.length === b.length && a.every((v, i) => v === b[i])
+
+    const changes = []
+
+    if (!isEqualArray(newVal.tags, oldVal.tags)) changes.push('tags')
+    if (!isEqualArray(newVal.your_meanings, oldVal.your_meanings)) changes.push('your_meanings')
+    if (newVal.status !== oldVal.status) changes.push('status')
+
+    if (changes.length === 0) return
+    console.log("changes", changes)
+    console.log("newVal", newVal)
+    syncPhrase({
+      ...newVal,
+      changes
+    })
+  },
+  { deep: false }
+)
+
+
+watch(() => currentPhraseData.value.status, async (newVal, oldVal) => {
+    if (oldVal !== 6) return
+    if (newVal === 0 || newVal === 5) return
+    if (currentPhraseData.value.your_meanings.length !== 0) return
+    const translated = await onTranslate(currentPhraseData.value.phrase)
+    currentPhraseData.value.your_meanings.push(translated)  
+
 })
 
 
@@ -170,15 +259,13 @@ const newMeaning = ref('')
 
 const playAudio = ref(true)
 
-
+const {speakEnglish, onTranslate} = useGooleTranslate()
 watch(() => currentPhraseData.value?.phrase,
     async (phrase) => {
-        const { onTranslate,
-            speakEnglish} = useGooleTranslate(currentPhraseData.value.phrase)
+
         const translated = await onTranslate(phrase)
         translateAi.value = translated
 
-       
     }, 
     {immediate: true}
 )
@@ -226,7 +313,7 @@ const addTag = () => {
 const removeMeaning = (meaning) => {
     const arr = currentPhraseData.value.your_meanings
     currentPhraseData.value.your_meanings = arr.filter(w => w !== meaning)
-    // console.log('currentPhraseData.value.your_meanings', currentPhraseData.value.your_meanings)
+   
 }
 
 const addMeaning = () => {
@@ -235,6 +322,8 @@ const addMeaning = () => {
 
     if (!currentPhraseData.value.your_meanings.includes(textNewMeaning)) {
         currentPhraseData.value.your_meanings.push(textNewMeaning)
+        
+        if (currentPhraseData.value.status === 6) {currentPhraseData.value.status =1}
     }
     newMeaning.value = ''
     openAddMeaning.value = false
@@ -243,9 +332,10 @@ const addMeaning = () => {
 const selectTranslations = (idx) => {
 
     const selected = usersTranslation.value[idx]
-
+  
     if (!currentPhraseData.value.your_meanings.includes(selected)) {
         currentPhraseData.value.your_meanings.unshift(selected)
+        if (currentPhraseData.value.status === 6) {currentPhraseData.value.status =1}
         }
 
     if (!translateAi.value) {
@@ -265,15 +355,16 @@ const selectTranslations = (idx) => {
 
 }
 
-const onKeydown = (e) => {
-    const listkeys = ['ArrowDown', 'ArrowUp','ArrowRight', 'ArrowLeft', 'Enter', 's']
+
+const onKeydown = async (e) => {
+    const listkeys = ['ArrowDown', 'ArrowUp','ArrowRight', 'ArrowLeft', 'Enter', 's', "x"]
     if (!listkeys.includes(e.key)) return
 
     const tag = e.target?.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA') return
-    e.preventDefault()
+  
     if (e.key === 'Enter') {
-        if (currentPhraseData.value.global_meanings.length < 1) return
+        
         selectTranslations(focusTranslationIndex.value)
         return
     }
@@ -301,29 +392,31 @@ const onKeydown = (e) => {
     if (e.key === 'ArrowLeft' ) {
         setTimeout(() => {
             speakEnglish(currentPhraseData.value.phrase)
-        }, 100) 
+        }, 20) 
         
     }
 
     if (e.key === 'ArrowRight') {
+        
         setTimeout(() => {
             speakEnglish(currentPhraseData.value.phrase)
-        }, 100)
-
-        if (currentPhraseData.value.status === 6 && currentPhraseData.value.phrase.split(' ').length === 1) {
-         
-            currentPhraseData.value.your_meanings.push(translateAi.value)
-            console.log("translateAi.value" , translateAi.value)
-            currentPhraseData.value.status = 1
-            console.log('currentPhraseData.value.status', currentPhraseData.value.status)
-        }
+        }, 20)
+ 
     }
 
     if (e.key === 's') {
         speakEnglish(currentPhraseData.value.phrase)
     }
- 
+
+    if (e.key === 'x') {
+        currentPhraseData.value.tags = []
+        currentPhraseData.value.your_meanings = []
+        translateAi.value = await onTranslate(currentPhraseData.value.phrase)
+    }
+
 }
+
+
 
 const handleClickOutside = (e) => {
     if (inputTag.value && !inputTag.value.contains(e.target)) {
@@ -333,7 +426,7 @@ const handleClickOutside = (e) => {
 }   
 
 const onPointerDown = () => {
-    playAudio.value = false; console.log('playAudio.value', playAudio.value)
+    // playAudio.value = false; console.log('playAudio.value', playAudio.value)
 }
 
 const onPointerUp = (e) => {
@@ -344,7 +437,7 @@ const onPointerUp = (e) => {
     const PhraseEl = target.closest('.phrase-item')
     if (!WordEl && !PhraseEl) return
     
-    console.log('playAudio after', playAudio.value)
+    // console.log('playAudio after', playAudio.value)
     speakEnglish(currentPhraseData.value.phrase)
 }
 
@@ -391,3 +484,27 @@ onBeforeUnmount(() => {
     border-radius: 999px;
 }
 </style>
+
+  () => props.sidebarData,
+  async (newVal, oldVal) => {
+    if (!oldVal) return
+
+    if (
+    oldVal.phrase !== newVal.phrase &&
+      oldVal.status === 6 &&
+      oldVal.phrase.split(' ').length === 1
+    ) {
+      const translated = await onTranslate(oldVal.phrase)
+
+      emit('updatePrevious', {
+        phrase: oldVal.phrase,
+        tags: [],
+        your_meanings: [translated],
+        global_tags: oldVal.global_tags,
+        global_meanings: oldVal.global_meanings,
+        status: 1
+      })
+    }
+  },
+  { deep: true }
+) -->

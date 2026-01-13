@@ -63,7 +63,7 @@ export const useLesson = () => {
             },
             {
                 "word": "am",
-                "status": 6,
+                "status": 2,
                 "w_idx": 5,
                 "p_idx": 0,
                 "s_idx": 0,

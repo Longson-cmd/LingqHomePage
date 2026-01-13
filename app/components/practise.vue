@@ -14,6 +14,7 @@
                         :lesson-data="lessondata"
                         :list-sentence="listSentence"
                         :readerHeight="boxHeight" 
+                        :current-phrase-status="currentPhraseData.status"
                         v-model:current-value="current" 
                         @send-total-page="total = $event"
                         @selected="onSelected"
@@ -37,6 +38,7 @@
                     @pointermove.stop
                     @pointerup.stop
                     v-model:sidebar-data="currentPhraseData"
+                    @update-previous="handleUpdatePrevisous"
                 />
 
         </div>
@@ -69,43 +71,45 @@ const messure = () => {
 
 }
 
-const {dataBackend} = useLesson()
-
-
-const lessondata = ref(dataBackend?.lesson_data?? [])
-const listSentence = ref(dataBackend?.list_sentences?? [])
-const statusTagsMeanings = ref(dataBackend?.Tags_Meanings?? [])
+// const {dataBackend} = useLesson()
+// const lessondata = ref(dataBackend?.lesson_data?? [])
+// const listSentence = ref(dataBackend?.list_sentences?? [])
+// const statusTagsMeanings = ref(dataBackend?.Tags_Meanings?? [])
+// const audioURL = ref('')
+const lessondata = ref( [])
+const listSentence = ref([])
+const statusTagsMeanings = ref([])
 const audioURL = ref('')
 
 
-// const getLesson = async () => {
-//      await $fetch('http://localhost:8000/login/', {
-//       method: 'POST', 
-//       body: {
-//         email: 'test@example.com',
-//         password: '1234abcd'
-//       },
-//       credentials: 'include'
-//     })
+const getLesson = async () => {
+     await $fetch('http://localhost:8000/login/', {
+      method: 'POST', 
+      body: {
+        email: 'test@example.com',
+        password: '1234abcd'
+      },
+      credentials: 'include'
+    })
 
-//     const {data} = await useFetch(
-//       'http://localhost:8000/get_lesson/', 
-//       {
-//         params: {lesson_name : lessonName},
-//         credentials: 'include',
-//         server: false
-//       }
-//     )
+    const {data} = await useFetch(
+      'http://localhost:8000/get_lesson/', 
+      {
+        params: {lesson_name : lessonName},
+        credentials: 'include',
+        server: false
+      }
+    )
 
-//     lessondata.value = data.value?.lesson_data ?? []
-//     listSentence.value = data.value?.list_sentences ?? []
-//     statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
+    lessondata.value = data.value?.lesson_data ?? []
+    listSentence.value = data.value?.list_sentences ?? []
+    statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
 
 
-//     audioURL.value = data.value.audios?.[0]?.audio_url
-//       ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
-//       : ''
-// }
+    audioURL.value = data.value.audios?.[0]?.audio_url
+      ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
+      : ''
+}
 
 const currentPhraseData = ref({
     phrase: 'breakfast',
@@ -117,6 +121,7 @@ const currentPhraseData = ref({
 })
 
 watch(currentPhraseData, (newVal) => {
+    if (newVal.phrase.split(" ").length > 1 && newVal.status === 6) return
     statusTagsMeanings.value[newVal.phrase] = {
         "tags": newVal.tags,
         "your_meanings": newVal.your_meanings,
@@ -124,8 +129,16 @@ watch(currentPhraseData, (newVal) => {
         "global_meanings": newVal.global_meanings,
         "status": newVal.status,
     }
-    // console.log("statusTagsMeanings.value[newVal.phrase]", statusTagsMeanings.value[newVal.phrase])
+    
+    
 }, {deep: true})
+
+
+
+const handleUpdatePrevisous = (data) => {
+    statusTagsMeanings.value[data.phrase].your_meanings = data.your_meanings
+    statusTagsMeanings.value[data.phrase].status = data.status
+}
 
 const onSelected = (data) => {
   
@@ -141,7 +154,7 @@ const onSelected = (data) => {
 
 
 onMounted(async () => {
-    // await getLesson()
+    await getLesson()
     messure();
     
     await nextTick();

@@ -1,7 +1,6 @@
+import debounce from "lodash/debounce";
+export function useGooleTranslate () {
 
-export function useGooleTranslate (text) {
-
-let translated = ''
 
 const onTranslate = async (text) => {
     
@@ -19,19 +18,19 @@ const onTranslate = async (text) => {
         }
         )
         const result = data?.[0]?.[0]?.[0]?? ''
-        translated = result
+
         return result
     }
 
     catch (err) {
         console.error('Translation failed', err)
-        translated = ''
+
         return ''
     }
 }
 
 // 🟢 Speak English input text
-function speakEnglish(text) {
+const speakEnglish = debounce((text) =>{
     try {  // Create a speech utterance using the input text
     const utterance = new SpeechSynthesisUtterance(text)
 
@@ -50,12 +49,9 @@ function speakEnglish(text) {
     catch (error) {
         console.error('there is an error with speakEnglish', error)
     }
-}
-
-    
+}, 400)
 
 return {
-    translated,
     onTranslate,
     speakEnglish
 }}

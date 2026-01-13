@@ -96,7 +96,8 @@ const props = defineProps({
   readerHeight: {type: Number, default: 500},
   currentValue : {type :Number, default: 1},
   lessonData: {type: Array, default : () => []},
-  listSentence : {type: Array, default : () => []}
+  listSentence : {type: Array, default : () => []},
+  currentPhraseStatus :{type: Number }
 })
 const lessondata = ref(props.lessonData)
 
@@ -127,8 +128,10 @@ const {
 const emitStatus = (keyboard) => {
   emit('status', keyboard)
 }
-const {changePhraseStatus, moveNextPrevious} = useKeyboard(startPointer, currentPointer, lessondata, currentPage, totalPage, emitStatus)
+const {changePhraseStatus,changePhraseStatusByKeyborad, moveNextPrevious} = useKeyboard(startPointer, currentPointer, lessondata, currentPage, totalPage,  emitStatus)
 
+
+watch(() => props.currentPhraseStatus, (newVal) => changePhraseStatus(newVal))
 /* =========================================================
    Local UI State
 ========================================================= */
@@ -154,7 +157,7 @@ const selected = computed(() => {
   const selected_phrase = listWordInSentence.slice(a, b + 1)
   const cleaned_selected_phrase = selected_phrase.map( item => cleanWord(item))
   if (selected_phrase.length > 8) return {text: '', valid: false, error: 'too-long'}
-  return {text: selected_phrase.join(' '), valid: true}
+  return {text: cleaned_selected_phrase.join(' '), valid: true}
 })
 
 watch(selected, (newVal) => {
@@ -226,14 +229,14 @@ onMounted(async () => {
   // Global listeners (remember to remove them on unmount)
   window.addEventListener('resize', updateTotalPages)
   window.addEventListener('pointerup', pointerUp)
-  window.addEventListener('keydown', changePhraseStatus)
+  window.addEventListener('keydown', changePhraseStatusByKeyborad)
   window.addEventListener('keydown', moveNextPrevious)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateTotalPages)
   window.removeEventListener('pointerup', pointerUp)
-  window.removeEventListener('keydown', changePhraseStatus)
+  window.removeEventListener('keydown', changePhraseStatusByKeyborad)
   window.removeEventListener('keydown', moveNextPrevious)
 })
 </script>

@@ -1,3 +1,4 @@
+
 // /composables/useTime.js
 export function useConvert() {
 // Convert seconds -> "M:SS"
@@ -14,23 +15,25 @@ const seconds = (rawString) => {
 }
 
 
-const  cleanWord = (word) => {
-  if (!word) return ''
+// * @param {string} word
+//  * @returns {string} cleaned word
+//  */
+const cleanWord = (word)=> {
 
-  let w = word.toLowerCase().trim()
+  let w = String(word).toLowerCase().trim();
 
-  // Unicode normalization (same as unicodedata.normalize)
-  w = w.normalize('NFKD')
+  // Unicode normalize (NFKD)
+  // (Available in modern JS runtimes)
+  w = w.normalize("NFKD");
 
-  // Normalize punctuation
-  w = w
-    .replace(/’/g, "'")
-    .replace(/[–—]/g, "-")
+  // Replace smart apostrophe and dash variants
+  w = w.replace(/’/g, "'").replace(/[–—]/g, "-");
 
-  // Remove unwanted characters (keep letters, numbers, spaces, apostrophes)
-  w = w.replace(/[^\w\s']/g, '')
-
-  return w
+  // Remove non-alphanumeric characters except apostrophes.
+  // Python regex: r"[^\w\s']", ""
+  // JS equivalent: keep [A-Za-z0-9_], whitespace, and apostrophes.
+  w = w.replace(/[^\w\s']/g, "");
+  return w;
 }
 
   return {
