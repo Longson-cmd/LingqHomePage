@@ -4,6 +4,7 @@ export const useLesson = () => {
         [
             {
                 "word": "Mike",
+                "cleaned": "mike",
                 "status": 0,
                 "w_idx": 0,
                 "p_idx": 0,
@@ -16,6 +17,7 @@ export const useLesson = () => {
                 "phrase": [
                     {
                         "word": "gets",
+                        "cleaned": "gets",
                         "status": 0,
                         "w_idx": 1,
                         "p_idx": 0,
@@ -26,6 +28,7 @@ export const useLesson = () => {
                     },
                     {
                         "word": "up",
+                        "cleaned": "up",
                         "status": 0,
                         "w_idx": 2,
                         "p_idx": 0,
@@ -43,7 +46,8 @@ export const useLesson = () => {
             },
             {
                 "word": "at",
-                "status": 6,
+                "cleaned": "at",
+                "status": 2,
                 "w_idx": 3,
                 "p_idx": 0,
                 "s_idx": 0,
@@ -53,6 +57,7 @@ export const useLesson = () => {
             },
             {
                 "word": "six",
+                "cleaned": "six",
                 "status": 6,
                 "w_idx": 4,
                 "p_idx": 0,
@@ -63,7 +68,8 @@ export const useLesson = () => {
             },
             {
                 "word": "am",
-                "status": 2,
+                "cleaned": "am",
+                "status": 6,
                 "w_idx": 5,
                 "p_idx": 0,
                 "s_idx": 0,
@@ -75,6 +81,7 @@ export const useLesson = () => {
                 "phrase": [
                     {
                         "word": "every",
+                        "cleaned": "every",
                         "status": 6,
                         "w_idx": 6,
                         "p_idx": 0,
@@ -85,7 +92,8 @@ export const useLesson = () => {
                     },
                     {
                         "word": "morning.",
-                        "status": 6,
+                        "cleaned": "morning",
+                        "status": 2,
                         "w_idx": 7,
                         "p_idx": 0,
                         "s_idx": 0,
@@ -94,7 +102,7 @@ export const useLesson = () => {
                         "visible_in_phrase": true
                     }
                 ],
-                "status": 2,
+                "status": 5,
                 "p_idx": 0,
                 "s_idx": 0,
                 "type": "phrase",
@@ -102,7 +110,8 @@ export const useLesson = () => {
             },
             {
                 "word": "He",
-                "status": 6,
+                "cleaned": "he",
+                "status": 0,
                 "w_idx": 8,
                 "p_idx": 0,
                 "s_idx": 1,
@@ -112,6 +121,7 @@ export const useLesson = () => {
             },
             {
                 "word": "makes",
+                "cleaned": "makes",
                 "status": 6,
                 "w_idx": 9,
                 "p_idx": 0,
@@ -122,6 +132,7 @@ export const useLesson = () => {
             },
             {
                 "word": "breakfast",
+                "cleaned": "breakfast",
                 "status": 1,
                 "w_idx": 10,
                 "p_idx": 0,
@@ -132,6 +143,7 @@ export const useLesson = () => {
             },
             {
                 "word": "and",
+                "cleaned": "and",
                 "status": 6,
                 "w_idx": 11,
                 "p_idx": 0,
@@ -142,7 +154,8 @@ export const useLesson = () => {
             },
             {
                 "word": "drinks",
-                "status": 6,
+                "cleaned": "drinks",
+                "status": 2,
                 "w_idx": 12,
                 "p_idx": 0,
                 "s_idx": 1,
@@ -152,6 +165,7 @@ export const useLesson = () => {
             },
             {
                 "word": "a",
+                "cleaned": "a",
                 "status": 6,
                 "w_idx": 13,
                 "p_idx": 0,
@@ -162,7 +176,8 @@ export const useLesson = () => {
             },
             {
                 "word": "coffee.",
-                "status": 1,
+                "cleaned": "coffee",
+                "status": 2,
                 "w_idx": 14,
                 "p_idx": 0,
                 "s_idx": 1,
@@ -174,7 +189,8 @@ export const useLesson = () => {
         [
             {
                 "word": "He",
-                "status": 6,
+                "cleaned": "he",
+                "status": 0,
                 "w_idx": 15,
                 "p_idx": 1,
                 "s_idx": 2,
@@ -186,6 +202,7 @@ export const useLesson = () => {
                 "phrase": [
                     {
                         "word": "drives",
+                        "cleaned": "drives",
                         "status": 1,
                         "w_idx": 16,
                         "p_idx": 1,
@@ -196,6 +213,7 @@ export const useLesson = () => {
                     },
                     {
                         "word": "to",
+                        "cleaned": "to",
                         "status": 6,
                         "w_idx": 17,
                         "p_idx": 1,
@@ -206,6 +224,7 @@ export const useLesson = () => {
                     },
                     {
                         "word": "work",
+                        "cleaned": "work",
                         "status": 2,
                         "w_idx": 18,
                         "p_idx": 1,
@@ -223,6 +242,7 @@ export const useLesson = () => {
             },
             {
                 "word": "in",
+                "cleaned": "in",
                 "status": 6,
                 "w_idx": 19,
                 "p_idx": 1,
@@ -233,7 +253,8 @@ export const useLesson = () => {
             },
             {
                 "word": "his",
-                "status": 6,
+                "cleaned": "his",
+                "status": 1,
                 "w_idx": 20,
                 "p_idx": 1,
                 "s_idx": 2,
@@ -243,6 +264,7 @@ export const useLesson = () => {
             },
             {
                 "word": "car?",
+                "cleaned": "car",
                 "status": 2,
                 "w_idx": 21,
                 "p_idx": 1,
@@ -255,7 +277,8 @@ export const useLesson = () => {
         [
             {
                 "word": "His",
-                "status": 6,
+                "cleaned": "his",
+                "status": 1,
                 "w_idx": 22,
                 "p_idx": 2,
                 "s_idx": 3,
@@ -264,28 +287,40 @@ export const useLesson = () => {
                 "visible_in_phrase": true
             },
             {
-                "word": "work",
-                "status": 2,
-                "w_idx": 23,
+                "phrase": [
+                    {
+                        "word": "work",
+                        "cleaned": "work",
+                        "status": 2,
+                        "w_idx": 23,
+                        "p_idx": 2,
+                        "s_idx": 3,
+                        "idx_w_in_s": 1,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "starts",
+                        "cleaned": "starts",
+                        "status": 2,
+                        "w_idx": 24,
+                        "p_idx": 2,
+                        "s_idx": 3,
+                        "idx_w_in_s": 2,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    }
+                ],
+                "status": 1,
                 "p_idx": 2,
                 "s_idx": 3,
-                "idx_w_in_s": 1,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "starts",
-                "status": 2,
-                "w_idx": 24,
-                "p_idx": 2,
-                "s_idx": 3,
-                "idx_w_in_s": 2,
-                "type": "word",
-                "visible_in_phrase": true
+                "type": "phrase",
+                "visible": true
             },
             {
                 "word": "at",
-                "status": 6,
+                "cleaned": "at",
+                "status": 2,
                 "w_idx": 25,
                 "p_idx": 2,
                 "s_idx": 3,
@@ -295,6 +330,7 @@ export const useLesson = () => {
             },
             {
                 "word": "seven",
+                "cleaned": "seven",
                 "status": 6,
                 "w_idx": 26,
                 "p_idx": 2,
@@ -305,6 +341,7 @@ export const useLesson = () => {
             },
             {
                 "word": "thirty",
+                "cleaned": "thirty",
                 "status": 6,
                 "w_idx": 27,
                 "p_idx": 2,
@@ -315,6 +352,7 @@ export const useLesson = () => {
             },
             {
                 "word": "am!",
+                "cleaned": "am",
                 "status": 6,
                 "w_idx": 28,
                 "p_idx": 2,
@@ -324,27 +362,39 @@ export const useLesson = () => {
                 "visible_in_phrase": true
             },
             {
-                "word": "Mike",
-                "status": 0,
-                "w_idx": 29,
+                "phrase": [
+                    {
+                        "word": "Mike",
+                        "cleaned": "mike",
+                        "status": 0,
+                        "w_idx": 29,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 0,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "is",
+                        "cleaned": "is",
+                        "status": 6,
+                        "w_idx": 30,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 1,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    }
+                ],
+                "status": 1,
                 "p_idx": 2,
                 "s_idx": 4,
-                "idx_w_in_s": 0,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "is",
-                "status": 6,
-                "w_idx": 30,
-                "p_idx": 2,
-                "s_idx": 4,
-                "idx_w_in_s": 1,
-                "type": "word",
-                "visible_in_phrase": true
+                "type": "phrase",
+                "visible": true
             },
             {
                 "word": "a",
+                "cleaned": "a",
                 "status": 6,
                 "w_idx": 31,
                 "p_idx": 2,
@@ -354,48 +404,62 @@ export const useLesson = () => {
                 "visible_in_phrase": true
             },
             {
-                "word": "cook",
-                "status": 3,
-                "w_idx": 32,
+                "phrase": [
+                    {
+                        "word": "cook",
+                        "cleaned": "cook",
+                        "status": 3,
+                        "w_idx": 32,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 3,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "at",
+                        "cleaned": "at",
+                        "status": 2,
+                        "w_idx": 33,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 4,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "a",
+                        "cleaned": "a",
+                        "status": 6,
+                        "w_idx": 34,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 5,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "restaurant.",
+                        "cleaned": "restaurant",
+                        "status": 3,
+                        "w_idx": 35,
+                        "p_idx": 2,
+                        "s_idx": 4,
+                        "idx_w_in_s": 6,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    }
+                ],
+                "status": 1,
                 "p_idx": 2,
                 "s_idx": 4,
-                "idx_w_in_s": 3,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "at",
-                "status": 6,
-                "w_idx": 33,
-                "p_idx": 2,
-                "s_idx": 4,
-                "idx_w_in_s": 4,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "a",
-                "status": 6,
-                "w_idx": 34,
-                "p_idx": 2,
-                "s_idx": 4,
-                "idx_w_in_s": 5,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "restaurant.",
-                "status": 3,
-                "w_idx": 35,
-                "p_idx": 2,
-                "s_idx": 4,
-                "idx_w_in_s": 6,
-                "type": "word",
-                "visible_in_phrase": true
+                "type": "phrase",
+                "visible": true
             },
             {
                 "word": "He",
-                "status": 6,
+                "cleaned": "he",
+                "status": 0,
                 "w_idx": 36,
                 "p_idx": 2,
                 "s_idx": 5,
@@ -407,6 +471,7 @@ export const useLesson = () => {
                 "phrase": [
                     {
                         "word": "makes",
+                        "cleaned": "makes",
                         "status": 6,
                         "w_idx": 37,
                         "p_idx": 2,
@@ -417,6 +482,7 @@ export const useLesson = () => {
                     },
                     {
                         "word": "food",
+                        "cleaned": "food",
                         "status": 3,
                         "w_idx": 38,
                         "p_idx": 2,
@@ -434,6 +500,7 @@ export const useLesson = () => {
             },
             {
                 "word": "for",
+                "cleaned": "for",
                 "status": 6,
                 "w_idx": 39,
                 "p_idx": 2,
@@ -444,6 +511,7 @@ export const useLesson = () => {
             },
             {
                 "word": "hungry",
+                "cleaned": "hungry",
                 "status": 6,
                 "w_idx": 40,
                 "p_idx": 2,
@@ -454,7 +522,8 @@ export const useLesson = () => {
             },
             {
                 "word": "customers!",
-                "status": 4,
+                "cleaned": "customers",
+                "status": 1,
                 "w_idx": 41,
                 "p_idx": 2,
                 "s_idx": 5,
@@ -466,6 +535,7 @@ export const useLesson = () => {
         [
             {
                 "word": "The",
+                "cleaned": "the",
                 "status": 6,
                 "w_idx": 42,
                 "p_idx": 3,
@@ -476,7 +546,8 @@ export const useLesson = () => {
             },
             {
                 "word": "customers",
-                "status": 4,
+                "cleaned": "customers",
+                "status": 1,
                 "w_idx": 43,
                 "p_idx": 3,
                 "s_idx": 6,
@@ -486,6 +557,7 @@ export const useLesson = () => {
             },
             {
                 "word": "are",
+                "cleaned": "are",
                 "status": 6,
                 "w_idx": 44,
                 "p_idx": 3,
@@ -496,6 +568,7 @@ export const useLesson = () => {
             },
             {
                 "word": "from",
+                "cleaned": "from",
                 "status": 6,
                 "w_idx": 45,
                 "p_idx": 3,
@@ -506,6 +579,7 @@ export const useLesson = () => {
             },
             {
                 "word": "many",
+                "cleaned": "many",
                 "status": 6,
                 "w_idx": 46,
                 "p_idx": 3,
@@ -516,6 +590,7 @@ export const useLesson = () => {
             },
             {
                 "word": "countries!",
+                "cleaned": "countries",
                 "status": 4,
                 "w_idx": 47,
                 "p_idx": 3,
@@ -528,6 +603,7 @@ export const useLesson = () => {
         [
             {
                 "word": "They",
+                "cleaned": "they",
                 "status": 6,
                 "w_idx": 48,
                 "p_idx": 4,
@@ -538,6 +614,7 @@ export const useLesson = () => {
             },
             {
                 "word": "speak",
+                "cleaned": "speak",
                 "status": 6,
                 "w_idx": 49,
                 "p_idx": 4,
@@ -548,6 +625,7 @@ export const useLesson = () => {
             },
             {
                 "word": "many",
+                "cleaned": "many",
                 "status": 6,
                 "w_idx": 50,
                 "p_idx": 4,
@@ -558,6 +636,7 @@ export const useLesson = () => {
             },
             {
                 "word": "different",
+                "cleaned": "different",
                 "status": 6,
                 "w_idx": 51,
                 "p_idx": 4,
@@ -568,6 +647,7 @@ export const useLesson = () => {
             },
             {
                 "word": "languages!",
+                "cleaned": "languages",
                 "status": 4,
                 "w_idx": 52,
                 "p_idx": 4,
@@ -580,6 +660,7 @@ export const useLesson = () => {
         [
             {
                 "word": "Mike",
+                "cleaned": "mike",
                 "status": 0,
                 "w_idx": 53,
                 "p_idx": 5,
@@ -590,6 +671,7 @@ export const useLesson = () => {
             },
             {
                 "word": "can",
+                "cleaned": "can",
                 "status": 6,
                 "w_idx": 54,
                 "p_idx": 5,
@@ -600,6 +682,7 @@ export const useLesson = () => {
             },
             {
                 "word": "meet",
+                "cleaned": "meet",
                 "status": 6,
                 "w_idx": 55,
                 "p_idx": 5,
@@ -610,6 +693,7 @@ export const useLesson = () => {
             },
             {
                 "word": "many",
+                "cleaned": "many",
                 "status": 6,
                 "w_idx": 56,
                 "p_idx": 5,
@@ -622,6 +706,7 @@ export const useLesson = () => {
                 "phrase": [
                     {
                         "word": "friendly",
+                        "cleaned": "friendly",
                         "status": 5,
                         "w_idx": 57,
                         "p_idx": 5,
@@ -632,6 +717,7 @@ export const useLesson = () => {
                     },
                     {
                         "word": "people?",
+                        "cleaned": "people",
                         "status": 6,
                         "w_idx": 58,
                         "p_idx": 5,
@@ -648,27 +734,39 @@ export const useLesson = () => {
                 "visible": true
             },
             {
-                "word": "Mike",
-                "status": 0,
-                "w_idx": 59,
+                "phrase": [
+                    {
+                        "word": "Mike",
+                        "cleaned": "mike",
+                        "status": 0,
+                        "w_idx": 59,
+                        "p_idx": 5,
+                        "s_idx": 9,
+                        "idx_w_in_s": 0,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    },
+                    {
+                        "word": "is",
+                        "cleaned": "is",
+                        "status": 6,
+                        "w_idx": 60,
+                        "p_idx": 5,
+                        "s_idx": 9,
+                        "idx_w_in_s": 1,
+                        "type": "word",
+                        "visible_in_phrase": true
+                    }
+                ],
+                "status": 1,
                 "p_idx": 5,
                 "s_idx": 9,
-                "idx_w_in_s": 0,
-                "type": "word",
-                "visible_in_phrase": true
-            },
-            {
-                "word": "is",
-                "status": 6,
-                "w_idx": 60,
-                "p_idx": 5,
-                "s_idx": 9,
-                "idx_w_in_s": 1,
-                "type": "word",
-                "visible_in_phrase": true
+                "type": "phrase",
+                "visible": true
             },
             {
                 "word": "happy",
+                "cleaned": "happy",
                 "status": 5,
                 "w_idx": 61,
                 "p_idx": 5,
@@ -679,6 +777,7 @@ export const useLesson = () => {
             },
             {
                 "word": "when",
+                "cleaned": "when",
                 "status": 6,
                 "w_idx": 62,
                 "p_idx": 5,
@@ -689,7 +788,8 @@ export const useLesson = () => {
             },
             {
                 "word": "he",
-                "status": 6,
+                "cleaned": "he",
+                "status": 0,
                 "w_idx": 63,
                 "p_idx": 5,
                 "s_idx": 9,
@@ -699,6 +799,7 @@ export const useLesson = () => {
             },
             {
                 "word": "talks",
+                "cleaned": "talks",
                 "status": 5,
                 "w_idx": 64,
                 "p_idx": 5,
@@ -709,6 +810,7 @@ export const useLesson = () => {
             },
             {
                 "word": "to",
+                "cleaned": "to",
                 "status": 6,
                 "w_idx": 65,
                 "p_idx": 5,
@@ -719,6 +821,7 @@ export const useLesson = () => {
             },
             {
                 "word": "the",
+                "cleaned": "the",
                 "status": 6,
                 "w_idx": 66,
                 "p_idx": 5,
@@ -729,7 +832,8 @@ export const useLesson = () => {
             },
             {
                 "word": "customers.",
-                "status": 4,
+                "cleaned": "customers",
+                "status": 1,
                 "w_idx": 67,
                 "p_idx": 5,
                 "s_idx": 9,
@@ -814,7 +918,9 @@ export const useLesson = () => {
         },
         "at": {
             "tags": [],
-            "your_meanings": [],
+            "your_meanings": [
+                "Tại"
+            ],
             "global_tags": [
                 "n"
             ],
@@ -824,7 +930,7 @@ export const useLesson = () => {
                 "xem",
                 "ít nhất"
             ],
-            "status": 6
+            "status": 2
         },
         "six": {
             "tags": [],
@@ -873,7 +979,9 @@ export const useLesson = () => {
         },
         "morning": {
             "tags": [],
-            "your_meanings": [],
+            "your_meanings": [
+                "buổi sáng"
+            ],
             "global_tags": [
                 "n"
             ],
@@ -882,11 +990,13 @@ export const useLesson = () => {
                 "sáng",
                 "sáng mai"
             ],
-            "status": 6
+            "status": 2
         },
         "he": {
             "tags": [],
-            "your_meanings": [],
+            "your_meanings": [
+                "Anh ta"
+            ],
             "global_tags": [
                 "n"
             ],
@@ -897,7 +1007,7 @@ export const useLesson = () => {
                 "vẫn",
                 "ổng"
             ],
-            "status": 6
+            "status": 0
         },
         "makes": {
             "tags": [],
@@ -949,7 +1059,9 @@ export const useLesson = () => {
         },
         "drinks": {
             "tags": [],
-            "your_meanings": [],
+            "your_meanings": [
+                "đồ uống"
+            ],
             "global_tags": [
                 "v",
                 "n"
@@ -960,7 +1072,7 @@ export const useLesson = () => {
                 "thức",
                 "uống"
             ],
-            "status": 6
+            "status": 2
         },
         "a": {
             "tags": [],
@@ -994,7 +1106,7 @@ export const useLesson = () => {
                 "pha",
                 "phê"
             ],
-            "status": 1
+            "status": 2
         },
         "drives": {
             "tags": [
@@ -1068,7 +1180,9 @@ export const useLesson = () => {
         },
         "his": {
             "tags": [],
-            "your_meanings": [],
+            "your_meanings": [
+                "của anh ấy"
+            ],
             "global_tags": [],
             "global_meanings": [
                 "hắn",
@@ -1077,7 +1191,7 @@ export const useLesson = () => {
                 "đầu",
                 "ổng"
             ],
-            "status": 6
+            "status": 1
         },
         "car": {
             "tags": [
@@ -1262,7 +1376,7 @@ export const useLesson = () => {
                 "khách hàng",
                 "vị"
             ],
-            "status": 4
+            "status": 1
         },
         "the": {
             "tags": [],
@@ -1523,17 +1637,6 @@ export const useLesson = () => {
             ],
             "status": 5
         },
-        "gets up": {
-            "tags": [
-                "verb"
-            ],
-            "your_meanings": [
-                "thức dậy"
-            ],
-            "global_tags": [],
-            "global_meanings": [],
-            "status": 1
-        },
         "every morning": {
             "tags": [
                 "adverbial phrase"
@@ -1545,6 +1648,17 @@ export const useLesson = () => {
             "global_meanings": [],
             "status": 5
         },
+        "gets up": {
+            "tags": [
+                "verb"
+            ],
+            "your_meanings": [
+                "thức dậy"
+            ],
+            "global_tags": [],
+            "global_meanings": [],
+            "status": 1
+        },
         "drives to work": {
             "tags": [
                 "verb"
@@ -1555,6 +1669,31 @@ export const useLesson = () => {
             "global_tags": [],
             "global_meanings": [],
             "status": 2
+        },
+        "work starts": {
+            "tags": [],
+            "your_meanings": [
+                "công việc bắt đầu"
+            ],
+            "global_tags": [],
+            "global_meanings": [],
+            "status": 1
+        },
+        "cook at a restaurant": {
+            "tags": [],
+            "your_meanings": [
+                "nấu ăn ở nhà hàng"
+            ],
+            "global_tags": [],
+            "global_meanings": [],
+            "status": 1
+        },
+        "mike is": {
+            "tags": [],
+            "your_meanings": [],
+            "global_tags": [],
+            "global_meanings": [],
+            "status": 1
         },
         "makes food": {
             "tags": [
@@ -1589,9 +1728,795 @@ export const useLesson = () => {
             "whisper_url": "/media/whisper/test%40example.com/result0.json",
             "uploaded_at": "2025-11-08T03:37:59.176Z"
         }
+    ],
+    "core_data": [
+        [
+            [
+                {
+                    "word": "Mike",
+                    "cleaned": "mike",
+                    "status": 0,
+                    "w_idx": 0,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "gets",
+                    "cleaned": "gets",
+                    "status": 0,
+                    "w_idx": 1,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "up",
+                    "cleaned": "up",
+                    "status": 0,
+                    "w_idx": 2,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "at",
+                    "cleaned": "at",
+                    "status": 2,
+                    "w_idx": 3,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "six",
+                    "cleaned": "six",
+                    "status": 6,
+                    "w_idx": 4,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "am",
+                    "cleaned": "am",
+                    "status": 6,
+                    "w_idx": 5,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "every",
+                    "cleaned": "every",
+                    "status": 6,
+                    "w_idx": 6,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "morning.",
+                    "cleaned": "morning",
+                    "status": 2,
+                    "w_idx": 7,
+                    "p_idx": 0,
+                    "s_idx": 0,
+                    "idx_w_in_s": 7,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ],
+            [
+                {
+                    "word": "He",
+                    "cleaned": "he",
+                    "status": 0,
+                    "w_idx": 8,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "makes",
+                    "cleaned": "makes",
+                    "status": 6,
+                    "w_idx": 9,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "breakfast",
+                    "cleaned": "breakfast",
+                    "status": 1,
+                    "w_idx": 10,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "and",
+                    "cleaned": "and",
+                    "status": 6,
+                    "w_idx": 11,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "drinks",
+                    "cleaned": "drinks",
+                    "status": 2,
+                    "w_idx": 12,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "a",
+                    "cleaned": "a",
+                    "status": 6,
+                    "w_idx": 13,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "coffee.",
+                    "cleaned": "coffee",
+                    "status": 2,
+                    "w_idx": 14,
+                    "p_idx": 0,
+                    "s_idx": 1,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ],
+        [
+            [],
+            [
+                {
+                    "word": "He",
+                    "cleaned": "he",
+                    "status": 0,
+                    "w_idx": 15,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "drives",
+                    "cleaned": "drives",
+                    "status": 1,
+                    "w_idx": 16,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "to",
+                    "cleaned": "to",
+                    "status": 6,
+                    "w_idx": 17,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "work",
+                    "cleaned": "work",
+                    "status": 2,
+                    "w_idx": 18,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "in",
+                    "cleaned": "in",
+                    "status": 6,
+                    "w_idx": 19,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "his",
+                    "cleaned": "his",
+                    "status": 1,
+                    "w_idx": 20,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "car?",
+                    "cleaned": "car",
+                    "status": 2,
+                    "w_idx": 21,
+                    "p_idx": 1,
+                    "s_idx": 2,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ],
+        [
+            [],
+            [
+                {
+                    "word": "His",
+                    "cleaned": "his",
+                    "status": 1,
+                    "w_idx": 22,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "work",
+                    "cleaned": "work",
+                    "status": 2,
+                    "w_idx": 23,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "starts",
+                    "cleaned": "starts",
+                    "status": 2,
+                    "w_idx": 24,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "at",
+                    "cleaned": "at",
+                    "status": 2,
+                    "w_idx": 25,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "seven",
+                    "cleaned": "seven",
+                    "status": 6,
+                    "w_idx": 26,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "thirty",
+                    "cleaned": "thirty",
+                    "status": 6,
+                    "w_idx": 27,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "am!",
+                    "cleaned": "am",
+                    "status": 6,
+                    "w_idx": 28,
+                    "p_idx": 2,
+                    "s_idx": 3,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ],
+            [
+                {
+                    "word": "Mike",
+                    "cleaned": "mike",
+                    "status": 0,
+                    "w_idx": 29,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "is",
+                    "cleaned": "is",
+                    "status": 6,
+                    "w_idx": 30,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "a",
+                    "cleaned": "a",
+                    "status": 6,
+                    "w_idx": 31,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "cook",
+                    "cleaned": "cook",
+                    "status": 3,
+                    "w_idx": 32,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "at",
+                    "cleaned": "at",
+                    "status": 2,
+                    "w_idx": 33,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "a",
+                    "cleaned": "a",
+                    "status": 6,
+                    "w_idx": 34,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "restaurant.",
+                    "cleaned": "restaurant",
+                    "status": 3,
+                    "w_idx": 35,
+                    "p_idx": 2,
+                    "s_idx": 4,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ],
+            [
+                {
+                    "word": "He",
+                    "cleaned": "he",
+                    "status": 0,
+                    "w_idx": 36,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "makes",
+                    "cleaned": "makes",
+                    "status": 6,
+                    "w_idx": 37,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "food",
+                    "cleaned": "food",
+                    "status": 3,
+                    "w_idx": 38,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "for",
+                    "cleaned": "for",
+                    "status": 6,
+                    "w_idx": 39,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "hungry",
+                    "cleaned": "hungry",
+                    "status": 6,
+                    "w_idx": 40,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "customers!",
+                    "cleaned": "customers",
+                    "status": 1,
+                    "w_idx": 41,
+                    "p_idx": 2,
+                    "s_idx": 5,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ],
+        [
+            [],
+            [
+                {
+                    "word": "The",
+                    "cleaned": "the",
+                    "status": 6,
+                    "w_idx": 42,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "customers",
+                    "cleaned": "customers",
+                    "status": 1,
+                    "w_idx": 43,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "are",
+                    "cleaned": "are",
+                    "status": 6,
+                    "w_idx": 44,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "from",
+                    "cleaned": "from",
+                    "status": 6,
+                    "w_idx": 45,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "many",
+                    "cleaned": "many",
+                    "status": 6,
+                    "w_idx": 46,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "countries!",
+                    "cleaned": "countries",
+                    "status": 4,
+                    "w_idx": 47,
+                    "p_idx": 3,
+                    "s_idx": 6,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ],
+        [
+            [],
+            [
+                {
+                    "word": "They",
+                    "cleaned": "they",
+                    "status": 6,
+                    "w_idx": 48,
+                    "p_idx": 4,
+                    "s_idx": 7,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "speak",
+                    "cleaned": "speak",
+                    "status": 6,
+                    "w_idx": 49,
+                    "p_idx": 4,
+                    "s_idx": 7,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "many",
+                    "cleaned": "many",
+                    "status": 6,
+                    "w_idx": 50,
+                    "p_idx": 4,
+                    "s_idx": 7,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "different",
+                    "cleaned": "different",
+                    "status": 6,
+                    "w_idx": 51,
+                    "p_idx": 4,
+                    "s_idx": 7,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "languages!",
+                    "cleaned": "languages",
+                    "status": 4,
+                    "w_idx": 52,
+                    "p_idx": 4,
+                    "s_idx": 7,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ],
+        [
+            [],
+            [
+                {
+                    "word": "Mike",
+                    "cleaned": "mike",
+                    "status": 0,
+                    "w_idx": 53,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "can",
+                    "cleaned": "can",
+                    "status": 6,
+                    "w_idx": 54,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "meet",
+                    "cleaned": "meet",
+                    "status": 6,
+                    "w_idx": 55,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "many",
+                    "cleaned": "many",
+                    "status": 6,
+                    "w_idx": 56,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "friendly",
+                    "cleaned": "friendly",
+                    "status": 5,
+                    "w_idx": 57,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "people?",
+                    "cleaned": "people",
+                    "status": 6,
+                    "w_idx": 58,
+                    "p_idx": 5,
+                    "s_idx": 8,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ],
+            [
+                {
+                    "word": "Mike",
+                    "cleaned": "mike",
+                    "status": 0,
+                    "w_idx": 59,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 0,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "is",
+                    "cleaned": "is",
+                    "status": 6,
+                    "w_idx": 60,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 1,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "happy",
+                    "cleaned": "happy",
+                    "status": 5,
+                    "w_idx": 61,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 2,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "when",
+                    "cleaned": "when",
+                    "status": 6,
+                    "w_idx": 62,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 3,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "he",
+                    "cleaned": "he",
+                    "status": 0,
+                    "w_idx": 63,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 4,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "talks",
+                    "cleaned": "talks",
+                    "status": 5,
+                    "w_idx": 64,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 5,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "to",
+                    "cleaned": "to",
+                    "status": 6,
+                    "w_idx": 65,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 6,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "the",
+                    "cleaned": "the",
+                    "status": 6,
+                    "w_idx": 66,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 7,
+                    "type": "word",
+                    "visible_in_phrase": true
+                },
+                {
+                    "word": "customers.",
+                    "cleaned": "customers",
+                    "status": 1,
+                    "w_idx": 67,
+                    "p_idx": 5,
+                    "s_idx": 9,
+                    "idx_w_in_s": 8,
+                    "type": "word",
+                    "visible_in_phrase": true
+                }
+            ]
+        ]
     ]
 }
-
   
     return {
         dataBackend

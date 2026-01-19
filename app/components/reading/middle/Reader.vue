@@ -3,7 +3,7 @@
 
 
 
-    <div class="  overflow-hidden flex flex-wrap gap-y-7" ref="prose" 
+    <div class="relative  overflow-hidden flex flex-wrap gap-y-7" ref="prose" 
       @pointerdown.prevent="handlePointerDown"
       @pointermove="handlePointerEnter">
       <div v-for="(para, idPara) in lessondata" :key="idPara" class="text-3xl flex flex-wrap gap-y-7 px-2  text-start">
@@ -69,6 +69,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 
 import Popup from './Popup.vue'
 
+
 /* =========================================================
    Composables / Data Sources
    - Keep these near the top so readers know “where data comes from”
@@ -97,18 +98,38 @@ const props = defineProps({
   currentValue : {type :Number, default: 1},
   lessonData: {type: Array, default : () => []},
   listSentence : {type: Array, default : () => []},
+  statusTagsMeanings: {type: Array, default: () => []},
+  coreData: {type: Array, default: () => []},
   currentPhraseStatus :{type: Number }
 })
 const lessondata = ref(props.lessonData)
+const core_data = props.coreData
 
-const emit = defineEmits(['update:currentValue', 'sendTotalPage', 'selected', 'status'])
+const newStatusDict = computed(() => {
+  const statusDict = {}
+  const listKeys = Object.keys(props.statusTagsMeanings)
+  for (const item of listKeys) {
+    if (item.split(" ").length === 1|| props.statusTagsMeanings[item].status >0) {
+       statusDict[item] = props.statusTagsMeanings[item].status
+    }
+   
+  }
+  return statusDict
+})
+
+const emit = defineEmits(['update:currentValue', 'sendTotalPage', 'selected', 'sendStatusFromReader'])
 
 const currentPage = computed({
   get: () => props.currentValue,
   set: (v) => emit('update:currentValue', v)
 })
 
-watch(currentPage, (newVal) => scrollNewPage(newVal))
+watch(currentPage,  (newVal) => {
+    scrollNewPage(newVal);
+
+    changePageStatus()
+
+})
 
 const totalPage = ref(1)
 
@@ -118,20 +139,36 @@ const sendPages = () => {
 }
 
 const {
+  view,
   prose,
   remaining,
   updateTotalPages,
   scrollNewPage,
 } = pagination(props.readerHeight , currentPage, totalPage, sendPages)
 
-
+// @sendStatus="currentPhraseData.status = $event"
 const emitStatus = (keyboard) => {
-  emit('status', keyboard)
+  emit('sendStatusFromReader', keyboard)
 }
-const {changePhraseStatus,changePhraseStatusByKeyborad, moveNextPrevious} = useKeyboard(startPointer, currentPointer, lessondata, currentPage, totalPage,  emitStatus)
+const {changePageStatus,changePageStatusByKeyborad, moveNextPrevious} = useKeyboard(startPointer,currentPointer, prose, view, core_data, newStatusDict , lessondata, currentPage, totalPage,  emitStatus)
 
 
-watch(() => props.currentPhraseStatus, (newVal) => changePhraseStatus(newVal))
+watch( () => props.currentPhraseStatus,  (newVal) => {
+  changePageStatus(newVal)
+  // const sleep = (ms) =>
+  // new Promise(resolve => setTimeout(resolve, ms));
+
+  // await sleep(1000);
+  // const res = await $fetch('http://localhost:8000/get_lesson/', {
+  //   method: "GET", 
+  //   params: {lesson_name : 'lesson 0'},
+  //   credentials: "include"
+  // })
+
+  // console.log("Res", res)
+  // lessondata.value = res.lesson_data
+
+})
 /* =========================================================
    Local UI State
 ========================================================= */
@@ -217,6 +254,11 @@ const isActice = (wordIndex) => {
  * Move next or previous page by keyborad.
  * Move next or previous page by keyborad.
  */
+const itemFirstAndLastOfPage = computed(() => {
+  // const proseHeight = prose.value.scrollTop
+  // const offSetTop = currentPage.value
+  return prose.value.scrollTop
+})
 
 
 /* =========================================================
@@ -229,14 +271,14 @@ onMounted(async () => {
   // Global listeners (remember to remove them on unmount)
   window.addEventListener('resize', updateTotalPages)
   window.addEventListener('pointerup', pointerUp)
-  window.addEventListener('keydown', changePhraseStatusByKeyborad)
+  window.addEventListener('keydown', changePageStatusByKeyborad)
   window.addEventListener('keydown', moveNextPrevious)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateTotalPages)
   window.removeEventListener('pointerup', pointerUp)
-  window.removeEventListener('keydown', changePhraseStatusByKeyborad)
+  window.removeEventListener('keydown', changePageStatusByKeyborad)
   window.removeEventListener('keydown', moveNextPrevious)
 })
 </script>

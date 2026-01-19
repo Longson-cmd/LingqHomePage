@@ -140,6 +140,7 @@ const emit = defineEmits(['update:sidebarData', 'updatePrevious'])
 const currentPhraseData = computed({
   get: () => props.sidebarData,
   set: (newVal) => {
+    // if (newVal.phrase.split(" ").length > 1 && newVal.status ===0) return
     emit('update:sidebarData', newVal)
   }
 })
@@ -156,31 +157,9 @@ const syncPhrase = debounce(async(playLoad) => {
     }
 
     catch(error) {
-        console.log('error with update currentphrase data ', playLoad)
+        console.log('error with update currentphrase data ', error)
     }
 }, 500)
-
-
-
-watch(() => props.sidebarData, async (newVal, oldVal) => {
-    if (
-        oldVal.phrase !== newVal.phrase &&
-        oldVal.status === 6 &&
-        oldVal.phrase.split(' ').length === 1
-    ) {
-        const translated = await onTranslate(oldVal.phrase)
-
-        emit('updatePrevious', {
-            phrase: oldVal.phrase,
-            your_meanings: [translated],
-            status: 1
-        })
-    }
-  
-  
-}, {deep : true})
-
-
 
 
 watch(
@@ -212,18 +191,41 @@ watch(
     if (changes.length === 0) return
     console.log("changes", changes)
     console.log("newVal", newVal)
-    syncPhrase({
-      ...newVal,
-      changes
-    })
+    // syncPhrase({
+    //   ...newVal,
+    //   changes
+    // })
   },
   { deep: false }
 )
 
 
+
+watch(() => props.sidebarData, async (newVal, oldVal) => {
+    if (
+        oldVal.phrase !== newVal.phrase &&
+        oldVal.status === 6 &&
+        oldVal.phrase.split(' ').length === 1
+    ) {
+        const translated = await onTranslate(oldVal.phrase)
+
+        emit('updatePrevious', {
+            phrase: oldVal.phrase,
+            your_meanings: [translated],
+            status: 1
+        })
+    }
+  
+  
+}, {deep : true})
+
+
+
+
+
 watch(() => currentPhraseData.value.status, async (newVal, oldVal) => {
-    if (oldVal !== 6) return
-    if (newVal === 0 || newVal === 5) return
+    if (oldVal !== 6 && oldVal !==0) return
+    if ( newVal === 5) return
     if (currentPhraseData.value.your_meanings.length !== 0) return
     const translated = await onTranslate(currentPhraseData.value.phrase)
     currentPhraseData.value.your_meanings.push(translated)  
@@ -485,26 +487,3 @@ onBeforeUnmount(() => {
 }
 </style>
 
-  () => props.sidebarData,
-  async (newVal, oldVal) => {
-    if (!oldVal) return
-
-    if (
-    oldVal.phrase !== newVal.phrase &&
-      oldVal.status === 6 &&
-      oldVal.phrase.split(' ').length === 1
-    ) {
-      const translated = await onTranslate(oldVal.phrase)
-
-      emit('updatePrevious', {
-        phrase: oldVal.phrase,
-        tags: [],
-        your_meanings: [translated],
-        global_tags: oldVal.global_tags,
-        global_meanings: oldVal.global_meanings,
-        status: 1
-      })
-    }
-  },
-  { deep: true }
-) -->

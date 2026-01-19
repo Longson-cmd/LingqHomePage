@@ -58,9 +58,8 @@ const scrollNewPage = (n) => {
 
 
     return {
+        view,
         prose, 
-        currentPage,
-        totalPage,
         remaining,
         updateTotalPages,
         scrollNewPage,

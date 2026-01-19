@@ -15,15 +15,25 @@
                         :list-sentence="listSentence"
                         :readerHeight="boxHeight" 
                         :current-phrase-status="currentPhraseData.status"
+                        :status-tags-meanings="statusTagsMeanings"
+                        :core-data="core_data"
                         v-model:current-value="current" 
                         @send-total-page="total = $event"
                         @selected="onSelected"
-                        @status="currentPhraseData.status = $event"
+                        @send-status-from-reader="currentPhraseData.status = $event"
                         />
                     </div>
-                    <button @click="current = Math.min(total, current + 1)" :class="(current === total) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
-                        <font-awesome icon="chevron-right" />
+                    <button @click="current !== total? (current = Math.min(total, current + 1)): finishLesson()" 
+                    :class="(current === total) && ' hover:bg-transparent '" 
+                    class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl ">
+                        <!-- <font-awesome :icon="current !==total ? 'chevron-right' : 'fa-check'" /> -->
+                        <font-awesome v-if="current !==total" icon="chevron-right" />
+                        <span v-else  class="h-10 w-10 hover:bg-gray-200 rounded-full">
+                            <font-awesome  icon="fa-check"  class="text-green-500"/>
+                        </span>
+                        
                     </button>
+                   
                 </div>
                 <FooterReader 
                     @pointerdown.stop
@@ -55,9 +65,9 @@ import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
 
 
+
 const mainRef = ref(null)
 const boxHeight = ref(0)
-
 
 
 const lessonName = 'lesson 0'
@@ -71,16 +81,12 @@ const messure = () => {
 
 }
 
-// const {dataBackend} = useLesson()
-// const lessondata = ref(dataBackend?.lesson_data?? [])
-// const listSentence = ref(dataBackend?.list_sentences?? [])
-// const statusTagsMeanings = ref(dataBackend?.Tags_Meanings?? [])
-// const audioURL = ref('')
+
 const lessondata = ref( [])
 const listSentence = ref([])
-const statusTagsMeanings = ref([])
+const core_data = ref([])
+const statusTagsMeanings = ref({})
 const audioURL = ref('')
-
 
 const getLesson = async () => {
      await $fetch('http://localhost:8000/login/', {
@@ -104,8 +110,9 @@ const getLesson = async () => {
     lessondata.value = data.value?.lesson_data ?? []
     listSentence.value = data.value?.list_sentences ?? []
     statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
+    core_data.value = data.value?.core_data?? []
 
-
+      console.log("lessondata.value", lessondata.value[1])
     audioURL.value = data.value.audios?.[0]?.audio_url
       ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
       : ''
@@ -120,8 +127,11 @@ const currentPhraseData = ref({
     status: 6
 })
 
+
 watch(currentPhraseData, (newVal) => {
     if (newVal.phrase.split(" ").length > 1 && newVal.status === 6) return
+
+    if (newVal.phrase.split(" ").length > 1 && newVal.status === 0) { delete statusTagsMeanings.value[newVal.phrase]}
     statusTagsMeanings.value[newVal.phrase] = {
         "tags": newVal.tags,
         "your_meanings": newVal.your_meanings,
@@ -129,8 +139,9 @@ watch(currentPhraseData, (newVal) => {
         "global_meanings": newVal.global_meanings,
         "status": newVal.status,
     }
+
     
-    
+
 }, {deep: true})
 
 
@@ -151,6 +162,31 @@ const onSelected = (data) => {
         status : statusTagsMeanings.value[data.text]?.status?? 6,
     }
 } 
+
+const finishLesson = async () => {
+
+        
+    
+    const statusDict = {}
+    const listKeys = Object.keys(statusTagsMeanings.value)
+    for (const item of listKeys) {
+        statusDict[item] = statusTagsMeanings.value[item].status
+    }
+  
+    
+
+   try {
+        await $fetch('http://localhost:8000/finish_lesson/', {
+            method: "PUT", 
+            body: statusDict,
+            credentials: "include"
+        })
+   }
+
+   catch(error) {
+        console.log("there is an error with finish lesson", error)
+   }
+}
 
 
 onMounted(async () => {
