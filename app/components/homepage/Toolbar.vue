@@ -46,7 +46,7 @@
       </button>
 
       <div v-if="openImport" class="absolute whitespace-nowrap border bg-white font-normal z-10 shadow-md px-5 mt-0.5 py-2  w-44 top-full right-0 rounded-xl flex flex-col gap-3">
-        <nuxt-link to="/CreateLesson" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1">
+        <nuxt-link to="/ImportLesson" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1">
           <img src="/icons/header/importLesson.svg" alt="ImportLesson" />
           <span class="text-black">Lesson</span>
         </nuxt-link>

@@ -1,6 +1,7 @@
 <template>
   <!-- <div class="max-w-md border m-5 mx-auto flex items-center justify-center "> -->
-    <!-- <div class=" min-w-52 max-w-80 mb-3 inline-flex items-center justify-between"> -->
+    <div class="relative min-w-52 max-w-80 mb-3 inline-flex items-center justify-between" @mouseenter="showUnder = true"
+        @mouseleave="showUnder = false">
         <NuxtLink class=" z-10 bg-white min-h-64 block border w-full rounded-2xl overflow-hidden group"
             :class="showUnder && 'border-gray-300 shadow-md'">
             <!-- UPPER   -->
@@ -22,13 +23,6 @@
                     <button class="h-8 w-8 bg-white rounded-full"><font-awesome icon="chevron-down" /></button>
                 </div>
 
-                <!-- center -->
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div
-                        class=" h-16 w-16 rounded-full bg-blue-800/80 flex items-center justify-center text-3xl font-semibold text-yellow-400">
-                        {{ lessonNumber }}
-                    </div>
-                </div>
 
                 <!-- bottom left -->
                 <div class="absolute left-2 bottom-2 text-white text-sm font-medium">
@@ -57,10 +51,10 @@
             </div>
 
             <!-- LOWER -->
-            <div class="p-2 text-sm">
+            <div class="px-2 py-1 text-sm">
                 <div class="flex justify-between items-start text-base">
                     <span class=" inline-block ">
-                        {{ lessonName }}
+                        {{ courseName }}
                     </span>
                     <button
                         class="h-8 w-8 hover:bg-gray-200 self-start rounded-full flex items-center justify-center flex-shrink-0">
@@ -76,12 +70,18 @@
                         3:03</span>
                 </div>
 
-                <span class="inline-block mt-2 text-gray-500">{{ courseName }}</span>
+                <div class="inline-flex gap-1 mt-2">
+                    <img src="/icons/others/course.svg" alt="course"/>
+                    <span>{{numberLessons}} lessons</span>
+                </div>
             </div>
 
 
         </NuxtLink>
-    <!-- </div> -->
+        <div v-show="showUnder" class=" absolute -bottom-[5px]  w-full ">
+            <div class="bg-gray-50 ml-2 mr-1 h-5 rounded-2xl border border-gray-300 shadow-md"></div>
+        </div>
+    </div>
 
   <!-- </div> -->
 </template>
@@ -92,13 +92,12 @@ import {ref} from 'vue'
 
 const showUnder = ref(false)
 const props = defineProps({
-    courseName : {type: String, default: "Quick import"},
-    lessonNumber : {type: String, default : 10},
-    lessonName : {type:String, default: "Lesson name by default"},
-    numberNewWords : {style: Number, default: 8},
-    numberLingQs: {style: Number, default: 9},
-    numberKnownWords: {style: Number, default: 10},
-    newWordsPercents: {style:Number, default: 11},
+    numberLessons : {type: Number, default : 10},
+    courseName : {type:String, default: "Lesson name by default"},
+    numberNewWords : {type: Number, default: 8},
+    numberLingQs: {type: Number, default: 9},
+    numberKnownWords: {type: Number, default: 10},
+    newWordsPercents: {type:Number, default: 11},
 })
 
 </script>

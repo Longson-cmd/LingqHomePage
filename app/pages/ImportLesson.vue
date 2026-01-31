@@ -1,55 +1,122 @@
 <template>
-  <div class="max-w-sm md:max-w-md lg:max-w-4xl mx-auto px-3 my-5 ">
-    <div class="flex justify-between py-5">
+  <div class="max-w-sm md:max-w-md lg:max-w-6xl mx-auto px-3 my-5 " >
+    <div class="flex justify-between items-start py-5">
       <NuxtLink class="hover:bg-gray-100 px-3 py-1 text-center rounded-md"> <font-awesome icon="chevron-left" /> Back
         Homepage</NuxtLink>
-      <button @click="saveAndGenerate" class="bg-[#0B1B32] hover:bg-black font-medium text-white px-3 py-1 rounded-md">Save and generate
-        lesson</button>
+      <div class="flex flex-col items-end">
+        <button @click="saveAndGenerate" class="bg-[#0B1B32] hover:bg-black font-medium text-white px-3 py-1 rounded-md">
+          {{createLessonSuccessfully ? 'Open  lesson' : 'Save and generate lesson'}}
+        </button>
+          <span class="text-sm text-red-600 mr-3 whitespace-pre-line">{{messageCreateLesson}}</span>
+      </div>
     </div>
 
     <div class="flex flex-col lg:flex-row ">
       <LeftPart
-       class="w-full lg:w-[236px] lg:pr-10 lg:mt-10 lg:border-r" 
+       class="w-full lg:w-[236px] lg:pr-10 lg:mt-10 lg:border-r lg:border-r-gray-400" 
        @sendLanguage="language = $event"
        @sendPictureFile="pictureFile = $event"
-        @sendLevel="level = $event"
+        @sendLevel="level = $event;"
        />
       <div class=" w-full lg:pl-10">
         <!-- IMPORT LESSON PART -->
         <div>
           <span class="text-lg text-center text-blue-500 block font-bold">Lesson name && decription</span>
           <input type="text" v-model="lessonName"
-            class="border my-3 w-full px-3 py-2 rounded-md placeholder:text-gray-700 focus:outline-none focus:ring-2  focus:ring-gray-300 focus:shadow-lg focus:border-gray-500"
+            class="border border-gray-400 my-3 w-full px-3 py-2 rounded-md 
+            placeholder:text-gray-700 
+            focus:outline-none focus:ring-2  focus:ring-gray-300 focus:shadow-lg focus:border-gray-500"
             placeholder="Add title 60 charaters max" />
 
           <textarea type="text" v-model="lessonDescription"
-            class="border w-full px-3 py-2 rounded-md placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:shadow-lg focus:border-gray-500"
+            class="border border-gray-400 w-full px-3 py-2 rounded-md 
+            placeholder:text-gray-600 focus:outline-none focus:ring-2 
+            focus:ring-gray-300 focus:shadow-lg focus:border-gray-500"
             placeholder="Add description 200 charaters max (optional)" />
 
-          <button class="px-3 py-2 whitespace-nowrap bg-gray-100 hover:bg-gray-300 rounded-md"><font-awesome
-              icon="plus" />
-            Course</button>
+          <div class="flex gap-2">
+            <div class="relative" ref="refCourse">
+              <button @click="openSelectCourse = true" class=" max-w-60 whitespace-nowrap bg-gray-100 hover:bg-gray-300 rounded-md">
+                <span v-if="idxCourse !== -1" class="inline-flex items-center px-2 py-1 rounded-md gap-1 max-w-52">
+                  <img :src=listCourse[idxCourse].url alt="avatar" class="h-8 w-8 rounded-full shrink-0">
+                  <span class=" text-start  truncate text-sm">{{listCourse[idxCourse].name}}</span>
+                </span>
+                <span v-else class="inline-block px-3 py-2">Select Course <font-awesome icon="chevron-down"/></span>
+              </button>
+              
+              <div v-if = openSelectCourse class="absolute max-h-60 overflow-y-auto overflow-x-hidden  left-0 translate-y-full bottom-0  rounded-2xl bg-white z-10 border">
+                <span class="inline-block py-1 px-3 font-medium text-gray-700">All course</span>
+                <button v-for="(course , idx) in listCourse" 
+                @click="idxCourse = idx; openSelectCourse = false"
+                class="flex p-1 items-center justify-start gap-2 truncate w-60 py-1 hover:bg-gray-200"
+                :class="idx === idxCourse && 'bg-gray-200'"
+                >
+                  <img :src=course.url alt="avatar" class="h-8 w-8 rounded-full shrink-0">
+                  <span class="text-start truncate text-sm">{{course.name}}</span>
+                </button>
+              </div>
+              
+            </div>
+            
+            <button 
+            @click="openAddCouse = true"
+              class="px-3 py-2 whitespace-nowrap bg-gray-100 hover:bg-gray-300 rounded-md">
+              <font-awesome icon="plus" />
+              Course
+            </button>
+          </div>
         </div>
 
         <RightPart 
         @sendAudioFile="audioFile=$event"
         @sendTextFile="textFile=$event"
         @sendInputText="inputText=$event"
+        @send-youtube-url="youtubeUrl = $event"
         />
       </div>
     </div>
+
+    <CreateCourse 
+    v-show="openAddCouse"
+    @sendDataCourse="addNewCouse"
+    @close-box="openAddCouse = $event; idxCourse = 0"
+    />
   </div>
 </template>
 
 
 <script setup>
-import {ref} from "vue"
-
+import {ref, onMounted, onBeforeUnmount} from "vue"
+import CreateCourse from "~/components/createLesson/CreateCourse.vue";
 import LeftPart from "~/components/createLesson/LeftPart.vue";
 import RightPart from "~/components/createLesson/RightPart.vue";
+
+const listCourse =ref( [
+  {name: "Cafe avec Johan check truncate", url : "/images/avatar.jpg"},
+  {name: "To fluency", url : "/images/avatar.jpg"},
+  {name: "Steve Kaufman", url : "/images/avatar.jpg"},
+  {name: "Vinh Giang", url : "/images/avatar.jpg"}
+])
+
+
+const openAddCouse = ref(false)
+const addNewCouse = (data) => {
+  listCourse.value.unshift({
+    name: data.courseName,
+    url: data.pictureUrl ?? "/images/avatar.jpg"
+  })
+}
+
+const youtubeUrl = ref("")
+
+const idxCourse = ref(-1)
+const openSelectCourse = ref(false)
+const refCourse = ref(null)
+
 const lessonName = ref("")
 const lessonDescription = ref("")
-const ErrMessage = ref("")
+const messageCreateLesson = ref("")
+const createLessonSuccessfully = ref(false)
 
 const pictureFile = ref(null)
 const level = ref('')
@@ -60,6 +127,38 @@ const inputText = ref("")
 
 
 const saveAndGenerate = async () => {
+
+  if (youtubeUrl.value) {
+    try {
+      const data = {
+          "course_name": listCourse.value[idxCourse.value] ?? 'default',
+          "youtube_url": youtubeUrl.value
+        }
+
+      if (lessonName.value) {
+        data.lesson_name = lessonName.value
+      }
+      const result = await $fetch("http://localhost:8000/create_youtube_lesson/", {
+        method: 'POST', 
+        body: data,
+        credentials: "include"
+      })
+
+      messageCreateLesson.value = result?.data?.message || "Create lesson successfully!"
+      createLessonSuccessfully.value = true
+    }
+    catch (error) {
+      messageCreateLesson.value = error?.data?.message || "Can't create lesson with this youtube url \nChoose one of two option: \n1. Change youtube url. \n2. Create lesson manually."
+    }
+
+    return
+  }
+
+
+  if (!lessonName.value) {
+    messageCreateLesson.value = "Please give lesson a name"
+    return
+  }
   const formData = new FormData()
   if (textFile.value) {
       formData.append("textfile", textFile.value)
@@ -68,7 +167,7 @@ const saveAndGenerate = async () => {
     formData.append('inputtext', inputText.value)
   }
   else {
-    ErrMessage.value = 'Missing a text!'
+    messageCreateLesson.value = 'Missing a text!'
     return
   }
 
@@ -78,30 +177,35 @@ const saveAndGenerate = async () => {
   formData.append('level', level.value)
   formData.append('picture', pictureFile.value)
   formData.append('audiofile', audioFile.value)
+  formData.append("course_name", listCourse.value[idxCourse.value] ?? 'default')
 
-  console.log("lesson_name", lessonName.value )
-  console.log('lesson_description', lessonDescription.value)
-  console.log("language", language.value)
-  console.log('level', level.value)
-  console.log('picture', pictureFile.value)
-  console.log('audiofile', audioFile.value)
-  console.log("textfile", textFile.value)
-  console.log('inputtext', inputText.value)
-  
+
   try {
-    const result = await $fetch("http://localhost:8000/create_lesson", {
+    const result = await $fetch("http://localhost:8000/create_lesson/", {
       method: 'POST',
-      body: formData
+      body: formData,
+      credentials: "include"
     })
 
+    messageCreateLesson.value = result?.data?.message || "Create lesson successfully!"
+    createLessonSuccessfully.value = true
   }
 
   catch (error) {
     console.error(error)
-    ErrMessage.value = error?.data?.message || "Failed to generate new lesson"
+    messageCreateLesson.value = error?.data?.message || "Failed to generate new lesson"
   }
 
 }
+
+const handleClickOutsides = (e) => {
+  if (!refCourse.value || !refCourse.value.contains(e.target)) {
+    openSelectCourse.value = false
+  }
+}
+
+onMounted(() => window.addEventListener("click", handleClickOutsides))
+onBeforeUnmount(() => window.removeEventListener("click", handleClickOutsides))
 
 
 </script>

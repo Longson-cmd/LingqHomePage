@@ -146,7 +146,6 @@ const onSelected = (data) => {
     }
 } 
 
-const handleStatusFromReader = () => {}
 
 
 onMounted(async () => {

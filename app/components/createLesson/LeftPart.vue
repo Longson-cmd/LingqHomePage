@@ -13,7 +13,7 @@
             <font-awesome icon="plus" class="self-center h-5 w-5" />
             <span class="block text-center text-gray-700 font-medium">Add image</span>
           </div>
-          <img v-if="previewURL" :src="previewURL" alt="previewURL"
+          <img v-else :src="previewURL" alt="previewURL"
             class="object-cover h-[126px] w-[126px] rounded-full">
         </label>
       </span>

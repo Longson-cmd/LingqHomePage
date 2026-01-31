@@ -55,7 +55,7 @@
 
             <textarea v-show="openAddMeaning || currentPhraseData.your_meanings.length ===0" placeholder="Enter new meaning, then press 'Enter'" v-model="newMeaning"
                 @input="(e) => {
-                    e.target.style.height = 'auto',
+                    e.target.style.height = 'auto';
                         e.target.style.height = e.target.scrollHeight + 'px'
 
                 }" @keydown.enter.stop @keyup.enter="addMeaning"

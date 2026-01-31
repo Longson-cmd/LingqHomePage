@@ -1,151 +1,165 @@
-<template>
-    <div class="flex flex-col h-screen">
-        <HeaderLing />
-        <div class="flex flex-1 h-full min-h-0  ">
-            <div class="flex flex-1 flex-col">
-                <HeaderReader v-model:currentValue="current" v-model:totalValue="total"/>
-                <div ref="mainRef" class="flex-1 min-h-0 flex px-3 ">
-                    <button @click="current = Math.max(1, current -1)" :class="(current === 1) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
-                        <font-awesome icon="chevron-left" />
-                    </button>
-                    <div class="flex-1 min-h-0">
-                        <Reader  
-                        v-if="boxHeight > 0"
-                        :lesson-data="lessondata"
-                        :list-sentence="listSentence"
-                        :readerHeight="boxHeight" 
-                        v-model:current-value="current" 
-                        @send-total-page="total = $event"
-                        @selected="onSelected"/>
-                    </div>
-                    <button @click="current = Math.min(total, current + 1)" :class="(current === total) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
-                        <font-awesome icon="chevron-right" />
-                    </button>
-                </div>
-                <FooterReader />
-            </div>
-
-                <Sidebar
-                    v-model:sidebar-data="currentPhraseData"
-                />
-
-        </div>
-    </div>
-</template>
-
-<script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
-
-import HeaderLing from '~/components/reading/HeaderLing.vue';
-import FooterReader from '~/components/reading/FooterReader.vue';
-import HeaderReader from '~/components/reading/HeaderReader.vue';
-import Sidebar from '~/components/reading/middle/Sidebar.vue';
-import Reader from '~/components/reading/middle/Reader.vue';
-
-
-const mainRef = ref(null)
-const boxHeight = ref(0)
-
-
-
-const lessonName = 'lesson 0'
-const current = ref(1)
-const total = ref(1)
-
-
-
-const messure = () => {
-    boxHeight.value = Math.round(mainRef?.value.getBoundingClientRect().height)
-
-}
-
-const {dataBackend} = useLesson()
-console.log("dataBackend", dataBackend)
-
-const lessondata = ref(dataBackend?.lesson_data?? [])
-const listSentence = ref(dataBackend?.list_sentences?? [])
-const statusTagsMeanings = ref(dataBackend?.Tags_Meanings?? [])
-const audioURL = ref('')
-
-
-
-
-// const getLesson = async () => {
-//      await $fetch('http://localhost:8000/login/', {
-//       method: 'POST', 
-//       body: {
-//         email: 'test@example.com',
-//         password: '1234abcd'
-//       },
-//       credentials: 'include'
-//     })
-
-//     const {data} = await useFetch(
-//       'http://localhost:8000/get_lesson/', 
-//       {
-//         params: {lesson_name : lessonName},
-//         credentials: 'include',
-//         server: false
-//       }
-//     )
-
-//     lessondata.value = data.value?.lesson_data ?? []
-//     listSentence.value = data.value?.list_sentences ?? []
-//     statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
-
-
-//     audioURL.value = data.value.audios?.[0]?.audio_url
-//       ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
-//       : ''
-// }
-
-const currentPhraseData = ref({
-    phrase: 'breakfast',
-    tags: ["demo"],
-    your_meanings: [],
-    global_tags : [],
-    global_meanings: [],
-    status: 6
-})
-
-watch(currentPhraseData, (newVal) => {
-    statusTagsMeanings.value[newVal.phrase] = {
-        "tags": newVal.tags,
-        "your_meanings": newVal.your_meanings,
-        "global_tags": newVal.global_tags,
-        "global_meanings": newVal.global_meanings,
-        "status": newVal.status,
-    }
-})
-
-const onSelected = (data) => {
-    currentPhraseData.value = statusTagsMeanings.value[data.text] ?? {
-        phrase: data.text,
-        your_meanings: [],
-        global_tags : [],
-        global_meanings: [],
-        status: 6
-    }
-
-    // console.log(data.text, Object.prototype.hasOwnProperty.call(statusTagsMeanings.value, data.text))
-
-    
-} 
-
-
-onMounted(async () => {
-    // await getLesson()
-    messure();
-    
-    await nextTick();
+<script>
+    const dataCourseCards =  [
+  {
+    numberLessons: "01",
+    courseName: "Introduction to Daily Life",
+    numberNewWords: 8,
+    numberLingQs: 9,
+    numberKnownWords: 10,
+    newWordsPercents: 12,
+  },
+  {
+    numberLessons: "02",
+    courseName: "Talking About Hobbies",
+    numberNewWords: 12,
+    numberLingQs: 7,
+    numberKnownWords: 18,
+    newWordsPercents: 15,
+  },
+  {
+    numberLessons: "03",
+    courseName: "Work and Studies",
+    numberNewWords: 6,
+    numberLingQs: 5,
+    numberKnownWords: 22,
+    newWordsPercents: 9,
+  },
+  {
+    numberLessons: "04",
+    courseName: "Daily Routine",
+    numberNewWords: 10,
+    numberLingQs: 11,
+    numberKnownWords: 14,
+    newWordsPercents: 18,
+  },
+  {
+    numberLessons: "05",
+    courseName: "Food and Cooking",
+    numberNewWords: 14,
+    numberLingQs: 10,
+    numberKnownWords: 20,
+    newWordsPercents: 21,
+  },
+  {
+    numberLessons: "06",
+    courseName: "Health and Exercise",
+    numberNewWords: 9,
+    numberLingQs: 8,
+    numberKnownWords: 25,
+    newWordsPercents: 11,
+  },
+  {
+    numberLessons: "07",
+    courseName: "Technology in Life",
+    numberNewWords: 16,
+    numberLingQs: 13,
+    numberKnownWords: 30,
+    newWordsPercents: 24,
+  },
+  {
+    numberLessons: "08",
+    courseName: "Travel Experiences",
+    numberNewWords: 11,
+    numberLingQs: 9,
+    numberKnownWords: 28,
+    newWordsPercents: 17,
+  },
+  {
+    numberLessons: "09",
+    courseName: "Culture and Traditions",
+    numberNewWords: 13,
+    numberLingQs: 12,
+    numberKnownWords: 26,
+    newWordsPercents: 19,
+  },
+  {
+    numberLessons: "10",
+    courseName: "Family and Relationships",
+    numberNewWords: 7,
+    numberLingQs: 6,
+    numberKnownWords: 32,
+    newWordsPercents: 8,
+  },
+  {
+    numberLessons: "11",
+    courseName: "Shopping and Money",
+    numberNewWords: 15,
+    numberLingQs: 14,
+    numberKnownWords: 21,
+    newWordsPercents: 23,
+  },
+  {
+    numberLessons: "12",
+    courseName: "Education Systems",
+    numberNewWords: 9,
+    numberLingQs: 7,
+    numberKnownWords: 35,
+    newWordsPercents: 10,
+  },
+  {
+    numberLessons: "13",
+    courseName: "Social Media",
+    numberNewWords: 18,
+    numberLingQs: 15,
+    numberKnownWords: 27,
+    newWordsPercents: 26,
+  },
+  {
+    numberLessons: "14",
+    courseName: "Environmental Issues",
+    numberNewWords: 14,
+    numberLingQs: 11,
+    numberKnownWords: 29,
+    newWordsPercents: 20,
+  },
+  {
+    numberLessons: "15",
+    courseName: "Technology at Work",
+    numberNewWords: 10,
+    numberLingQs: 8,
+    numberKnownWords: 40,
+    newWordsPercents: 12,
+  },
+  {
+    numberLessons: "16",
+    courseName: "Future Plans",
+    numberNewWords: 12,
+    numberLingQs: 10,
+    numberKnownWords: 34,
+    newWordsPercents: 16,
+  },
+  {
+    numberLessons: "17",
+    courseName: "Problem Solving",
+    numberNewWords: 17,
+    numberLingQs: 14,
+    numberKnownWords: 31,
+    newWordsPercents: 25,
+  },
+  {
+    numberLessons: "18",
+    courseName: "Leadership and Teamwork",
+    numberNewWords: 13,
+    numberLingQs: 11,
+    numberKnownWords: 38,
+    newWordsPercents: 18,
+  },
+  {
+    numberLessons: "19",
+    courseName: "Culture Shock",
+    numberNewWords: 8,
+    numberLingQs: 6,
+    numberKnownWords: 42,
+    newWordsPercents: 9,
+  },
+  {
+    numberLessons: "20",
+    courseName: "Review and Reflection",
+    numberNewWords: 5,
+    numberLingQs: 4,
+    numberKnownWords: 50,
+    newWordsPercents: 6,
+  },
+];
    
-    window.addEventListener('resize', messure)
-
-})
-
-onBeforeUnmount(() => {
-    window.removeEventListener('resize', messure)
-})
-
-
 </script>
