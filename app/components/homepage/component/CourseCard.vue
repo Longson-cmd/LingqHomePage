@@ -16,10 +16,15 @@
                     <span class="text-white text-sm hidden group-hover:inline">LingQ</span>
                 </div>
                 <!-- top right -->
-                <div class="absolute top-2 right-2  items-center hidden group-hover:flex">
+                <div class="absolute top-2 right-2  items-center flex group-hover:flex ">
                     <button
-                        class="h-8 w-8 bg-green-400 hover:bg-green-600 rounded-full mr-1 flex items-center justify-center"><font-awesome
-                            icon="plus" /></button>
+                        @mouseenter="showTrash = true"
+                        @mouseleave="showTrash = false"
+                        @click="deleteCourse"
+                        class="h-8 w-8 bg-green-400 hover:bg-red-600 rounded-full mr-1 flex items-center justify-center">
+                        <img v-if="showTrash" src="/icons/others/whiteTrash.svg" alt="whiteTrash"/>
+                        <font-awesome v-else icon="plus" />
+                        </button>
                     <button class="h-8 w-8 bg-white rounded-full"><font-awesome icon="chevron-down" /></button>
                 </div>
 
@@ -91,6 +96,7 @@
 import {ref} from 'vue'
 
 const showUnder = ref(false)
+const showTrash = ref(false)
 const props = defineProps({
     numberLessons : {type: Number, default : 10},
     courseName : {type:String, default: "Lesson name by default"},
@@ -99,5 +105,25 @@ const props = defineProps({
     numberKnownWords: {type: Number, default: 10},
     newWordsPercents: {type:Number, default: 11},
 })
+
+const emit = defineEmits(['deleteCourse'])
+
+
+const deleteCourse = async () => {
+    try {
+        const result =  await $fetch("http://localhost:8000/create_course/", {
+            method : "DELETE",
+            body: {course_name : courseName},
+            credentials: "include"
+        })
+
+        emit('deleteCourse', courseName)
+    }
+
+    catch (error) {
+        const errMessage = error?.data?.message?? "Can't delete this course"
+        console.log('errMessage', errMessage)
+    }
+}
 
 </script>

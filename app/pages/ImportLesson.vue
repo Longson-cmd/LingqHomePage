@@ -128,15 +128,15 @@ const inputText = ref("")
 
 const saveAndGenerate = async () => {
 
-  if (youtubeUrl.value) {
+  if (youtubeUrl.value.trim()) {
     try {
       const data = {
           "course_name": listCourse.value[idxCourse.value] ?? 'default',
-          "youtube_url": youtubeUrl.value
+          "youtube_url": youtubeUrl.value.trim()
         }
 
-      if (lessonName.value) {
-        data.lesson_name = lessonName.value
+      if (lessonName.value.trim()) {
+        data.lesson_name = lessonName.value.trim()
       }
       const result = await $fetch("http://localhost:8000/create_youtube_lesson/", {
         method: 'POST', 
@@ -144,7 +144,7 @@ const saveAndGenerate = async () => {
         credentials: "include"
       })
 
-      messageCreateLesson.value = result?.data?.message || "Create lesson successfully!"
+      messageCreateLesson.value = result?.message || "Create lesson successfully!"
       createLessonSuccessfully.value = true
     }
     catch (error) {
@@ -155,7 +155,7 @@ const saveAndGenerate = async () => {
   }
 
 
-  if (!lessonName.value) {
+  if (!lessonName.value.trim()) {
     messageCreateLesson.value = "Please give lesson a name"
     return
   }
@@ -163,31 +163,31 @@ const saveAndGenerate = async () => {
   if (textFile.value) {
       formData.append("textfile", textFile.value)
   }
-  else if (inputText.value) {
-    formData.append('inputtext', inputText.value)
+  else if (inputText.value.trim()) {
+    formData.append('inputText', inputText.value.trim())
   }
   else {
     messageCreateLesson.value = 'Missing a text!'
     return
   }
 
-  formData.append("lesson_name", lessonName.value )
-  formData.append('lesson_description', lessonDescription.value)
-  formData.append("language", language.value)
-  formData.append('level', level.value)
-  formData.append('picture', pictureFile.value)
-  formData.append('audiofile', audioFile.value)
+  formData.append("lesson_name", lessonName.value.trim() )
   formData.append("course_name", listCourse.value[idxCourse.value] ?? 'default')
+  // formData.append('lesson_description', lessonDescription.value)
+  // formData.append("language", language.value)
+  // formData.append('level', level.value)
+  if (pictureFile.value) formData.append('picture', pictureFile.value)
+  if (audioFile.value) formData.append('audiofile', audioFile.value)
 
 
   try {
-    const result = await $fetch("http://localhost:8000/create_lesson/", {
+    const result = await $fetch("http://localhost:8000/create_lesson_manually/", {
       method: 'POST',
       body: formData,
       credentials: "include"
     })
 
-    messageCreateLesson.value = result?.data?.message || "Create lesson successfully!"
+    messageCreateLesson.value = result?.message || "Create lesson successfully!"
     createLessonSuccessfully.value = true
   }
 

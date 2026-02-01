@@ -112,16 +112,16 @@ const saveCourse = async () => {
 
     const formData = new FormData()
     formData.append("course_name", titleText)
-    if (idxLevel.value !== -1) formData.append("course_level", listLevels[idxLevel.value])
-    if (courseDescription.value) formData.append("course_description", courseDescription.value.trim())
+    // if (idxLevel.value !== -1) formData.append("course_level", listLevels[idxLevel.value])
+    // if (courseDescription.value) formData.append("course_description", courseDescription.value.trim())
     if (pictureFile.value) formData.append("course_picture", pictureFile.value)
 
     try {      
-        // await $fetch("http://localhost:8000/create_course", {
-        //     method: "POST",
-        //     body: formData,
-        //     credentials: "include"
-        // })
+        await $fetch("http://localhost:8000/create_course", {
+            method: "POST",
+            body: formData,
+            credentials: "include"
+        })
         emit("sendDataCourse", {
             "courseName": courseName.value,
             "pictureUrl": pictureUrl.value

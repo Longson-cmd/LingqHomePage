@@ -60,6 +60,7 @@ import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
 const {dataLessonCards, dataCourseCards}  = useDataLessonCard()
 const data = ref(dataLessonCards.slice(0, 8))
+
 const mode = ref("lesson")
 const changeMode = (type) => {
     mode.value = type
@@ -112,6 +113,8 @@ watch([() => data.value.length, () => isMobile.value, () => numberGrid.value], (
 
     indexStart.value = Math.max(0, Math.min(newLen - newNumberGrid, indexStart.value))
 })
+
+
 
 
 
