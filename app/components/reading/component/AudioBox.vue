@@ -24,8 +24,8 @@
           </div>
 
           <div class="w-full flex justify-between gap-1 mt-1">
-              <button @click="currentTime = Math.max(0, currentTime -5)" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondback.svg" alt="fiveSecondback"/></button>
-              <button @click="currentTime = Math.min(duration, currentTime +5)" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondnext.svg" alt="fiveSecondnext"/></button>
+              <button @click="currentTime = Math.max(0, currentTime -5)" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondBack.svg" alt="fiveSecondback"/></button>
+              <button @click="currentTime = Math.min(duration, currentTime +5)" class="h-8 px-1 hover:bg-gray-300 rounded-lg flex items-center justify-center"><img src="/icons/reader/fiveSecondNext.svg" alt="fiveSecondnext"/></button>
               <button @click="isLoop = !isLoop ; console.log('isLoop', isLoop)" :class="isLoop && 'bg-gray-300'" class="h-8 px-1 rounded-lg flex items-center justify-center"><img src="/icons/reader/repeat.svg" alt="repeat"/></button>
               <div ref="speedOptionsRef" class="relative">
                   <button @click="openAudioOptions = !openAudioOptions" class="w-16 h-8 px-1 hover:bg-gray-300 rounded-lg italic flex items-center justify-center gap-1 text">{{`${audioSpeed}x`}}  <font-awesome icon="chevron-up"  class="text-xs mt-1"/></button>
