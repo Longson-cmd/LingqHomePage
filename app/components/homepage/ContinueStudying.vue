@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col my-2">
+    <div class="flex flex-col py-2 bg-gray-50">
         <div class="flex items-center  flex-gap flex-col md:flex-row px-3 md:px-[56px] mb-2">
             <span class="font-semibold mr-3 self-start">Continue Studying <font-awesome icon='play' class="text-gray-300 text-sm"></font-awesome></span>
             <div class="flex gap-3 self-center">
@@ -19,23 +19,32 @@
             <div v-if="mode === 'course'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <CourseCard
                 v-for="(item , idx) in visibleData" :key="idx"
+                :course-img-url="item.imgUrl"
                 :number-lessons="item.numberLessons"
                 :course-name="item.courseName"
                 :number-new-words="item.numberNewWords"
                 :number-ling-qs="item.numberLingQs"
                 :number-known-words="item.numberKnownWords"
                 :new-words-percents="item.newWordsPercents"
+                @delete-course="removeCourse"
+                @show-course-infos="emit('showCourseInfos', $event)"
                 />
             </div>
             <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <LessonCard
                 v-for="(item , idx) in visibleData" :key="idx"
+                :course-name="item.courseName"
+                :lesson-img-url="item.imgUrl"
                 :lesson-number="item.lessonNumber"
                 :lesson-name="item.lessonName"
                 :number-new-words="item.numberNewWords"
                 :number-ling-qs="item.numberLingQs"
                 :number-known-words="item.numberKnownWords"
                 :new-words-percents="item.newWordsPercents"
+                :continuing-lesson="true" 
+                :builtin-lesson="item.builtinLesson ?? false"
+                @remove-from-continuing="removeLesson"
+                @show-course-infos="emit('showCourseInfos', $event)"
                 />
             </div>
             <button 
@@ -52,21 +61,75 @@
 <script setup>
 
 
-import {ref, computed, watch} from 'vue'
+import {ref, computed, watch, onMounted} from 'vue'
 import { useBreakpoints } from '@vueuse/core';
 // import CourseCard from './homepage/component/CourseCard.vue';
 // import LessonCard from './homepage/component/LessonCard.vue';
 import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
-const {dataLessonCards, dataCourseCards}  = useDataLessonCard()
-const data = ref(dataLessonCards.slice(0, 8))
+
+// const data = ref(dataLessonCards.slice(0, 8))
+const data = ref([])
+const dataLessonCards = ref([])
+const dataCourseCards = ref([])
+
+const props = defineProps({
+    newLessonData : {type : Object, default: () => ({})}
+})
+
+const emit = defineEmits(['showCourseInfos'])
+
+const {
+        dataLessonCardsBuitin,
+        dataCourseCardsBuiltin,
+        dataLessonCardsDemo,
+        dataCourseCardsDemo
+    } = useDataLessonCard()
+
+const getCardsData = async () => {
+
+    console.log('GET DATA FOR LESSON AND COURSE CARDS')
+    try {
+        const dataBackend = await $fetch('http://3.26.146.123:8000/continue_study/', {
+        method: "GET", 
+        credentials: "include" 
+        
+    })
+
+    dataLessonCards.value = dataBackend?.["dataLessonCards"] ?? dataLessonCardsDemo
+    dataCourseCards.value = dataBackend?.["dataCourseCards"] ?? dataCourseCardsDemo
+    data.value = dataLessonCards.value
+}
+    catch (error) {
+        dataLessonCards.value = dataLessonCardsDemo 
+        dataCourseCards.value = dataCourseCardsDemo
+        data.value = dataLessonCards.value
+    }
+ 
+}
+
 
 const mode = ref("lesson")
 const changeMode = (type) => {
     mode.value = type
-    if (type === "lesson") data.value = dataLessonCards.slice(0,8)
-    else if (type === "course") data.value = dataCourseCards.slice(0, 10)
-    else data.value = dataLessonCards.splice(0,2)
+    if (type === "lesson") {
+        if (dataLessonCards.value.length === 0 ) {
+            data.value = dataLessonCardsBuitin
+        }
+        else {
+            data.value = dataLessonCards.value
+        }
+        
+    }
+    else if (type === "course") {
+        if (dataCourseCards.value.length === 0) {
+            data.value = dataCourseCardsBuiltin
+        }
+        else {
+            data.value = dataCourseCards.value
+        }
+    }
+    else data.value = dataLessonCards.value.slice(0,4)
 }
 
 const indexStart = ref(0)
@@ -99,8 +162,7 @@ const NextCourses = () => {
     if (isMobile.value) return
 
     if (data.value.length < numberGrid.value) return
-    indexStart.value = Math.min(data.value.length - numberGrid.value, indexStart.value + numberGrid.value)
-    
+    indexStart.value = Math.min(data.value.length - numberGrid.value, indexStart.value + numberGrid.value)   
 }
 
 
@@ -114,7 +176,54 @@ watch([() => data.value.length, () => isMobile.value, () => numberGrid.value], (
     indexStart.value = Math.max(0, Math.min(newLen - newNumberGrid, indexStart.value))
 })
 
+watch(() => props.newLessonData, (newVal) => {
+  
+   
+    const index = dataLessonCards.value.findIndex(item => item.lessonName === newVal.lessonName && item.courseName === newVal.courseName)
+    if (index !== -1) {
+        dataLessonCards.value.splice(index, 1)
+        dataLessonCards.value.unshift(newVal)
+        data.value = dataLessonCards.value
+    }
 
+    else {
+        dataLessonCards.value.unshift(newVal)
+        data.value = dataLessonCards.value
+    }
+}, {deep: true})
+
+
+const removeLesson = (childData) => {
+    dataLessonCards.value = dataLessonCards.value.filter(card => !(card.lessonName === childData.lessonName && card.courseName === childData.courseName))
+
+    if (dataLessonCards.value.length === 0) {
+        data.value = dataLessonCardsDemo
+    }
+    else {
+        data.value = dataLessonCards.value
+    }
+}
+
+
+
+
+const removeCourse = (courseDelete) => {
+ 
+    dataLessonCards.value = dataLessonCards.value.filter(card => card.courseName !== courseDelete)
+    dataCourseCards.value = dataCourseCards.value.filter(card => card.courseName !== courseDelete)
+    
+    if (dataCourseCards.value.length === 0) {
+        data.value = dataCourseCardsDemo
+    }
+    else {
+        data.value = dataCourseCards.value
+    }
+}
+
+onMounted(async () => {
+    await getCardsData()
+  
+})
 
 
 

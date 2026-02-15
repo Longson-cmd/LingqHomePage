@@ -51,7 +51,7 @@
         Depending on the speed of your connection and the size fo the file, this could take a few minutes.
       </span>
 
-      <spiner />
+      <Spiner v-if="loading"/>
     </div>
 
     <span v-if="message" class="mt-3 text-red-600">{{ message }}</span>
@@ -63,30 +63,49 @@
 import { ref } from "vue"
 import Spiner from "./Spiner.vue"
 
+
+
 const uploadFile = ref(null)
 const message = ref("")
 const importing = ref(false)
+const loading = ref(false)
 
 const emit = defineEmits(["send-message"])
 const sendToParent = () => {
   emit("send-message", "closeUpload")
 }
 
+const router = useRouter()
+
 const handleFile = async (e) => {
+
   message.value = ""
-  uploadFile.value = e.target.files[0]
+  const file = e.target?.files?.[0]
+  if (!file) return
+
+  uploadFile.value = file
+
   importing.value = true
+  loading.value = true
   const formData = new FormData()
   formData.append("file", uploadFile.value)
-  formData.append("lesson_name", "lesson_1")
 
   try {
-    const result = await $fetch("http://localhost:3000/upload", {
+    const result = await $fetch("http://3.26.146.123:8000/upload_text/", {
       method: "POST",
       body: formData
     })
 
-    message.value = "uploaded " + result.filename
+    const lesson_name = result.lesson_name
+    const course_name = result.course_name
+
+    router.push({
+      path: '/ReaderMain',
+      query: {
+        lessonName: lesson_name,
+        courseName: course_name
+      }
+    })
 
   }
 
@@ -96,7 +115,9 @@ const handleFile = async (e) => {
   }
 
   finally {
-    // sendToParent()
+    loading.value = false
+    uploadFile.value = null
+
   }
 
 }

@@ -1,9 +1,12 @@
 <template>
-    <div class=" inset-0 w-full bg-gray-500/10 z-10 px-5 pt-5 flex  justify-center">
-        <div class="max-w-3xl w-full bg-white rounded-3xl shawdow-lg border border-gray-300 ">
+    <div class="fixed inset-0 cursor-pointer w-full bg-black/50 z-30 px-5 py-5  flex  justify-center overflow-y-auto ">
+        <div class="max-w-4xl pb-10 flex flex-col w-full  bg-white rounded-3xl shadow-lg border border-gray-300 ">
             <!-- upper Part -->
             <div class="relative h-80 ">
-                <img src="/images/Course/chapter1.jpg" alt="courePicture"
+                <button @click="emit('showCourseInfos', false)" class="absolute z-10 top-5 left-5 h-10 w-10 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 whitespace-nowrap shrink-0">
+                    <font-awesome icon="times" class="text-xl"/>
+                </button>
+                <img :src="courseImgUrl" alt="courePicture"
                 class="w-full h-full object-cover rounded-3xl "
                 >
                 <div class="absolute inset-0 bg-gradient-to-b from-black/0 to-black/50 "></div>
@@ -59,7 +62,7 @@
                         </div>
                         <!-- progress bar -->
                         <div class="h-2 w-full bg-gray-200 rounded">
-                            <div class="h-full bg-yellow-300 rounded" :style="{width: (numberLingQs / numberTotalWords) * 100 + '%'}"></div>
+                            <div class="h-full bg-yellow-300 rounded" :style="{width: (numberTotalWords? (numberLingQs / numberUniqueWords) * 100  : 0) + '%'}"></div>
                         </div>
                     </div>
                     <!--  number KnownWords -->
@@ -71,7 +74,7 @@
                         </div>
                         <!-- progress bar -->
                         <div class="h-2 w-full bg-gray-200 border rounded">
-                            <div class="h-full bg-white rounded" :style="{width: newWordsPercents + '%'}"></div>
+                            <div class="h-full bg-white rounded" :style="{width: (numberTotalWords ? ( numberKnownWords / numberUniqueWords) * 100 : 0) + '%'}"></div>
                         </div>
                     </div>
 
@@ -80,14 +83,14 @@
              </div>
 
              <!-- Course name and search lesson -->
-              <div class="flex px-8 py-0 md:py-8 flex-col jusitfy-center gap-3  md:flex-row md:justify-between">
+              <div class="flex px-8 py-0 md:py-8 flex-col justify-center gap-3  md:flex-row md:justify-between">
                 <span class="font-medium text-gray-700 text-center">Course: {{courseName}}</span>
                 <div class="w-auto md:w-2/5 flex flex-col gap-3 justify-center items-center md:flex-row">
                     <div class="border px-2 py-1 text-sm rounded-md bg-gray-200 whitespace-nowrap shrink-0">
                         <input type="text" placeholder="Search lesson" class="outline-none bg-gray-200 ring-0 appearance-none">
                         <font-awesome icon="search" class="text-gray-600"/>
                     </div>
-                    <div class="flex flex-row whitspace-nowrap shrink-0">
+                    <div class="flex flex-row whitespace-nowrap shrink-0">
                         <img src="/icons/others/course.svg" alt="">
                         {{numberLessons}} 
                         lesson
@@ -95,56 +98,90 @@
                 </div>
               </div>
 
-              <temprarily
-              class="py-3"
-              v-for="item in dataLessonCardsDemo"
-              :lesson-img-url="item.imgUrl"
-              :course-name="item.courseName"
-              :lesson-name="item.lessonName"
-              :lesson-number="item.lessonNumber"
-              :number-new-words="item.numberNewWords"
-              :number-ling-qs="item.numberLingQs"
-              :number-known-words="item.numberKnownWords"
-              :new-words-percents="item.newWordsPercents"
-              :builtin-lesson='item.builtinLesson ?? false'
+              
+                <LessonInCourse
+                class="py-3 z-50 bg-white"
+                v-for="item in dataLessons"
+                :lesson-img-url="item.imgUrl"
+                :course-name="item.courseName"
+                :lesson-name="item.lessonName"
+                :lesson-number="item.lessonNumber"
+                :number-new-words="item.numberNewWords"
+                :number-ling-qs="item.numberLingQs"
+                :number-known-words="item.numberKnownWords"
+                :new-words-percents="item.newWordsPercents"
+                :builtin-lesson='item.builtinLesson ?? false'
 
-              />
+                />
+
+              
         </div>
     </div>
 </template>
 
 <script setup>
-import {ref, toRefs} from 'vue'
-import temprarily from './temprarily.vue'
-
-
-const props = defineProps({
-    courseImgUrl : {tyle:String, default : '/images/course.jpg'},  
-    numberLessons : {type: Number, default : 10},
-    courseName : {type:String, default: "Quick import"},
-    numberNewWords : {type: Number, default: 8},
-    numberLingQs: {type: Number, default: 9},
-    numberKnownWords: {type: Number, default: 10},
-    newWordsPercents: {type:Number, default: 11},
-
-    numberTotalWords: {type:Number, default : 25},
-    numberUniqueWords : {type: Number, default : 5},
-    level: {type:String, default: "Intermediate 1"},
-    audioDuration: {type: String, default: "10:10"},
-    numberLike: {type: Number, default: 17},
-    authorAvatar: {typeof: Number, default : '/images/lesson.jpg'},
-    author: {typeof: Number, default : 'Mr Steve'}
-})
-
-const {dataLessonCardsDemo} = useDataLessonCard()
-
-const {
-    courseImgUrl, numberLessons, courseName, numberNewWords, numberLingQs, numberKnownWords, newWordsPercents,numberTotalWords,numberUniqueWords,
-    level, audioDuration, numberLike, authorAvatar, author
-} = toRefs(props)
+import {ref, computed,  toRefs} from 'vue'
+import LessonInCourse from './component/LessonInCourse.vue'
 
 
 const listReferences = ['literature', 'audiobooks', 'books', 'kids', 'children', 'le petit prince']
+
+
+const emit = defineEmits(['showCourseInfos'])
+
+const props = defineProps({
+    dataCourse: {type: Object, default: () => {}},
+    dataLessons: {type: Array, default : () => []},
+
+    level: {type:String, default: "Intermediate 1"},
+    audioDuration: {type: String, default: "10:10"},
+    numberLike: {type: Number, default: 17},
+    authorAvatar: {type: String, default : '/images/lesson.jpg'},
+    author: {type: String, default : 'Mr Steve'}
+})
+
+const courseImgUrl = computed(() => props.dataCourse.imgUrl)
+const numberLessons = computed(() => props.dataCourse.numberLessons)
+const courseName = computed(() => props.dataCourse.courseName)
+const numberNewWords = computed(() => props.dataCourse.numberNewWords)
+const numberLingQs = computed(() => props.dataCourse.numberLingQs)
+const numberKnownWords = computed(() => props.dataCourse.numberKnownWords)
+const newWordsPercents = computed(() => props.dataCourse.newWordsPercents)
+const numberTotalWords = computed(() => props.dataCourse.numberTotalWords)
+const numberUniqueWords = computed(() => props.dataCourse.numberUniqueWords)
+
+
+// const {
+//     courseImgUrl, numberLessons, courseName, 
+//     numberNewWords, numberLingQs, numberKnownWords, 
+//     newWordsPercents,
+//     numberTotalWords,numberUniqueWords} = toRefs(props.dataCourse)
+
+
+// const props = defineProps({
+//     courseImgUrl : {tyle:String, default : '/images/course.jpg'},  
+//     numberLessons : {type: Number, default : 10},
+//     courseName : {type:String, default: "Quick import"},
+//     numberNewWords : {type: Number, default: 8},
+//     numberLingQs: {type: Number, default: 9},
+//     numberKnownWords: {type: Number, default: 10},
+//     newWordsPercents: {type:Number, default: 11},
+
+//     numberTotalWords: {type:Number, default : 25},
+//     numberUniqueWords : {type: Number, default : 5},
+//     level: {type:String, default: "Intermediate 1"},
+//     audioDuration: {type: String, default: "10:10"},
+//     numberLike: {type: Number, default: 17},
+//     authorAvatar: {typeof: Number, default : '/images/lesson.jpg'},
+//     author: {typeof: Number, default : 'Mr Steve'}
+// })
+
+// const {
+//     courseImgUrl, numberLessons, courseName, numberNewWords, numberLingQs, numberKnownWords, newWordsPercents,numberTotalWords,numberUniqueWords,
+//     level, audioDuration, numberLike, authorAvatar, author
+// } = toRefs(props)
+
+
 
 
 

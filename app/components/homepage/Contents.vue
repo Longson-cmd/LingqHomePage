@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col my-2">
+    <div class="flex flex-col py-2 bg-gray-50">
         <div class="flex items-center  flex-gap flex-col md:flex-row px-3 md:px-[56px] mb-2">
             <span class="font-semibold mr-3 self-start">{{props.contentName}} <font-awesome icon='play' class="text-gray-300 text-sm"></font-awesome></span>
             <div class="flex gap-3 self-center">
@@ -18,23 +18,30 @@
             <div v-if="mode === 'course'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <CourseCard
                 v-for="(item , idx) in visibleData" :key="idx"
+                :course-img-url="item.imgUrl"
                 :number-lessons="item.numberLessons"
                 :course-name="item.courseName"
                 :number-new-words="item.numberNewWords"
                 :number-ling-qs="item.numberLingQs"
                 :number-known-words="item.numberKnownWords"
                 :new-words-percents="item.newWordsPercents"
+                @show-course-infos="emit('showCourseInfos', $event)"
                 />
             </div>
             <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <LessonCard
                 v-for="(item , idx) in visibleData" :key="idx"
+                :lesson-img-url="item.imgUrl"
                 :lesson-number="item.lessonNumber"
                 :lesson-name="item.lessonName"
                 :number-new-words="item.numberNewWords"
                 :number-ling-qs="item.numberLingQs"
                 :number-known-words="item.numberKnownWords"
                 :new-words-percents="item.newWordsPercents"
+                :continuing-lesson="false"
+                :builtin-lesson="item.builtinLesson ?? false"
+                @add-to-continuting="emit('addToContinuing', $event)"
+                @show-course-infos="emit('showCourseInfos', $event)"
                 />
             </div>
             <button 
@@ -57,18 +64,20 @@ import { useBreakpoints } from '@vueuse/core';
 // import LessonCard from './homepage/component/LessonCard.vue';
 import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
-const {dataLessonCards, dataCourseCards}  = useDataLessonCard()
+const {dataLessonCardsBuitin, dataCourseCardsBuiltin}  = useDataLessonCard()
 
 const props = defineProps({
     contentName : {type: String, default: "Self development"}
 })
 
-const data = ref(dataLessonCards.slice(0, 8))
+const emit = defineEmits(['addToContinuing', 'showCourseInfos'])
+
+const data = ref(dataLessonCardsBuitin.slice(0, 8))
 const mode = ref("lesson")
 const changeMode = (type) => {
     mode.value = type
-    if (type === "lesson") data.value = dataLessonCards.slice(0,8)
-    else  data.value = dataCourseCards.slice(0, 10)
+    if (type === "lesson") data.value = dataLessonCardsBuitin.slice(0,8)
+    else  data.value = dataCourseCardsBuiltin.slice(0, 10)
 
 }
 
@@ -116,6 +125,7 @@ watch([() => data.value.length, () => isMobile.value, () => numberGrid.value], (
 
     indexStart.value = Math.max(0, Math.min(newLen - newNumberGrid, indexStart.value))
 })
+
 
 
 

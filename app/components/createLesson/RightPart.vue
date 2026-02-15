@@ -161,9 +161,11 @@ const toggleYoutube = () => {
     openAddYoutubeUrl.value = true
   }
   else {
+
     youtubeUrl.value = ''
     showWarning.value = false
     inputYoutube.value = ""
+    emit("sendYoutubeUrl", youtubeUrl.value)
   }
 }
 

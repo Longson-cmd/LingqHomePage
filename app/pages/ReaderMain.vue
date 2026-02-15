@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
 
 import HeaderLing from '~/components/reading/HeaderLing.vue';
 import FooterReader from '~/components/reading/FooterReader.vue';
@@ -64,17 +64,12 @@ import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
 
-
-
 const mainRef = ref(null)
 const boxHeight = ref(0)
 
 
-const lessonName = 'lesson 0'
 const current = ref(1)
 const total = ref(1)
-
-
 
 const messure = () => {
     boxHeight.value = Math.round(mainRef?.value.getBoundingClientRect().height)
@@ -88,34 +83,31 @@ const core_data = ref([])
 const statusTagsMeanings = ref({})
 const audioURL = ref('')
 
+
+
+const route = useRoute()
+const lesson_name = computed(() => route.query.lessonName || 'Default lesson')
+const course_name = computed(() => route.query.courseName || 'Quick import')
 const getLesson = async () => {
-     await $fetch('http://localhost:8000/login/', {
-      method: 'POST', 
-      body: {
-        email: 'test@example.com',
-        password: '1234abcd'
-      },
-      credentials: 'include'
+    console.log('lesson_name', lesson_name.value)
+    const data = await $fetch('http://3.26.146.123:8000/get_lesson/', {
+        method : "GET",
+        query: {
+            lesson_name : lesson_name.value,
+            course_name : course_name.value
+        },
+        credentials : 'include'
     })
 
-    const {data} = await useFetch(
-      'http://localhost:8000/get_lesson/', 
-      {
-        params: {lesson_name : lessonName},
-        credentials: 'include',
-        server: false
-      }
-    )
+    lessondata.value = data.lesson_data ?? []
+    listSentence.value = data.list_sentences ?? []
+    statusTagsMeanings.value = data.Tags_Meanings ?? {}
+    core_data.value = data.core_data?? []
 
-    lessondata.value = data.value?.lesson_data ?? []
-    listSentence.value = data.value?.list_sentences ?? []
-    statusTagsMeanings.value = data.value?.Tags_Meanings ?? []
-    core_data.value = data.value?.core_data?? []
-
-      console.log("lessondata.value", lessondata.value[1])
-    audioURL.value = data.value.audios?.[0]?.audio_url
-      ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
-      : ''
+    //   console.log("lessondata.value", lessondata.value[1])
+    // audioURL.value = data.value.audios?.[0]?.audio_url
+    //   ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
+    //   : ''
 }
 
 const currentPhraseData = ref({
@@ -163,9 +155,9 @@ const onSelected = (data) => {
     }
 } 
 
-const finishLesson = async () => {
 
-        
+const router = useRouter()
+const finishLesson = async () => {
     
     const statusDict = {}
     const listKeys = Object.keys(statusTagsMeanings.value)
@@ -173,14 +165,15 @@ const finishLesson = async () => {
         statusDict[item] = statusTagsMeanings.value[item].status
     }
   
-    
 
    try {
-        await $fetch('http://localhost:8000/finish_lesson/', {
+        await $fetch('http://3.26.146.123:8000/finish_lesson/', {
             method: "PUT", 
             body: statusDict,
             credentials: "include"
         })
+
+        router.push('/HomepageLingQ')
    }
 
    catch(error) {

@@ -1,12 +1,12 @@
 <template>
   <!-- <div class="max-w-md border m-5 mx-auto flex items-center justify-center "> -->
-    <div class="relative min-w-52 max-w-80 mb-3 inline-flex items-center justify-between" @mouseenter="showUnder = true"
+    <div @click="emit('showCourseInfos', courseName)" class="relative cursor-pointer min-w-52 mb-3 inline-flex items-center justify-between" @mouseenter="showUnder = true"
         @mouseleave="showUnder = false">
-        <NuxtLink class=" z-10 bg-white min-h-64 block border w-full rounded-2xl overflow-hidden group"
+        <div class=" z-10 bg-white min-h-64 block border w-full rounded-2xl overflow-hidden group"
             :class="showUnder && 'border-gray-300 shadow-md'">
             <!-- UPPER   -->
             <div class=" relative aspect-[3/2] border bg-cover bg-center "
-                :style="{ backgroundImage: 'url(/images/Girl.jpeg)' }">
+                :style="{ backgroundImage: `url(${courseImgUrl})` }">
                 <div
                     class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/20 to-transparent">
                 </div>
@@ -16,11 +16,11 @@
                     <span class="text-white text-sm hidden group-hover:inline">LingQ</span>
                 </div>
                 <!-- top right -->
-                <div class="absolute top-2 right-2  items-center flex group-hover:flex ">
+                <div class="absolute top-2 right-2  items-center hidden group-hover:flex ">
                     <button
                         @mouseenter="showTrash = true"
                         @mouseleave="showTrash = false"
-                        @click="deleteCourse"
+                        @click.stop.prevent="deleteCourse"
                         class="h-8 w-8 bg-green-400 hover:bg-red-600 rounded-full mr-1 flex items-center justify-center">
                         <img v-if="showTrash" src="/icons/others/whiteTrash.svg" alt="whiteTrash"/>
                         <font-awesome v-else icon="plus" />
@@ -82,7 +82,7 @@
             </div>
 
 
-        </NuxtLink>
+        </div>
         <div v-show="showUnder" class=" absolute -bottom-[5px]  w-full ">
             <div class="bg-gray-50 ml-2 mr-1 h-5 rounded-2xl border border-gray-300 shadow-md"></div>
         </div>
@@ -98,6 +98,7 @@ import {ref} from 'vue'
 const showUnder = ref(false)
 const showTrash = ref(false)
 const props = defineProps({
+    courseImgUrl : {tyle:String, default : '/images/course.jpg'},  
     numberLessons : {type: Number, default : 10},
     courseName : {type:String, default: "Lesson name by default"},
     numberNewWords : {type: Number, default: 8},
@@ -106,23 +107,23 @@ const props = defineProps({
     newWordsPercents: {type:Number, default: 11},
 })
 
-const emit = defineEmits(['deleteCourse'])
-
+const emit = defineEmits(['deleteCourse', 'showCourseInfos'])
 
 const deleteCourse = async () => {
     try {
-        const result =  await $fetch("http://localhost:8000/create_course/", {
+        const result =  await $fetch("http://3.26.146.123:8000/delete_course/", {
             method : "DELETE",
-            body: {course_name : courseName},
+            body: {course_name : props.courseName},
             credentials: "include"
         })
 
-        emit('deleteCourse', courseName)
+        emit('deleteCourse', props.courseName)
     }
 
     catch (error) {
         const errMessage = error?.data?.message?? "Can't delete this course"
         console.log('errMessage', errMessage)
+        alert(errMessage)
     }
 }
 

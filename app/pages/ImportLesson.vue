@@ -1,10 +1,10 @@
 <template>
   <div class="max-w-sm md:max-w-md lg:max-w-6xl mx-auto px-3 my-5 " >
     <div class="flex justify-between items-start py-5">
-      <NuxtLink class="hover:bg-gray-100 px-3 py-1 text-center rounded-md"> <font-awesome icon="chevron-left" /> Back
+      <NuxtLink to="/HomepageLingQ" class="hover:bg-gray-100 px-3 py-1 text-center rounded-md"> <font-awesome icon="chevron-left" /> Back
         Homepage</NuxtLink>
       <div class="flex flex-col items-end">
-        <button @click="saveAndGenerate" class="bg-[#0B1B32] hover:bg-black font-medium text-white px-3 py-1 rounded-md">
+        <button @click="toggleSaveOrOpen" class="bg-[#0B1B32] hover:bg-black font-medium text-white px-3 py-1 rounded-md">
           {{createLessonSuccessfully ? 'Open  lesson' : 'Save and generate lesson'}}
         </button>
           <span class="text-sm text-red-600 mr-3 whitespace-pre-line">{{messageCreateLesson}}</span>
@@ -91,12 +91,22 @@ import CreateCourse from "~/components/createLesson/CreateCourse.vue";
 import LeftPart from "~/components/createLesson/LeftPart.vue";
 import RightPart from "~/components/createLesson/RightPart.vue";
 
+
 const listCourse =ref( [
   {name: "Cafe avec Johan check truncate", url : "/images/avatar.jpg"},
   {name: "To fluency", url : "/images/avatar.jpg"},
   {name: "Steve Kaufman", url : "/images/avatar.jpg"},
   {name: "Vinh Giang", url : "/images/avatar.jpg"}
 ])
+
+const get_list_courses = async () => {
+  const result = await $fetch('http://localhost:8000/get_list_courses/', {
+    method: "GET",
+    credentials: 'include'
+  })
+  
+  listCourse.value = result?.listCourse?? listCourse.value
+}
 
 
 const openAddCouse = ref(false)
@@ -125,9 +135,12 @@ const audioFile = ref(null)
 const textFile = ref(null)
 const inputText = ref("")
 
+const course_name = ref('')
+const lesson_name = ref('')
+const router = useRouter()
 
 const saveAndGenerate = async () => {
-
+  messageCreateLesson.value = ''
   if (youtubeUrl.value.trim()) {
     try {
       const data = {
@@ -144,6 +157,8 @@ const saveAndGenerate = async () => {
         credentials: "include"
       })
 
+      course_name.value = result.course_name
+      lesson_name.value = result.lesson_name
       messageCreateLesson.value = result?.message || "Create lesson successfully!"
       createLessonSuccessfully.value = true
     }
@@ -187,6 +202,8 @@ const saveAndGenerate = async () => {
       credentials: "include"
     })
 
+    course_name.value = result.course_name
+    lesson_name.value = result.lesson_name
     messageCreateLesson.value = result?.message || "Create lesson successfully!"
     createLessonSuccessfully.value = true
   }
@@ -198,13 +215,39 @@ const saveAndGenerate = async () => {
 
 }
 
+const openLesson = () => {
+  router.push({
+    path : '/ReaderMain',
+    query : {
+      lessonName : lesson_name.value,
+      courseName: course_name.value
+    }
+  })
+}
+
+const toggleSaveOrOpen = () => {
+  if (createLessonSuccessfully.value === true) {
+    openLesson()
+  }
+  else {
+    saveAndGenerate()
+  }
+}
+
+
+
+
+
 const handleClickOutsides = (e) => {
   if (!refCourse.value || !refCourse.value.contains(e.target)) {
     openSelectCourse.value = false
   }
 }
 
-onMounted(() => window.addEventListener("click", handleClickOutsides))
+onMounted( async() => {
+  await get_list_courses();
+  window.addEventListener("click", handleClickOutsides)
+})
 onBeforeUnmount(() => window.removeEventListener("click", handleClickOutsides))
 
 

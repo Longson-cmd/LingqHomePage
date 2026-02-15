@@ -5,7 +5,7 @@
         <form @submit.prevent="handleSubmit" class="flex flex-col gap-3">
           <input type="email" placeholder="email" v-model = "email" class="p-1 rounded-md border w-full">
           <input type="password" placeholder="password"  v-model = "password" class="p-1 rounded-md border w-full">
-          <button type="submit" class="w-full bg-black text-white  p-1 rounded-md">{{isLoading? "Loading ... " : "Log in"}}</button>
+          <button type="submit" class="w-full bg-black text-white  p-1 rounded-md">{{isLoading? "Loading ... " : "Sign Up"}}</button>
           <p class="text-red-600 text-center text-sm" v-if="errMessage">{{errMessage}}</p>
         </form>
         <p class="text-sm w-full text-center">Areadly had an account? <NuxtLink class="text-blue-600" to="/login"> Login</NuxtLink></p>
@@ -27,7 +27,7 @@ const handleSubmit =  async () => {
     isLoading.value = true
     errMessage.value = ""
     try {
-      await $fetch ("http://localhost:8000/register/", {
+      await $fetch ("http://3.26.146.123:8000/register/", {
         method: "POST",
         body : {
           email : email.value,

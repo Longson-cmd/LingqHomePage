@@ -191,10 +191,10 @@ watch(
     if (changes.length === 0) return
     console.log("changes", changes)
     console.log("newVal", newVal)
-    // syncPhrase({
-    //   ...newVal,
-    //   changes
-    // })
+    syncPhrase({
+      ...newVal,
+      changes
+    })
   },
   { deep: false }
 )
