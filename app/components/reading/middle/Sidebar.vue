@@ -107,7 +107,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue'
-const config = useRuntimeConfig()
+
 
 
 const props = defineProps({
@@ -149,7 +149,7 @@ const currentPhraseData = computed({
 import debounce from "lodash/debounce";
 const syncPhrase = debounce(async(playLoad) => {
     try {
-        await $fetch(`${config.public.apiBase}/update_word/`, {
+        await $fetch('http://3.26.146.123:8000/update_word/', {
             method: "PUT",
             body: playLoad,
             credentials: "include"

@@ -64,6 +64,7 @@ const handleSubmit = async () => {
   errMessage.value = "";
 
   try {
+    console.log(`${config.public.apiBase}/login/`)
     await $fetch(`${config.public.apiBase}/login/`, {
       method: "POST",
       body: {
