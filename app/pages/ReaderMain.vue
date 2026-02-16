@@ -64,6 +64,8 @@ import FooterReader from '~/components/reading/FooterReader.vue';
 import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
+
+
 const config = useRuntimeConfig()
 const mainRef = ref(null)
 const boxHeight = ref(0)
@@ -91,6 +93,7 @@ const lesson_name = computed(() => route.query.lessonName || 'Default lesson')
 const course_name = computed(() => route.query.courseName || 'Quick import')
 const getLesson = async () => {
     console.log('lesson_name', lesson_name.value)
+    console.log('check this endpoint', `${config.public.apiBase}/get_lesson/`)
     const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
         method : "GET",
         query: {
@@ -99,6 +102,8 @@ const getLesson = async () => {
         },
         credentials : 'include'
     })
+
+    console.log("print in if got data from backend")
 
     lessondata.value = data.lesson_data ?? []
     listSentence.value = data.list_sentences ?? []

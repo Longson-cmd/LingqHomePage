@@ -60,10 +60,10 @@
 
 
 <script setup>
-const config = useRuntimeConfig()
+
 import { ref } from "vue"
 import Spiner from "./Spiner.vue"
-
+const config = useRuntimeConfig()
 
 
 const uploadFile = ref(null)
