@@ -1,38 +1,38 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import process from "node:process";
+
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@vesp/nuxt-fontawesome'],
+  modules: ["@nuxtjs/tailwindcss", "@vesp/nuxt-fontawesome"],
 
   runtimeConfig: {
-  public: {
-    apiBase: ''
-  }
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:8000",
+    },
   },
 
   fontawesome: {
     icons: {
       solid: [
-        'chevron-down',
+        "chevron-down",
         "chevron-left",
         "chevron-right",
-        'plus',
-        'minus',
-        'bars',
-        'times',
+        "plus",
+        "minus",
+        "bars",
+        "times",
         "search",
         "chevron-up",
-        "chevron-right",
         "play-circle",
         "pause-circle",
         "ellipsis-h",
         "ellipsis-v",
         "play",
         "check",
-        'check-circle'
-      ]
-    }
-  }
-})
-
+        "check-circle",
+      ],
+    },
+  },
+});
