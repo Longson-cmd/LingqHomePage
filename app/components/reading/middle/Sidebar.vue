@@ -106,8 +106,8 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
 import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue'
+const config = useRuntimeConfig()
 
 
 const props = defineProps({

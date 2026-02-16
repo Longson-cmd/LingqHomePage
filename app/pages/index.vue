@@ -46,9 +46,12 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
+
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
+const config = useRuntimeConfig()
+console.log('{config.public.apiBase}/login/', `${config.public.apiBase}/login/`)
 
 const router = useRouter();
 const email = ref("");

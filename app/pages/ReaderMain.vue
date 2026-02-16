@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
+
 import { ref, computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
 
 import HeaderLing from '~/components/reading/HeaderLing.vue';
@@ -64,7 +64,7 @@ import FooterReader from '~/components/reading/FooterReader.vue';
 import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
-
+const config = useRuntimeConfig()
 const mainRef = ref(null)
 const boxHeight = ref(0)
 

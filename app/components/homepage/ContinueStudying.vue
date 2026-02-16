@@ -59,7 +59,7 @@
 
 
 <script setup>
-const config = useRuntimeConfig()
+
 
 import {ref, computed, watch, onMounted} from 'vue'
 import { useBreakpoints } from '@vueuse/core';
@@ -67,7 +67,8 @@ import { useBreakpoints } from '@vueuse/core';
 // import LessonCard from './homepage/component/LessonCard.vue';
 import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
-
+const config = useRuntimeConfig()
+console.log('{config.public.apiBase}/login/', `${config.public.apiBase}/login/`)
 // const data = ref(dataLessonCards.slice(0, 8))
 const data = ref([])
 const dataLessonCards = ref([])
