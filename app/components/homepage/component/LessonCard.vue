@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-
+const config = useRuntimeConfig()
 import {ref} from 'vue'
 
 

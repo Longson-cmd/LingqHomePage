@@ -56,6 +56,7 @@
 </template>
 
 <script setup>
+const config = useRuntimeConfig()
 import { ref, computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue'
 
 import HeaderLing from '~/components/reading/HeaderLing.vue';

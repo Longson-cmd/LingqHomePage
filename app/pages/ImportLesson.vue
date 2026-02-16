@@ -86,6 +86,7 @@
 
 
 <script setup>
+const config = useRuntimeConfig()
 import {ref, onMounted, onBeforeUnmount} from "vue"
 import CreateCourse from "~/components/createLesson/CreateCourse.vue";
 import LeftPart from "~/components/createLesson/LeftPart.vue";

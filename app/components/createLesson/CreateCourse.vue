@@ -74,7 +74,7 @@
 
 
 <script setup>
-
+const config = useRuntimeConfig()
 import Picture from '../UI/Picture.vue';
 // import Picture from './UI/Picture.vue'
 import {ref, onMounted, onBeforeUnmount} from 'vue'
