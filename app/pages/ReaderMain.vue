@@ -93,6 +93,8 @@ const lesson_name = computed(() => route.query.lessonName || 'Default lesson')
 const course_name = computed(() => route.query.courseName || 'Quick import')
 const getLesson = async () => {
     console.log('lesson_name', lesson_name.value)
+    console.log("apiBase =", useRuntimeConfig().public.apiBase)
+
     console.log('check this endpoint', `${config.public.apiBase}/get_lesson/`)
     const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
         method : "GET",
