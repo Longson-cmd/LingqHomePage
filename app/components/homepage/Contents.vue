@@ -56,7 +56,7 @@
 
 
 <script setup>
-
+const config = useRuntimeConfig()
 
 import {ref, computed, watch} from 'vue'
 import { useBreakpoints } from '@vueuse/core';

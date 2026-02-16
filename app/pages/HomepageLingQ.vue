@@ -25,6 +25,8 @@
 
 
 <script setup>
+
+const config = useRuntimeConfig()
 import { useBreakpoints } from '@vueuse/core'
 
 import HeaderLingQ from '~/components/homepage/HeaderLingQ.vue'

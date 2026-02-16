@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-
+const config = useRuntimeConfig()
 import {ref} from 'vue'
 
 const showUnder = ref(false)
