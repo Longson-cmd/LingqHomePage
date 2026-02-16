@@ -91,7 +91,7 @@ const handleFile = async (e) => {
   formData.append("file", uploadFile.value)
 
   try {
-    const result = await $fetch("http://3.26.146.123:8000/upload_text/", {
+    const result = await $fetch(`${config.public.apiBase}/upload_text/`, {
       method: "POST",
       body: formData
     })

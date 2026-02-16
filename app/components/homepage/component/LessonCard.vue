@@ -156,7 +156,7 @@ const removeFromContinuingLesson = () => {
 
 const deleteLesson = async() =>{
     try {
-        await $fetch("http://3.26.146.123:8000/delete_lesson/", {
+        await $fetch(`${config.public.apiBase}/delete_lesson/`, {
             method: 'POST',
             body: {
                 lesson_name : props.lessonName,

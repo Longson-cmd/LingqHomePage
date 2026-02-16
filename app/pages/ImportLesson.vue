@@ -100,12 +100,14 @@ const listCourse =ref( [
 ])
 
 const get_list_courses = async () => {
-  const result = await $fetch('http://localhost:8000/get_list_courses/', {
+  const result = await $fetch(`${config.public.apiBase}/get_list_courses/`, {
     method: "GET",
     credentials: 'include'
   })
   
   listCourse.value = result?.listCourse?? listCourse.value
+
+  console.log('listCourse.value', listCourse.value)
 }
 
 
@@ -151,7 +153,7 @@ const saveAndGenerate = async () => {
       if (lessonName.value.trim()) {
         data.lesson_name = lessonName.value.trim()
       }
-      const result = await $fetch("http://localhost:8000/create_youtube_lesson/", {
+      const result = await $fetch(`${config.public.apiBase}/create_youtube_lesson/`, {
         method: 'POST', 
         body: data,
         credentials: "include"
@@ -196,7 +198,7 @@ const saveAndGenerate = async () => {
 
 
   try {
-    const result = await $fetch("http://localhost:8000/create_lesson_manually/", {
+    const result = await $fetch(`${config.public.apiBase}/create_lesson_manually/`, {
       method: 'POST',
       body: formData,
       credentials: "include"

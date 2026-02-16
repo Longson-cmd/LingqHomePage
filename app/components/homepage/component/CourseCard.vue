@@ -111,7 +111,7 @@ const emit = defineEmits(['deleteCourse', 'showCourseInfos'])
 
 const deleteCourse = async () => {
     try {
-        const result =  await $fetch("http://3.26.146.123:8000/delete_course/", {
+        const result =  await $fetch(`${config.public.apiBase}/delete_course/`, {
             method : "DELETE",
             body: {course_name : props.courseName},
             credentials: "include"

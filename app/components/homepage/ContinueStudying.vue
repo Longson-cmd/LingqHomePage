@@ -90,7 +90,7 @@ const getCardsData = async () => {
 
     console.log('GET DATA FOR LESSON AND COURSE CARDS')
     try {
-        const dataBackend = await $fetch('http://3.26.146.123:8000/continue_study/', {
+        const dataBackend = await $fetch(`${config.public.apiBase}/continue_study/`, {
         method: "GET", 
         credentials: "include" 
         

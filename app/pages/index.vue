@@ -81,7 +81,7 @@ const handleSubmit = async () => {
 };
 </script>
 
-<!-- ssh -i "C:\Users\PC\.ssh\lingq-key.pem" ec2-user@3.26.146.123 -->
+<!-- ssh -i "C:\Users\PC\.ssh\lingq-key.pem" ec2-user@3.26.146.123  -->
 
 <!-- PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs -->
 
@@ -89,7 +89,7 @@ const handleSubmit = async () => {
 <!-- export PORT=3000 -->
 <!-- export HOST=0.0.0.0 -->
 
-<!-- nohup env PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs > frontend.log 2>&1 &; exit -->
+<!-- nohup env PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs > frontend.log 2>&1 &   -->
 
 <!-- ss -ltnp | grep 3000 -->
 <!-- kill 148353 -->
