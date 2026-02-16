@@ -96,7 +96,7 @@ const getLesson = async () => {
     console.log("apiBase =", useRuntimeConfig().public.apiBase)
 
     console.log('check this endpoint', `${config.public.apiBase}/get_lesson/`)
-    const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
+    const data = await $fetch('http://3.26.146.123:8000/get_lesson/', {
         method : "GET",
         query: {
             lesson_name : lesson_name.value,
@@ -175,7 +175,7 @@ const finishLesson = async () => {
   
 
    try {
-        await $fetch(`${config.public.apiBase}/finish_lesson/`, {
+        await $fetch('http://3.26.146.123:8000/finish_lesson/', {
             method: "PUT", 
             body: statusDict,
             credentials: "include"
