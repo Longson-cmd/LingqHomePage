@@ -117,7 +117,7 @@ const saveCourse = async () => {
     if (pictureFile.value) formData.append("course_picture", pictureFile.value)
 
     try {      
-        await $fetch(`${config.public.apiBase}/create_course`, {
+        await $fetch(`${config.public.apiBase}/create_course/`, {
             method: "POST",
             body: formData,
             credentials: "include"
