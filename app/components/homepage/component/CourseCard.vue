@@ -92,9 +92,9 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
-import {ref} from 'vue'
 
+import {ref} from 'vue'
+const config = useRuntimeConfig()
 const showUnder = ref(false)
 const showTrash = ref(false)
 const props = defineProps({

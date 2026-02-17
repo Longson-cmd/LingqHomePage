@@ -149,7 +149,7 @@ const currentPhraseData = computed({
 import debounce from "lodash/debounce";
 const syncPhrase = debounce(async(playLoad) => {
     try {
-        await $fetch('http://3.26.146.123:8000/update_word/', {
+        await $fetch(`${config.public.apiBase}/update_word/`, {
             method: "PUT",
             body: playLoad,
             credentials: "include"

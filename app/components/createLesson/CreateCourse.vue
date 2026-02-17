@@ -74,11 +74,11 @@
 
 
 <script setup>
-const config = useRuntimeConfig()
+
 import Picture from '../UI/Picture.vue';
 // import Picture from './UI/Picture.vue'
 import {ref, onMounted, onBeforeUnmount} from 'vue'
-
+const config = useRuntimeConfig()
 const courseName = ref("")
 const courseDescription = ref("")
 const showWarning = ref(false)

@@ -80,3 +80,32 @@ const handleSubmit = async () => {
 
 
 </script>
+
+
+
+<!-- # auth path
+path("register/", register_user, name = 'signup'),
+path("login/", login_user, name = 'login'),
+
+# couser path
+path('create_course/', create_course, name = 'create_course'),
+path('delete_course/', delete_course, name = 'delete_course'),
+# Send data to hompage
+path('continue_study/', get_data_cards, name='get_data_cards'),
+path('show_course_infos/', show_course_infos, name='show_course_infos'),
+path('get_list_courses/', get_list_courses, name='get_list_courses'),
+
+# lesson path
+path("create_youtube_lesson/", create_youtube_lesson, name = "create_youtube_lesson"),
+path("create_lesson_manually/", create_lesson_manually, name = 'create_lesson_manually'),
+path("get_lesson/" , get_lesson, name= "get_lesson"),
+path('delete_lesson/', delete_lesson, name='delete_lesson'),
+
+#upload text and audio path
+path("upload_text/", upload_text, name = "upload_text"),
+path("upload_audio/", upload_audio, name="upload_audio"),
+
+# word path
+path("update_word/", update_word, name= "update_word" ),
+path("finish_lesson/",  finish_lesson, name= "finshi_lesson" ), -->
+

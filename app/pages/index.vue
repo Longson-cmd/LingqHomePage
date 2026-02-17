@@ -51,7 +51,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const config = useRuntimeConfig()
-console.log('{config.public.apiBase}/login/', `${config.public.apiBase}/login/`)
 
 const router = useRouter();
 const email = ref("");
@@ -64,7 +63,6 @@ const handleSubmit = async () => {
   errMessage.value = "";
 
   try {
-    console.log(`${config.public.apiBase}/login/`)
     await $fetch(`${config.public.apiBase}/login/`, {
       method: "POST",
       body: {
@@ -88,7 +86,7 @@ const handleSubmit = async () => {
 
 <!-- ssh -i "C:\Users\PC\.ssh\lingq-key.pem" ec2-user@3.26.146.123  -->
 
-<!-- PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs -->
+<!-- PORT=3000 HOST=0.0.0.0 node  -->
 
 
 <!-- export PORT=3000 -->

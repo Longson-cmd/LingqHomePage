@@ -65,7 +65,7 @@ import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
 
-
+const config = useRuntimeConfig()
 
 const mainRef = ref(null)
 const boxHeight = ref(0)
@@ -94,7 +94,7 @@ const course_name = computed(() => route.query.courseName || 'Quick import')
 const getLesson = async () => {
     console.log('lesson_name', lesson_name.value)
     console.log('good luck')
-    const data = await $fetch('http://3.26.146.123:8000/get_lesson/', {
+    const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
         method : "GET",
         query: {
             lesson_name : lesson_name.value,
@@ -173,7 +173,7 @@ const finishLesson = async () => {
   
 
    try {
-        await $fetch('http://3.26.146.123:8000/finish_lesson/', {
+        await $fetch(`${config.public.apiBase}/finish_lesson/`, {
             method: "PUT", 
             body: statusDict,
             credentials: "include"

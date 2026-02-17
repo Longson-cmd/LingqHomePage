@@ -105,11 +105,11 @@
 <script setup>
 
 import {ref} from 'vue'
-const config = useRuntimeConfig()
+
 
 const showUnder = ref(false)
 const hoverPlusButton = ref(false)
-
+const config = useRuntimeConfig()
 
 
 const props = defineProps({

@@ -26,7 +26,7 @@
 
 <script setup>
 
-const config = useRuntimeConfig()
+
 import { useBreakpoints } from '@vueuse/core'
 
 import HeaderLingQ from '~/components/homepage/HeaderLingQ.vue'
@@ -35,7 +35,7 @@ import ContinueStudying from '~/components/homepage/ContinueStudying.vue'
 import Contents from '~/components/homepage/Contents.vue'
 import ShowCourse from '~/components/homepage/ShowCourse.vue'
 import { ref } from 'vue'
-
+const config = useRuntimeConfig()
 const showCourseInfos = ref(false)
 
 const {

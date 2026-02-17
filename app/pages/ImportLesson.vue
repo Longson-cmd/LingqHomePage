@@ -86,12 +86,12 @@
 
 
 <script setup>
-const config = useRuntimeConfig()
+
 import {ref, onMounted, onBeforeUnmount} from "vue"
 import CreateCourse from "~/components/createLesson/CreateCourse.vue";
 import LeftPart from "~/components/createLesson/LeftPart.vue";
 import RightPart from "~/components/createLesson/RightPart.vue";
-
+const config = useRuntimeConfig()
 
 const listCourse =ref( [
   {name: "Cafe avec Johan check truncate", url : "/images/avatar.jpg"},

@@ -16,6 +16,7 @@
 <script setup>
 import {ref} from "vue"
 import { useRouter } from "vue-router";
+const config = useRuntimeConfig()
 
 const router = useRouter()
 const email = ref("")
@@ -27,7 +28,7 @@ const handleSubmit =  async () => {
     isLoading.value = true
     errMessage.value = ""
     try {
-      await $fetch ("http://3.26.146.123:8000/register/", {
+      await $fetch (`${config.public.apiBase}/register/`, {
         method: "POST",
         body : {
           email : email.value,
