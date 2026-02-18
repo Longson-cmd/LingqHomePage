@@ -95,7 +95,9 @@ const handleSubmit = async () => {
 <!-- nohup env PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs > frontend.log 2>&1 &   -->
 
 <!-- ss -ltnp | grep 3000 -->
- <!-- pkill node -->
+ <!-- sudo kill 777 -->
+ <!-- sudo pkill node -->
+
 
 <!-- kill 148353 -->
 <!-- LingqHomePage -->

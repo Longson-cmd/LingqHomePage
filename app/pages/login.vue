@@ -109,3 +109,5 @@ path("upload_audio/", upload_audio, name="upload_audio"),
 path("update_word/", update_word, name= "update_word" ),
 path("finish_lesson/",  finish_lesson, name= "finshi_lesson" ), -->
 
+
+

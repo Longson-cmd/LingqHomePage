@@ -45,20 +45,24 @@
         <font-awesome icon="chevron-down"/>
       </button>
 
-      <div v-if="openImport" class="absolute whitespace-nowrap border bg-white font-normal z-10 shadow-md px-5 mt-0.5 py-2  w-44 top-full right-0 rounded-xl flex flex-col gap-3">
-        <nuxt-link to="/ImportLesson" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1">
+      <div v-if="openImport" class="absolute whitespace-nowrap border bg-white font-normal z-10 shadow-md px-3 mt-0.5 py-2  w-44 top-full right-0 rounded-xl flex flex-col ">
+        <nuxt-link to="/ImportLesson" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-2">
           <img src="/icons/header/importLesson.svg" alt="ImportLesson" />
           <span class="text-black">Lesson</span>
         </nuxt-link>
-        <button @click="OpenUpload('newword')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1" >
+        <button @click="OpenUpload('youtube')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-2">
+          <img src="/icons/others/youtubeIcon.svg" alt="ImportVocabulary" />
+          <span class="text-black">Youtube</span>
+        </button>
+        <button @click="OpenUpload('newword')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-2" >
           <img src="/icons/header/importVocabulary.svg" alt="ImportVocabulary" />
           <span class="text-black">Vocabulary</span>
         </button>
-        <button @click="OpenUpload('text')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1">
+        <button @click="OpenUpload('text')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-2">
           <img src="/icons/header/importText.svg" alt="importText" />
           <span class="text-black">Ebook/File</span>
         </button>
-        <button @click="OpenUpload('audio')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-1 ">
+        <button @click="OpenUpload('audio')" class="flex justify-start items-center gap-4 hover:bg-gray-200 px-2 py-2 ">
           <img src="/icons/header/importAudio.svg" alt="ImportAudio"  class="ml-1"/>
           <span class="text-black">Audio</span>
         </button>
@@ -67,6 +71,7 @@
       <import-text v-if="uploadObject === 'text'" @send-message="uploadObject=$event"/>
       <import-audio v-if="uploadObject === 'audio'" @send-message="uploadObject=$event"/>
       <import-vocabulary v-if="uploadObject === 'newword' " @send-message="uploadObject=$event"/>
+      <ImportYoutube v-if="uploadObject === 'youtube'" @send-message="uploadObject=$event"/>
     </div>
 
    
@@ -81,6 +86,7 @@ import '@vueform/slider/themes/default.css'
 import ImportText from './component/ImportText.vue'
 import ImportAudio from './component/ImportAudio.vue'
 import importVocabulary from './component/importVocabulary.vue'
+import ImportYoutube from './component/ImportYoutube.vue'
 const range = ref([3, 5])
 const Levels = ["Beginner 1", "Beginner 2", "Intermediate 1", "Intermediate 2", "Advanced 1", "Advanced 2"]
 const importElement = ref(null)

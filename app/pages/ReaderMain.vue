@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col h-screen">
         <HeaderLing />
-        <div class="flex flex-1 h-full min-h-0  ">
+        <div class="flex flex-1 h-full min-h-0  pr-5">
             <div class="flex flex-1 flex-col">
                 <HeaderReader v-model:currentValue="current" v-model:totalValue="total"/>
                 <div ref="mainRef" class="flex-1 min-h-0 flex px-3 ">

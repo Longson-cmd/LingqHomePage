@@ -5,7 +5,7 @@
         Homepage</NuxtLink>
       <div class="flex flex-col items-end">
         <button @click="toggleSaveOrOpen" class="bg-[#0B1B32] hover:bg-black font-medium text-white px-3 py-1 rounded-md">
-          {{createLessonSuccessfully ? 'Open  lesson' : 'Save and generate lesson'}}
+          {{createLessonSuccessfully ? 'Open  lesson' : loading? "Loading ..." : 'Save and generate lesson'}}
         </button>
           <span class="text-sm text-red-600 mr-3 whitespace-pre-line">{{messageCreateLesson}}</span>
       </div>
@@ -120,6 +120,7 @@ const addNewCouse = (data) => {
   })
 }
 
+const loading = ref(false)
 const youtubeUrl = ref("")
 
 const idxCourse = ref(-1)
@@ -143,8 +144,14 @@ const lesson_name = ref('')
 const router = useRouter()
 
 const saveAndGenerate = async () => {
+
+
   messageCreateLesson.value = ''
+  
+
+  // create with youtube
   if (youtubeUrl.value.trim()) {
+    loading.value = true
     try {
       const data = {
           "course_name": listCourse.value[idxCourse.value] ?? 'default',
@@ -168,16 +175,20 @@ const saveAndGenerate = async () => {
     catch (error) {
       messageCreateLesson.value = error?.data?.message || "Can't create lesson with this youtube url \nChoose one of two option: \n1. Change youtube url. \n2. Create lesson manually."
     }
+    loading.value = false
 
     return
   }
 
 
+  // check lesson name
   if (!lessonName.value.trim()) {
     messageCreateLesson.value = "Please give lesson a name"
     return
   }
   const formData = new FormData()
+
+  // check existing text
   if (textFile.value) {
       formData.append("textfile", textFile.value)
   }
@@ -189,6 +200,8 @@ const saveAndGenerate = async () => {
     return
   }
 
+
+  // create lesson manually
   formData.append("lesson_name", lessonName.value.trim() )
   formData.append("course_name", listCourse.value[idxCourse.value] ?? 'default')
   // formData.append('lesson_description', lessonDescription.value)
@@ -197,8 +210,9 @@ const saveAndGenerate = async () => {
   if (pictureFile.value) formData.append('picture', pictureFile.value)
   if (audioFile.value) formData.append('audiofile', audioFile.value)
 
-
+  
   try {
+    loading.value = true
     const result = await $fetch(`${config.public.apiBase}/create_lesson_manually/`, {
       method: 'POST',
       body: formData,
@@ -215,6 +229,8 @@ const saveAndGenerate = async () => {
     console.error(error)
     messageCreateLesson.value = error?.data?.message || "Failed to generate new lesson"
   }
+
+  loading.value = false
 
 }
 

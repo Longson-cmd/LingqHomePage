@@ -13,9 +13,9 @@
         :class="showUnder && 'border-gray-300 shadow-md'">
         <!-- UPPER   -->
         <div class=" relative aspect-[3/2] border bg-cover bg-center "
-            :style="{ backgroundImage: `url(${lessonImgUrl})` }">
+            :style="{ backgroundImage: `url(${lessonImgUrl || '/images/Girl.jpeg'})` }">
             <div
-                class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/20 to-transparent">
+                class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 via-black/40 to-black-30">
             </div>
             <!-- top left -->
             <div class="absolute top-2 left-2 flex items-center gap-1">
@@ -75,7 +75,7 @@
         <!-- LOWER -->
         <div class="px-2 text-sm">
             <div class="flex justify-between items-start text-base">
-                <span class=" inline-block ">
+                <span class=" inline-block truncate">
                     {{ lessonName }}
                 </span>
                 <button

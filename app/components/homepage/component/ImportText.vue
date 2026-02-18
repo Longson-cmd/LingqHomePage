@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 h-screen bg-gray-500/10 z-20  px-5 w-full flex flex-col items-center justify-center">
+  <div class="fixed inset-0 h-screen bg-gray-500/50 z-20  px-5 w-full flex flex-col items-center justify-center">
     <!-- BEFORE IMPORTING -->
     <div v-if="!importing" class=" max-w-[600px] md:w-[600px] px-3 border bg-white p-5 rounded-2xl">
 
@@ -52,9 +52,10 @@
       </span>
 
       <Spiner v-if="loading"/>
+      <span v-if="message" class=" text-red-600 block text-center">{{ message }}</span>
     </div>
 
-    <span v-if="message" class="mt-3 text-red-600">{{ message }}</span>
+    
   </div>
 </template>
 
@@ -94,7 +95,8 @@ const handleFile = async (e) => {
   try {
     const result = await $fetch(`${config.public.apiBase}/upload_text/`, {
       method: "POST",
-      body: formData
+      body: formData,
+      credentials: 'include'
     })
 
     const lesson_name = result.lesson_name
@@ -105,7 +107,7 @@ const handleFile = async (e) => {
       query: {
         lessonName: lesson_name,
         courseName: course_name
-      }
+      },
     })
 
   }

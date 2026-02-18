@@ -49,7 +49,7 @@ const speakEnglish = debounce((text) =>{
     catch (error) {
         console.error('there is an error with speakEnglish', error)
     }
-}, 400)
+}, 500)
 
 return {
     onTranslate,

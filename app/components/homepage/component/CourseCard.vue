@@ -6,7 +6,7 @@
             :class="showUnder && 'border-gray-300 shadow-md'">
             <!-- UPPER   -->
             <div class=" relative aspect-[3/2] border bg-cover bg-center "
-                :style="{ backgroundImage: `url(${courseImgUrl})` }">
+                :style="{ backgroundImage: `url(${courseImgUrl || '/images/course.jpg'} )` }">
                 <div
                     class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/20 to-transparent">
                 </div>
@@ -56,9 +56,9 @@
             </div>
 
             <!-- LOWER -->
-            <div class="px-2 py-1 text-sm">
+            <div class="px-2 py-2  text-sm flex flex-col ">
                 <div class="flex justify-between items-start text-base">
-                    <span class=" inline-block ">
+                    <span class=" inline-block truncate">
                         {{ courseName }}
                     </span>
                     <button
@@ -75,7 +75,7 @@
                         3:03</span>
                 </div>
 
-                <div class="inline-flex gap-1 mt-2">
+                <div class="inline-flex gap-1 my-1">
                     <img src="/icons/others/course.svg" alt="course"/>
                     <span>{{numberLessons}} lessons</span>
                 </div>
