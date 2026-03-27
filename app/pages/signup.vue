@@ -37,7 +37,7 @@ const handleSubmit =  async () => {
       }) 
 
       alert("Created new account successfully!")
-      router.push("/login")
+      router.push("/")
     }
 
     catch (error) {

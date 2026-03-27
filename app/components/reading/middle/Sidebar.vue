@@ -1,6 +1,6 @@
 <template>
 
-    <div class="border flex  flex-col rounded-3xl w-[390px] h-[calc(100vh-104px)] mt-3  pt-3 ">
+    <div class="border flex  flex-col rounded-3xl w-[390px]  mt-3  pt-3 " :class="props.validPhrase? 'h-[calc(100vh-104px)]' : 'h-auto'">
         <!-- word and tags -->
         <div class="px-5 pb-2 ">
             <div class="flex flex-row gap-2 items-center font-bold text-xl my-3">
@@ -9,7 +9,7 @@
                 </button>
                 <span>{{ currentPhraseData.phrase }}</span>
             </div>
-            <div class="flex ">
+            <div v-show="props.validPhrase" class="flex ">
                 <div class="flex self-start items-center  shrink-0  w-10">
                     <img src="/icons/reader/coins.svg" alt="coin" class=" h-4 w-4">
                     <span class="mx-1">{{ frequent }}</span>
@@ -33,9 +33,13 @@
                         class="absolute -bottom-6 w-52 bg-white z-10 focus:outline-none focus:ring-0 px-2 p-0.5 rounded-md border border-gray-300 ">
                 </div>
             </div>
+
+            <span v-show="!props.validPhrase">
+                Để tạo một phrase LangG, vui lòng chọn tối đa 8 từ trong cùng một câu.
+            </span>
         </div>
 
-        <div class="p-5 border-y border-y-gray-300 flex flex-col gap-1 flex-1 min-h-0 overflow-auto custom-scrollbar">
+        <div v-show="validPhrase" class="p-5 border-y border-y-gray-300 flex flex-col gap-1 flex-1 min-h-0 overflow-auto custom-scrollbar">
             <span class="font-medium">Saved Meaning</span>
             <div v-for="(meaning, i) in listMeanings" :key="i" class="relative group mt-2">
                 <textarea placeholder="Enter meaning" v-model="listMeanings[i]" @input="(e) => {
@@ -61,9 +65,7 @@
                 }" @keydown.enter.stop @keyup.enter="addMeaning"
                 class="border min-h-10 inline-block w-full leading-none text-start pt-2 px-2  rounded-lg focus:outline-none focus:ring-0 " />
 
-            <span class="inline-block mt-5 mb-1 font-medium">Dictionaries</span>
-            <button class="px-3 py-1 self-start bg-gray-100 hover:bg-gray-300 inline-block text-xs rounded">Google
-                Translate</button>
+            
 
             <div class="mt-5 mb-1 flex justify-between items-center">
                 <span class="block  text-center font-medium">Popular Meanings</span>
@@ -74,7 +76,7 @@
             
 
             <button v-for="(traslattion, i) in usersTranslation" :key="i" @click="selectTranslations(i)"
-                class=" text-blue-600 px-3 py-2 mt-1 bg-gray-100 hover:bg-gray-200 flex items-center justify-between rounded-md"
+                class=" text-blue-600 text-start px-3 py-2 mt-1 bg-gray-100 hover:bg-gray-200 flex items-center justify-between rounded-md"
                 :class="i === focusTranslationIndex && 'bg-gray-200'"
                 >
                 <span>{{ traslattion }}</span>
@@ -85,7 +87,7 @@
             </button>
         </div>
 
-        <div class="px-4 py-2 flex justify-between">
+        <div v-show="validPhrase" class="px-4 py-2 flex justify-between">
             <button @click="currentPhraseData.status = 0 ; currentPhraseData.tags = []; currentPhraseData.your_meanings = []"
                 :class="['h-10 w-10 rounded-full border border-gray-300 hover:bg-red-100 flex items-center justify-center', wordStatus === 0 && 'bg-red-100']"><img
                     src="/icons/reader/trash.svg" alt="" /></button>
@@ -101,6 +103,13 @@
                 :class="['h-10 w-10 rounded-full border border-green-200 hover:bg-green-100 flex items-center justify-center', wordStatus === 5 && 'bg-green-200']"><font-awesome
                     icon="check" class="text-green-500" /></button>
         </div>
+
+        <div  v-show='!validPhrase' class="px-5 py-10 flex flex-col  border-t border-t-gray-300 ">
+            <span class="inline-block  mb-3 font-medium text-lg">Dictionaries</span>
+            <button @click="openTranslatePopup(currentPhraseData.phrase)" class="px-3 py-2  bg-gray-100 hover:bg-gray-300 inline-block font-medium rounded-md shadow-md">
+                Google Translate
+            </button>
+        </div>
     </div>
 
 </template>
@@ -111,28 +120,31 @@ const config = useRuntimeConfig()
 
 
 const props = defineProps({
-    sidebarData: {type : Object, default: () => ({
-            phrase: 'breakfast',
-             tags: [
-                "demo"
-            ],
-            your_meanings: [
-                "bữa sáng"
-            ],
-            global_tags: [
-                "v",
-                "n",
-                "s", 
-                'r'
-            ],
-            global_meanings: [
-                "bữa",
-                "sáng",
-                "ăn",
-                "điểm tâm"
-            ],
-            status: 1
-        })}
+    sidebarData: {type:Object},
+    // sidebarData: {type : Object, default: () => ({
+    //         phrase: 'breakfast',
+    //          tags: [
+    //             "demo"
+    //         ],
+    //         your_meanings: [
+    //             "bữa sáng"
+    //         ],
+    //         global_tags: [
+    //             "v",
+    //             "n",
+    //             "s", 
+    //             'r'
+    //         ],
+    //         global_meanings: [
+    //             "bữa",
+    //             "sáng",
+    //             "ăn",
+    //             "điểm tâm"
+    //         ],
+    //         status: 1
+    //     })},
+
+    validPhrase: {type: Boolean, default: false}
 })
 
 const emit = defineEmits(['update:sidebarData', 'updatePrevious'])
@@ -147,12 +159,17 @@ const currentPhraseData = computed({
 
 
 import debounce from "lodash/debounce";
+const { getCsrfToken } = useCsrf()
+
 const syncPhrase = debounce(async(playLoad) => {
     try {
         await $fetch(`${config.public.apiBase}/update_word/`, {
             method: "PUT",
             body: playLoad,
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                'X-CSRFToken': getCsrfToken()
+            }
         })
     }
 
@@ -189,8 +206,8 @@ watch(
     if (newVal.status !== oldVal.status) changes.push('status')
 
     if (changes.length === 0) return
-    console.log("changes", changes)
-    console.log("newVal", newVal)
+    // console.log("changes", changes) 
+    // console.log("newVal", newVal)
     syncPhrase({
       ...newVal,
       changes
@@ -211,7 +228,7 @@ watch(() => props.sidebarData, async (newVal, oldVal) => {
 
         emit('updatePrevious', {
             phrase: oldVal.phrase,
-            your_meanings: [translated],
+            your_meanings: [translated] || [],
             status: 1
         })
     }
@@ -261,7 +278,7 @@ const newMeaning = ref('')
 
 const playAudio = ref(true)
 
-const {speakEnglish, onTranslate} = useGooleTranslate()
+const { onTranslate, speakEnglish, openTranslatePopup} = useGooleTranslate()
 watch(() => currentPhraseData.value?.phrase,
     async (phrase) => {
 
@@ -300,7 +317,6 @@ const addTag = () => {
         return
     }
 
-    // console.log(currentPhraseData.value.tags)
     if (currentPhraseData.value.tags.includes(textNewTag)) {
 
         return

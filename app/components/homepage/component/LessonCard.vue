@@ -9,11 +9,11 @@
         
     }"
         :preserve-scroll="true"
-        class=" z-10 mb-3 bg-white min-h-64 block border w-full rounded-2xl overflow-hidden group"
-        :class="showUnder && 'border-gray-300 shadow-md'">
+        class=" z-10 mb-3 bg-white min-h-64 max-w-80 block border w-full rounded-2xl overflow-hidden shadow-md group shrink-0"
+        :class="showUnder && 'border-gray-300'"> 
         <!-- UPPER   -->
         <div class=" relative aspect-[3/2] border bg-cover bg-center "
-            :style="{ backgroundImage: `url(${lessonImgUrl || '/images/Girl.jpeg'})` }">
+            :style="{ backgroundImage: `url(${lessonImgUrl || '/images/lesson.png'})` }">
             <div
                 class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 via-black/40 to-black-30">
             </div>
@@ -85,7 +85,7 @@
             </div>
 
             <div> <span class="inline-block mt-3 h-2 w-2 rounded-full bg-blue-400"></span> {{ newWordsPercents }}% New
-                words Beginner 1 </div>
+                words Intermediate 1 </div>
             <div class="flex justify-between ">
                 <span class="truncate max-w-40">LingQ Mini Stories - France histoir Une nouvelle maison</span>
                 <span class="inline-flex gap-1 whitespace-nowrap "><img src="/icons/header/importAudio.svg" />
@@ -113,7 +113,7 @@ const config = useRuntimeConfig()
 
 
 const props = defineProps({
-    lessonImgUrl : {type: String, default: '/images/lesson.jpg'},
+    lessonImgUrl : {type: String, default: '/images/demo.png'},
     courseName : {type: String, default: "Quick import"},
     lessonNumber : {type: Number, default : 10},
     lessonName : {type:String, default: "Lesson name by default"},

@@ -83,23 +83,3 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-<!-- ssh -i "C:\Users\PC\.ssh\lingq-key.pem" ec2-user@3.26.146.123  -->
-
-<!-- PORT=3000 HOST=0.0.0.0 node  -->
-
-
-<!-- export PORT=3000 -->
-<!-- export HOST=0.0.0.0 -->
-<!-- export NUXT_PUBLIC_API_BASE=http://3.26.146.123:8000 -->
-<!-- nohup env PORT=3000 HOST=0.0.0.0 node .output/server/index.mjs > frontend.log 2>&1 &   -->
-
-<!-- ss -ltnp | grep 3000 -->
- <!-- sudo kill 777 -->
- <!-- sudo pkill node -->
-
-
-<!-- kill 148353 -->
-<!-- LingqHomePage -->
-<!-- email = 'test@example.com',
-password = "1234abcd" -->

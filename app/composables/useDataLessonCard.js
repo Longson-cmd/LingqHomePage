@@ -1,205 +1,203 @@
 export const useDataLessonCard = () => {
 const dataLessonCardsBuitin = [
   {
-    lessonNumber: "01",
+    lessonNumber: 1,
     lessonName: "Introduction to Daily Life",
     numberNewWords: 8,
     numberLingQs: 9,
     numberKnownWords: 10,
     newWordsPercents: 12,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "02",
+    lessonNumber: 2,
     lessonName: "Talking About Hobbies",
     numberNewWords: 12,
     numberLingQs: 7,
     numberKnownWords: 18,
     newWordsPercents: 15,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "03",
+    lessonNumber: 3,
     lessonName: "Work and Studies",
     numberNewWords: 6,
     numberLingQs: 5,
     numberKnownWords: 22,
     newWordsPercents: 9,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "04",
+    lessonNumber: 4,
     lessonName: "Daily Routine",
     numberNewWords: 10,
     numberLingQs: 11,
     numberKnownWords: 14,
     newWordsPercents: 18,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "05",
+    lessonNumber: 5,
     lessonName: "Food and Cooking",
     numberNewWords: 14,
     numberLingQs: 10,
     numberKnownWords: 20,
     newWordsPercents: 21,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "06",
+    lessonNumber: 6,
     lessonName: "Health and Exercise",
     numberNewWords: 9,
     numberLingQs: 8,
     numberKnownWords: 25,
     newWordsPercents: 11,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "07",
+    lessonNumber: 7,
     lessonName: "Technology in Life",
     numberNewWords: 16,
     numberLingQs: 13,
     numberKnownWords: 30,
     newWordsPercents: 24,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "08",
+    lessonNumber: 8,
     lessonName: "Travel Experiences",
     numberNewWords: 11,
     numberLingQs: 9,
     numberKnownWords: 28,
     newWordsPercents: 17,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "09",
+    lessonNumber: 9,
     lessonName: "Culture and Traditions",
     numberNewWords: 13,
     numberLingQs: 12,
     numberKnownWords: 26,
     newWordsPercents: 19,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   },
   {
-    lessonNumber: "10",
+    lessonNumber: 10,
     lessonName: "Family and Relationships",
     numberNewWords: 7,
     numberLingQs: 6,
     numberKnownWords: 32,
     newWordsPercents: 8,
-    imgUrl: "/images/Girl.jpeg",
+    imgUrl: "/images/lesson.png",
     builtinLesson: true
   }
 ];
 
-
 const dataCourseCardsBuiltin = [
   {
-    numberLessons: "01",
+    numberLessons: 1,
     courseName: "Introduction to Daily Life",
     numberNewWords: 8,
     numberLingQs: 9,
     numberKnownWords: 10,
     newWordsPercents: 12,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "02",
+    numberLessons: 2,
     courseName: "Talking About Hobbies",
     numberNewWords: 12,
     numberLingQs: 7,
     numberKnownWords: 18,
     newWordsPercents: 15,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "03",
+    numberLessons: 3,
     courseName: "Work and Studies",
     numberNewWords: 6,
     numberLingQs: 5,
     numberKnownWords: 22,
     newWordsPercents: 9,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "04",
+    numberLessons: 4,
     courseName: "Daily Routine",
     numberNewWords: 10,
     numberLingQs: 11,
     numberKnownWords: 14,
     newWordsPercents: 18,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "05",
+    numberLessons: 5,
     courseName: "Food and Cooking",
     numberNewWords: 14,
     numberLingQs: 10,
     numberKnownWords: 20,
     newWordsPercents: 21,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "06",
+    numberLessons: 6,
     courseName: "Health and Exercise",
     numberNewWords: 9,
     numberLingQs: 8,
     numberKnownWords: 25,
     newWordsPercents: 11,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "07",
+    numberLessons: 7,
     courseName: "Technology in Life",
     numberNewWords: 16,
     numberLingQs: 13,
     numberKnownWords: 30,
     newWordsPercents: 24,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "08",
+    numberLessons: 8,
     courseName: "Travel Experiences",
     numberNewWords: 11,
     numberLingQs: 9,
     numberKnownWords: 28,
     newWordsPercents: 17,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "09",
+    numberLessons: 9,
     courseName: "Culture and Traditions",
     numberNewWords: 13,
     numberLingQs: 12,
     numberKnownWords: 26,
     newWordsPercents: 19,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   },
   {
-    numberLessons: "10",
+    numberLessons: 10,
     courseName: "Family and Relationships",
     numberNewWords: 7,
     numberLingQs: 6,
     numberKnownWords: 32,
     newWordsPercents: 8,
-    imgUrl: '/images/Girl.jpeg'
+    imgUrl: "/images/course.png"
   }
-]
-
+];
    
 const dataLessonCardsDemo = [
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 9,
     lessonName: "Improving Fluency and Coherence",
@@ -209,7 +207,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 8,
     lessonName: "Using Examples in Answers",
@@ -219,7 +217,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 1,
     lessonName: "Introduction to Daily Conversation",
@@ -229,7 +227,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 62
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 10,
     lessonName: "Common Grammar Mistakes in Speaking",
@@ -239,7 +237,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 7,
     lessonName: "Handling Abstract Questions",
@@ -249,7 +247,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 6,
     lessonName: "Future Plans and Ambitions",
@@ -259,7 +257,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 62
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 5,
     lessonName: "Talking About Past Experiences",
@@ -269,7 +267,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 4,
     lessonName: "Expressing Opinions Clearly",
@@ -279,7 +277,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 3,
     lessonName: "Describing People and Places",
@@ -289,7 +287,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 2,
     lessonName: "Common IELTS Speaking Topics",
@@ -299,7 +297,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 2 Strategies",
     lessonNumber: 1,
     lessonName: "Introduction to Daily Conversation",
@@ -309,7 +307,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 62
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 10,
     lessonName: "Common Grammar Mistakes in Speaking",
@@ -319,7 +317,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 9,
     lessonName: "Improving Fluency and Coherence",
@@ -329,7 +327,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 8,
     lessonName: "Using Examples in Answers",
@@ -339,7 +337,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 7,
     lessonName: "Handling Abstract Questions",
@@ -349,7 +347,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 6,
     lessonName: "Future Plans and Ambitions",
@@ -359,7 +357,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 62
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 5,
     lessonName: "Talking About Past Experiences",
@@ -369,7 +367,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 79
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 4,
     lessonName: "Expressing Opinions Clearly",
@@ -379,7 +377,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 3,
     lessonName: "Describing People and Places",
@@ -389,7 +387,7 @@ const dataLessonCardsDemo = [
     newWordsPercents: 100
   },
   {
-    imgUrl: '/images/lesson.jpg',
+    imgUrl: '/images/lesson.png',
     courseName: "IELTS Speaking Part 1 Mastery",
     lessonNumber: 2,
     lessonName: "Common IELTS Speaking Topics",

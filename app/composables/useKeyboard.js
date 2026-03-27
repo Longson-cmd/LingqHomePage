@@ -16,12 +16,12 @@ const changePageStatus =  () => {
   const indexParaStart = firstEl.dataset.pIdx 
   const indexParaEnd = lastEl.dataset.pIdx
 
-  console.log(" seven stauts in newStatusDict ", newStatusDict.value["seven"])
+  // console.log(" seven stauts in newStatusDict ", newStatusDict.value["seven"])
 
   const {lessondataChunk} = useCreateLesson(core_data, newStatusDict, indexParaStart, indexParaEnd + 1)
   lessondata.value.splice(indexParaStart, indexParaEnd - indexParaStart + 1, ...lessondataChunk)
 
-  console.log("chuck data length", lessondataChunk[1])
+  // console.log("chuck data length", lessondataChunk[1])
 }
 
 
@@ -30,7 +30,7 @@ const changePageStatusByKeyborad = (e) => {
   
   const listKeys = ['x', '1', '2', '3', '4', '5']
   if (!listKeys.includes(e.key)) return
-  console.log("run changePageStatusByKeyborad")
+
   const newStatus = (e.key === 'x') ? 0 : Number(e.key)
   emitStatus(newStatus)
 
@@ -126,8 +126,8 @@ const moveNextPrevious = (e) => {
         const paraData = lessondata.value[i]
         const nextIndex = paraData.findIndex(item => (item['w_idx'] > wordIndex || item['phrase']?.[0]?.['w_idx'] > wordIndex) && item['status'] === 6 )
         if (nextIndex === -1) continue
-        console.log('nextIndex' , nextIndex)
-        console.log('paraData[nextIndex]', paraData[nextIndex])
+        // console.log('nextIndex' , nextIndex)
+        // console.log('paraData[nextIndex]', paraData[nextIndex])
         if (paraData[nextIndex]['type'] === 'phrase') {
           
           const startItem = paraData[nextIndex]['phrase'][0]

@@ -1,8 +1,7 @@
 <template>
     <div class="relative h-16 border shadow-md flex ">
         <div class="flex items-center px-2">
-           
-
+    
             <div class="flex items-center font-semibold">
                 <img src="/icons/header/lingicon.svg" alt="Linglogo" class="h-8 w-8 mr-2" />
                 <div class="hidden md:flex">
@@ -18,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <RightSide class="ml-auto px-2 z-10 self-center" />
+        <RightSide class="ml-auto px-2 z-10 self-center" :show-propgress="false" />
     </div>
 </template>
 

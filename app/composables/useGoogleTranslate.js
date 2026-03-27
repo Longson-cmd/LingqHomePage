@@ -51,7 +51,24 @@ const speakEnglish = debounce((text) =>{
     }
 }, 500)
 
+
+const openTranslatePopup = (text) => {
+  const q = text.trim();
+  if (!q) return;
+
+  const url =
+    "https://translate.google.com/?sl=en&tl=vi&op=translate&text=" +
+    encodeURIComponent(q);
+
+  window.open(
+    url,
+    "translatePopup",
+    "width=1000,height=600,noopener,noreferrer"
+  );
+}
+
 return {
     onTranslate,
-    speakEnglish
+    speakEnglish,
+    openTranslatePopup,
 }}

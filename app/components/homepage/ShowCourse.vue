@@ -6,7 +6,7 @@
                 <button @click="emit('showCourseInfos', false)" class="absolute z-10 top-5 left-5 h-10 w-10 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 whitespace-nowrap shrink-0">
                     <font-awesome icon="times" class="text-xl"/>
                 </button>
-                <img :src="courseImgUrl || '/images/course.jpg'" alt="courePicture"
+                <img :src="courseImgUrl || '/images/course.png'" alt="courePicture"
                 class="w-full h-full object-cover rounded-3xl "
                 >
                 <div class="absolute inset-0 bg-gradient-to-b from-black/0 to-black/50 "></div>
@@ -102,7 +102,7 @@
                 <LessonInCourse
                 class="py-3 z-50 bg-white"
                 v-for="item in dataLessons"
-                :lesson-img-url="item.imgUrl || '/images/Girl.jpeg'"
+                :lesson-img-url="item.imgUrl || '/images/lesson.png'"
                 :course-name="item.courseName"
                 :lesson-name="item.lessonName"
                 :lesson-number="item.lessonNumber"
@@ -136,7 +136,7 @@ const props = defineProps({
     level: {type:String, default: "Intermediate 1"},
     audioDuration: {type: String, default: "10:10"},
     numberLike: {type: Number, default: 17},
-    authorAvatar: {type: String, default : '/images/lesson.jpg'},
+    authorAvatar: {type: String, default : '/images/lesson.png'},
     author: {type: String, default : 'Mr Steve'}
 })
 

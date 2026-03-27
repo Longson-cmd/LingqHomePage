@@ -116,7 +116,7 @@ const openAddCouse = ref(false)
 const addNewCouse = (data) => {
   listCourse.value.unshift({
     name: data.courseName,
-    url: data.pictureUrl ?? "/images/avatar.jpg"
+    url: data.pictureUrl || "/images/avatar.jpg"
   })
 }
 
@@ -152,9 +152,11 @@ const saveAndGenerate = async () => {
   // create with youtube
   if (youtubeUrl.value.trim()) {
     loading.value = true
+
+    // console.log('course_name', listCourse.value[idxCourse.value].name)
     try {
       const data = {
-          "course_name": listCourse.value[idxCourse.value] ?? 'default',
+          "course_name": listCourse.value[idxCourse.value].name ?? 'default',
           "youtube_url": youtubeUrl.value.trim()
         }
 

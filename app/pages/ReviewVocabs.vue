@@ -1,9 +1,9 @@
 <template>
     <div class="min-h-screen bg-gray-50 py-10">
-        <div class="relative max-w-6xl rounded-2xl border  shadow-lg px-8 py-5 mx-auto  flex flex-col gap-6">
-            <NuxtLink to="/HomepageLingQ" class=" absolute text-gray-600 font-medium hover:text-black hover:bg-gray-100 px-3 py-1 text-center rounded-md"> <font-awesome icon="chevron-left" /> Back
+        <div class=" max-w-6xl rounded-2xl border  shadow-lg px-8 py-5 mx-auto  flex flex-col gap-6 ">
+            <NuxtLink to="/HomepageLingQ" class="inline-flex self-start justify-start items-center text-gray-600 font-medium hover:text-black hover:bg-gray-200 px-3 py-1 text-center rounded-md"> <font-awesome icon="chevron-left" /> Back
             Homepage</NuxtLink>
-            <div v-if="courseName && lessonName" class="flex text-2xl text-blue-600 font-bold  items-center justify-center">
+            <div v-if="courseName && lessonName" class="flex text-2xl text-blue-600 font-bold  items-start justify-center">
                 <span>Course: {{ courseName }}</span>
                 <span class="mx-2 text-2xl">•</span>
                 <span>Lesson: {{ lessonName }}</span>
@@ -55,13 +55,13 @@
                         </div>
                     </div>
                     
-                    <button @click="prevPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
+                    <button @click="prevPage" :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
                         <span class="bg-[#0B1B32] h-8 hover:bg-black text-white px-3 py-1 rounded-lg">{{ currentPage }}/{{ totalPages }}</span>
                     <button @click="nextPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
                 </div>
             </div>
     
-            <div v-if="isLoading === false" v-for="(item, index) in listVisibleData"  :key="item.word" class="border border-gray-600 rounded-lg  p-5 flex flex-col md:flex-row gap-3   items-center justify-between">
+            <div v-if="isLoading === false && listVisibleData.length > 0" v-for="(item, index) in listVisibleData"  :key="item.word" class="border border-gray-600 rounded-lg  p-5 flex flex-col md:flex-row gap-3   items-center justify-between">
                 <span class="font-medium text-lg w-40 text-center md:text-start">{{ item.word }}</span>
     
                 <button @click="showWordMeaning(index)"  :class="[item.showMeaning? '' : 'italic underline' , 'text-blue-600 mb-3']">{{ item.showMeaning? item.meaning : 'Show meaning'  }}</button>
@@ -70,28 +70,33 @@
                     <button @click="changeStatus(index, 0)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-red-100 flex items-center justify-center" :class="[item.status === 0 && 'bg-red-100']"><img src="/icons/reader/trash.svg" alt="trash"/></button>
                     <button @click="changeStatus(index, 1)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-300 flex items-center justify-center" :class="[item.status === 1 && 'bg-yellow-300']">1</button>
                     <button @click="changeStatus(index, 2)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-200 flex items-center justify-center" :class="[item.status === 2 && 'bg-yellow-200']">2</button>
-                    <button @click="changeStatus(index, 3)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-100 flex items-center justify-center" :class="[item.status === 3 && 'bg-red-100']">3</button>
-                    <button @click="changeStatus(index, 4)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-gray-200 flex items-center justify-center" :class="[item.status === 4 && 'bg-yellow-100']">4</button>
+                    <button @click="changeStatus(index, 3)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-yellow-100 flex items-center justify-center" :class="[item.status === 3 && 'bg-yellow-100']">3</button>
+                    <button @click="changeStatus(index, 4)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-gray-200 flex items-center justify-center" :class="[item.status === 4 && 'bg-gray-300']">4</button>
                     <button @click="changeStatus(index, 5)" class="h-10 w-10 rounded-full border border-gray-300 hover:bg-green-100 flex items-center justify-center" :class="[item.status === 5 && 'bg-green-100']"><font-awesome icon='check' class="text-green-500"/></button>
                 </div>
             </div>
+
+            <div v-if="isLoading === false && listVisibleData.length ===0" class="flex items-center justify-center py-20 text-red-500 font-medium text-lg">
+                <div>No data available</div>
+            </div>
            
-            <div v-if="isLoading === false" class="self-end flex items-center  h-8 gap-1">
-                     <button @click="prevPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
+            <div v-if="isLoading === false && listVisibleData.length === pageSize" class="self-end flex items-center  h-8 gap-1">
+                     <button @click="prevPage" :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
                         <span class="bg-[#0B1B32] h-8 hover:bg-black text-white px-3 py-1 rounded-lg">{{ currentPage }}/{{ totalPages }}</span>
                     <button @click="nextPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
-                    </div>
+                </div>
             </div>
     </div>
 </template>
 
 <script setup>
 
-import {ref, onMounted, onBeforeUnmount} from 'vue'
+import {ref, onMounted, computed, onBeforeUnmount} from 'vue'
+import {useRoute} from 'vue-router'
+const route  = useRoute()
 
-const lessonName = ref('')
-const courseName = ref('')
-
+const lessonName = computed(() => route.query.lessonName || '')
+const courseName = computed(() => route.query.courseName || '')
 
 const listStatusOptions = [
   { value: 1, label: '1 - New' },
@@ -119,18 +124,16 @@ const hasNextPage = ref(false)
 const isLoading = ref(false)
 
 
-const {listPhrasesData, listWordsData} = useListVocabularies()
+// const {listPhrasesData, listWordsData} = useListVocabularies()
 
-
-
-const listVisibleData = ref(listWordsData.value) // default show words data, when toggle to phrases, will set listVisibleData to listPhrasesData
+const listVisibleData = ref([]) // default show words data, when toggle to phrases, will set listVisibleData to listPhrasesData
 
 const showWordMeaning = (index) => {
     listVisibleData.value[index].showMeaning = !listVisibleData.value[index].showMeaning
 }
 
 
-const selectedStatuses = ref([1,2,3,4,5]) // default show all words with status 1-5 (exclude 0 - deleted)
+const selectedStatuses = ref([1,2,3]) // default show all words with status 1-3 (exclude 0 - deleted)
 const selectSortOption = ref(1)
 const toggleType = ref('words') // default show words, other option is 'phrases'
 
@@ -138,6 +141,7 @@ const toggleType = ref('words') // default show words, other option is 'phrases'
 
 
 import debounce from 'lodash/debounce'
+
 
 const config = useRuntimeConfig()
 
@@ -152,13 +156,11 @@ const getDataBackend = async () => {
                 selectSortOption: selectSortOption.value,
                 pageSize: pageSize.value,
                 currentPage: currentPage.value,
-                // lessonName: 'default',
-                // courseName: 'default'
+                lessonName: lessonName.value,
+                courseName: courseName.value
             },
             credentials: 'include'})
             
-            // listPhrasesData.value = data?.phrases ?? listPhrasesData.value 
-            // listWordsData.value = data.words ?? listWordsData.value
 
             if (toggleType.value === 'words') {
                 listVisibleData.value = data.listWordsData ?? []
@@ -183,7 +185,7 @@ const getDataBackend = async () => {
         // isLoading.value = false
     }
 
-    console.log('isloading', isLoading.value)
+    // console.log('listVisibleData.value', listVisibleData.value)
 }
 
 const prevPage = () => {

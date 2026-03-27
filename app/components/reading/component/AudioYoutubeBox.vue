@@ -85,8 +85,14 @@ let timer = null
 const boxRef = ref(null)
 const videoRef = ref(null)
 
-const currentTime = ref(0)
-const duration = ref(100)
+const props = defineProps({
+    youtubeData : {type : Object}
+})
+
+console.log('youtubeData', props.youtubeData)
+
+const currentTime = ref(props.youtubeData.youtube_start_time?? 0)
+const duration = ref(props.youtubeData.youtube_duration?? 100)
 const isPlaying = ref(false)
 const isUserSeeking = ref(false)
 const isLoop = ref(false)
@@ -98,9 +104,7 @@ const audioSpeed = ref(speedLists[3])
 
 const emit = defineEmits(['closeAudioBox'])
 
-const props = defineProps({
-    videoId : {type : String}
-})
+
 
 const loadYoutubeAPI = () =>
   new Promise((resolve) => {
@@ -113,6 +117,9 @@ const loadYoutubeAPI = () =>
     window.onYouTubeIframeAPIReady = () => resolve()
 })
 
+
+
+//  videoId: 'o4w8yAHWDEU',
 onMounted( async () => {
 
   videoPosition.value.x = Math.max(12, window.innerWidth - 288 - 12)
@@ -121,7 +128,7 @@ onMounted( async () => {
   await loadYoutubeAPI()
  
   player = new YT.Player(videoRef.value, {
-    videoId: 'sRXnme3pD9M', 
+    videoId: props.youtubeData.youtube_id?? '', 
 
     playerVars : {
       controls: 1,// Hiện thanh điều khiển

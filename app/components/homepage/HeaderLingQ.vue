@@ -14,7 +14,10 @@
         <NuxtLink class="hover:bg-gray-200 h-16 inline-flex justify-center items-center px-1 border-t-4 border-transparent">Community</NuxtLink>
       </div>
     </div>
-    <RightSide class="ml-auto px-2 z-10 self-center"/>
+    <RightSide 
+    class="ml-auto px-2 z-10 self-center"
+  
+    />
 
 
     <div  v-if="isOpen" class="absolute w-full top-full mt-2  text-lg gap-1 md:hidden">
@@ -54,7 +57,8 @@ import {ref} from "vue"
 const emit = defineEmits(['sending-toggle'])
 
 const props = defineProps({
-  showMain : Boolean
+  showMain : Boolean,
+ 
 })
 const isOpen = ref(!props.showMain)
 

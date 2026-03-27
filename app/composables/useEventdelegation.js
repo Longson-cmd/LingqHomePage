@@ -4,8 +4,8 @@ import {ref} from 'vue'
 export function useEventDelegation(isOpenPopup) {
 
 
-const startPointer = ref(null)
-const currentPointer = ref(null)
+const startPointer = ref([0, 0, 0, 0])
+const currentPointer = ref([0, 0, 0, 0])
 const isDraging = ref(false)
 
 
@@ -23,9 +23,7 @@ const onPointerdown = (indexWord, indexSentence, indexWordInSentence, indexPara)
 const onPointerEnter = (indexWord, indexSentence, indexWordInSentence, indexPara) => {
   if (!isDraging.value) return
 
-  
   currentPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
-
 
 }
 

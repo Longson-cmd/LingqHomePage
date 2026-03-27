@@ -5,8 +5,10 @@
     </button>
 
     <div v-if="openAudioBox " class="absolute -top-8 left-5 z-10  bg-white">
-        <AudioYoutubeBox v-if="haveVideoId" @close-audio-box="openAudioBox = $send" :video-id="videoId"/>
-        <AudioBox v-else @close-audio-box="openAudioBox = $send" :audioURL="audioURL"/>
+        <AudioYoutubeBox 
+        @close-audio-box="openAudioBox = $send" 
+        :youtube-data="props.youtubeData"/>
+        <!-- <AudioBox v-else @close-audio-box="openAudioBox = $send" :audioURL="audioURL"/> -->
     </div>
     
 
@@ -26,14 +28,15 @@
 <script setup>
 import {ref, onMounted, onBeforeUnmount} from 'vue'
 
-import AudioBox from './component/AudioBox.vue';
+// import AudioBox from './component/AudioBox.vue';
 import AudioYoutubeBox from './component/AudioYoutubeBox.vue';
 const openAudioBox = ref(false)
 const isSentenceView = ref(false)
 
-const haveVideoId = true
-const audioURL = ref('http://localhost:3000/sounds/demo.mp3')
-const videoId = 'sRXnme3pD9M'
+// const audioURL = ref('http://localhost:3000/sounds/demo.mp3')
 
+const props = defineProps({
+    youtubeData : {type: Object}
+})
 
 </script>

@@ -1,11 +1,10 @@
 <template>
-    <div class="flex flex-col py-2 bg-gray-50">
+    <div v-show="data.length !== 0" class="flex flex-col py-2 bg-gray-50">
         <div class="flex items-center  flex-gap flex-col md:flex-row px-3 md:px-[56px] mb-2">
             <span class="font-semibold mr-3 self-start">Continue Studying <font-awesome icon='play' class="text-gray-300 text-sm"></font-awesome></span>
             <div class="flex gap-3 self-center">
                 <button @click="changeMode('lesson')" :class="mode === 'lesson' && 'font-bold'">Lesson</button>
-                <button @click="changeMode('course') " :class="mode === 'course' && 'font-bold'">Course</button>
-                <button @click="mode = 'importLesson'">Imported Lesson</button>
+                <button @click="changeMode('course') " :class="mode === 'course' && 'font-bold'">Course</button>              
             </div>
         </div>
 
@@ -13,12 +12,12 @@
             <button 
             :disabled="indexStart === 0"
             class="w-[12px] md:w-[56px] flex items-center justify-center text-3xl hover:text-4xl "      
-            @click="PreviousCourses">
+            @click="Previous">
                 <font-awesome icon="chevron-left" v-show="!isMobile && data.length > numberGrid && indexStart !== 0"/>
             </button>
             <div v-if="mode === 'course'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <CourseCard
-                v-for="(item , idx) in visibleData" :key="idx"
+                v-for="(item , idx) in visibleData" :key="item.courseName"
                 :course-img-url="item.imgUrl"
                 :number-lessons="item.numberLessons"
                 :course-name="item.courseName"
@@ -32,10 +31,10 @@
             </div>
             <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <LessonCard
-                v-for="(item , idx) in visibleData" :key="idx"
+                v-for="(item , idx) in visibleData" :key="item.lessonName + item.courseName"
                 :course-name="item.courseName"
                 :lesson-img-url="item.imgUrl"
-                :lesson-number="item.lessonNumber"
+               
                 :lesson-name="item.lessonName"
                 :number-new-words="item.numberNewWords"
                 :number-ling-qs="item.numberLingQs"
@@ -48,10 +47,10 @@
                 />
             </div>
             <button 
-            :disabled="indexStart === data.length - numberGrid || data.length <= numberGrid"
+            :disabled="!canGoNext"
             class="w-[12px] md:w-[56px] flex items-center justify-center text-3xl hover:text-4xl "
-            @click="NextCourses" >
-                <font-awesome icon="chevron-right" v-show="!isMobile && data.length > numberGrid && indexStart !== data.length - numberGrid"/>
+            @click="Next" >
+                <font-awesome icon="chevron-right" v-show="!isMobile && canGoNext"/>
             </button>
         </div>
     </div>
@@ -68,11 +67,18 @@ import { useBreakpoints } from '@vueuse/core';
 import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
 const config = useRuntimeConfig()
-console.log('{config.public.apiBase}/login/', `${config.public.apiBase}/login/`)
-// const data = ref(dataLessonCards.slice(0, 8))
+
+
 const data = ref([])
 const dataLessonCards = ref([])
 const dataCourseCards = ref([])
+
+const lessonCurrentPage = ref(1)
+const lessonTotalPage = ref(2)
+
+const courseCurrentPage = ref(1)
+const courseTotalPage = ref(2)
+
 
 const props = defineProps({
     newLessonData : {type : Object, default: () => ({})}
@@ -80,57 +86,76 @@ const props = defineProps({
 
 const emit = defineEmits(['showCourseInfos'])
 
-const {
-        dataLessonCardsBuitin,
-        dataCourseCardsBuiltin,
-        dataLessonCardsDemo,
-        dataCourseCardsDemo
-    } = useDataLessonCard()
 
-const getCardsData = async () => {
 
-    console.log('GET DATA FOR LESSON AND COURSE CARDS')
+// Get lesson cards data
+const getLessonCardsData = async () => {
+
     try {
-        const dataBackend = await $fetch(`${config.public.apiBase}/continue_study/`, {
+        const dataBackend = await $fetch(`${config.public.apiBase}/get_data_lessons_cards/`, {
         method: "GET", 
+        query: {
+            page : lessonCurrentPage.value
+        },
         credentials: "include" 
         
-    })
+        })
 
-    dataLessonCards.value = dataBackend?.["dataLessonCards"] ?? dataLessonCardsDemo
-    dataCourseCards.value = dataBackend?.["dataCourseCards"] ?? dataCourseCardsDemo
-    data.value = dataLessonCards.value
+        dataLessonCards.value = [
+            ...dataLessonCards.value,
+            ...(dataBackend?.['dataLessonCards'] ?? [])
+        ]
+
+        data.value = dataLessonCards.value
+
+        const paginationInfo = dataBackend?.["pagination"] ?? {}
+        lessonTotalPage.value = paginationInfo.totalPages ?? 1
+
 }
     catch (error) {
-        dataLessonCards.value = dataLessonCardsDemo 
-        dataCourseCards.value = dataCourseCardsDemo
-        data.value = dataLessonCards.value
+        console.log('error fetching lesson cards data:', error)
     }
- 
+}
+
+const getCourseCardsData = async () => {
+
+    try {
+        const dataBackend = await $fetch(`${config.public.apiBase}/get_data_courses_cards/`, {
+        method: "GET", 
+        query: {
+            page : courseCurrentPage.value
+        },
+        credentials: "include" 
+        
+        })
+
+        dataCourseCards.value = [
+            ...dataCourseCards.value,
+            ...(dataBackend?.["dataCourseCards"] ?? [])
+        ]
+        data.value = dataCourseCards.value
+
+        const paginationInfo = dataBackend?.["pagination"] ?? {}
+        courseTotalPage.value = paginationInfo.totalPages ?? 1
+
+}
+    catch (error) {
+        console.log('error fetching course cards data:', error)
+    }
 }
 
 
 const mode = ref("lesson")
-const changeMode = (type) => {
+const changeMode = async (type) => {
     mode.value = type
+    indexStart.value = 0
     if (type === "lesson") {
-        if (dataLessonCards.value.length === 0 ) {
-            data.value = dataLessonCardsBuitin
-        }
-        else {
-            data.value = dataLessonCards.value
-        }
-        
+        data.value = dataLessonCards.value
     }
     else if (type === "course") {
-        if (dataCourseCards.value.length === 0) {
-            data.value = dataCourseCardsBuiltin
-        }
-        else {
-            data.value = dataCourseCards.value
-        }
+        if (dataCourseCards.value.length === 0) await getCourseCardsData()
+        data.value = dataCourseCards.value
     }
-    else data.value = dataLessonCards.value.slice(0,4)
 }
 
 const indexStart = ref(0)
@@ -154,17 +179,43 @@ const visibleData = computed(() => {
     return data.value.length - numberGrid.value > 0 ? data.value.slice(indexStart.value, indexStart.value + numberGrid.value) : data.value
 })
 
-const PreviousCourses = () => {
+const Previous = () => {
     if (isMobile.value) return
     indexStart.value = Math.max(0, indexStart.value - numberGrid.value)
 }
 
-const NextCourses = () => {
+const Next = async () => {
     if (isMobile.value) return
 
     if (data.value.length < numberGrid.value) return
+
+    const needMoreData  = data.value.length < indexStart.value + 2 * numberGrid.value
+
+    if (needMoreData) {
+        if (mode.value === 'lesson') {
+            if (lessonCurrentPage.value === lessonTotalPage.value) return
+            lessonCurrentPage.value += 1
+             await getLessonCardsData()
+        } else if (mode.value === 'course') {
+            if (courseCurrentPage.value === courseTotalPage.value) return
+            courseCurrentPage.value += 1
+            await getCourseCardsData()
+        }
+    } 
+
     indexStart.value = Math.min(data.value.length - numberGrid.value, indexStart.value + numberGrid.value)   
 }
+
+const canGoNext = computed(() => {
+    if (isMobile.value) return false
+
+    const hasMoreLoadedData = data.value.length > indexStart.value + numberGrid.value
+    const hasMoreBackendData = mode.value === 'lesson' ? lessonCurrentPage.value < lessonTotalPage.value : courseCurrentPage.value < courseTotalPage.value
+
+    return hasMoreLoadedData || hasMoreBackendData
+}) 
+
+
 
 
 watch([() => data.value.length, () => isMobile.value, () => numberGrid.value], ([newLen, newIsMobile, newNumberGrid]) => {
@@ -196,36 +247,24 @@ watch(() => props.newLessonData, (newVal) => {
 
 const removeLesson = (childData) => {
     dataLessonCards.value = dataLessonCards.value.filter(card => !(card.lessonName === childData.lessonName && card.courseName === childData.courseName))
+    data.value = dataLessonCards.value
 
-    if (dataLessonCards.value.length === 0) {
-        data.value = dataLessonCardsDemo
-    }
-    else {
-        data.value = dataLessonCards.value
-    }
 }
-
-
 
 
 const removeCourse = (courseDelete) => {
  
     dataLessonCards.value = dataLessonCards.value.filter(card => card.courseName !== courseDelete)
     dataCourseCards.value = dataCourseCards.value.filter(card => card.courseName !== courseDelete)
-    
-    if (dataCourseCards.value.length === 0) {
-        data.value = dataCourseCardsDemo
-    }
-    else {
-        data.value = dataCourseCards.value
-    }
+
+    data.value = dataCourseCards.value
+
 }
 
 onMounted(async () => {
-    await getCardsData()
+    await getLessonCardsData()
   
 })
-
 
 
 </script>

@@ -2,11 +2,11 @@
   <!-- <div class="max-w-md border m-5 mx-auto flex items-center justify-center "> -->
     <div @click="emit('showCourseInfos', courseName)" class="relative cursor-pointer min-w-52 mb-3 inline-flex items-center justify-between" @mouseenter="showUnder = true"
         @mouseleave="showUnder = false">
-        <div class=" z-10 bg-white min-h-64 block border w-full rounded-2xl overflow-hidden group"
-            :class="showUnder && 'border-gray-300 shadow-md'">
+        <div class=" z-10 bg-white min-h-64 max-w-80 block border w-full rounded-2xl overflow-hidden group shrink-0 shadow-md"
+            :class="showUnder && 'border-gray-300'">
             <!-- UPPER   -->
             <div class=" relative aspect-[3/2] border bg-cover bg-center "
-                :style="{ backgroundImage: `url(${courseImgUrl || '/images/course.jpg'} )` }">
+                :style="{ backgroundImage: `url(${courseImgUrl || '/images/course.png'} )` }">
                 <div
                     class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/20 to-transparent">
                 </div>
@@ -98,7 +98,7 @@ const config = useRuntimeConfig()
 const showUnder = ref(false)
 const showTrash = ref(false)
 const props = defineProps({
-    courseImgUrl : {tyle:String, default : '/images/course.jpg'},  
+    courseImgUrl : {tyle:String, default : '/images/course.png'},  
     numberLessons : {type: Number, default : 10},
     courseName : {type:String, default: "Lesson name by default"},
     numberNewWords : {type: Number, default: 8},

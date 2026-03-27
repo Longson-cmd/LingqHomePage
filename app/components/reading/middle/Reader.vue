@@ -1,8 +1,6 @@
 <template>
   <div class=" flex flex-col " :style="{height : readerHeight + 'px'}">
 
-
-
     <div class="relative  overflow-hidden flex flex-wrap gap-y-7" ref="prose" 
       @pointerdown.prevent="handlePointerDown"
       @pointermove="handlePointerEnter">
@@ -19,12 +17,12 @@
             :data-end-idx-w-in-s="item['phrase'][item['phrase'].length - 1]['idx_w_in_s']"
             :data-end-p-idx="item['phrase'][item['phrase'].length - 1]['p_idx']">
             <span v-for="(word) in item['phrase']"
-              :class="['inline-flex items-center h-[35px]  px-1', (isActice(word['w_idx']) && isOpenPopup) && 'bg-red-400']"
+              :class="['inline-flex items-center h-[35px]  px-1', (isActice(word['w_idx']) && isOpenPopup) && 'bg-blue-400']"
               v-show="word['visible_in_phrase']">
 
               <span
-                :class="['status-' + word['status'], word['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
-                class="  word-item " :id="`w-${word['w_idx']}`" :data-w-idx="word['w_idx']" :data-s-idx="word['s_idx']"
+                :class="['status-' + word['status'], word['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-600']"
+                class="border border-transparent  word-item " :id="`w-${word['w_idx']}`" :data-w-idx="word['w_idx']" :data-s-idx="word['s_idx']"
                 :data-idx-w-in-s="word['idx_w_in_s']" :data-p-idx="word['p_idx']">
                 {{ word['word'] }}
               </span>
@@ -33,9 +31,9 @@
           </span>
 
           <span v-else
-            :class="['flex  h-[35px]  items-center px-1 -blue-400 ', (isActice(item['w_idx']) && isOpenPopup) && 'bg-red-400']">
+            :class="['flex  h-[35px]  items-center px-1 -blue-400 ', (isActice(item['w_idx']) && isOpenPopup) && 'bg-blue-400']">
             <span :id="`w-${item['w_idx']}`"
-              :class="['status-' + item['status'], 'word-item', item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-300']"
+              :class="['status-' + item['status'], 'border border-transparent word-item', item['status'] === 6 ? 'hover:border-blue-600' : 'hover:border-yellow-600']"
               :data-w-idx="item['w_idx']" :data-s-idx="item['s_idx']" :data-idx-w-in-s="item['idx_w_in_s']"
               :data-p-idx="item['p_idx']">
               {{ item['word'] }}
@@ -98,7 +96,7 @@ const props = defineProps({
   currentValue : {type :Number, default: 1},
   lessonData: {type: Array, default : () => []},
   listSentence : {type: Array, default : () => []},
-  statusTagsMeanings: {type: Array, default: () => []},
+  statusTagsMeanings: {type: Object, default: () => []},
   coreData: {type: Array, default: () => []},
   currentPhraseStatus :{type: Number }
 })
@@ -155,18 +153,6 @@ const {changePageStatus,changePageStatusByKeyborad, moveNextPrevious} = useKeybo
 
 watch( () => props.currentPhraseStatus,  (newVal) => {
   changePageStatus(newVal)
-  // const sleep = (ms) =>
-  // new Promise(resolve => setTimeout(resolve, ms));
-
-  // await sleep(1000);
-  // const res = await $fetch('http://localhost:8000/get_lesson/', {
-  //   method: "GET", 
-  //   params: {lesson_name : 'lesson 0'},
-  //   credentials: "include"
-  // })
-
-  // console.log("Res", res)
-  // lessondata.value = res.lesson_data
 
 })
 /* =========================================================
@@ -184,7 +170,17 @@ const selected = computed(() => {
   if (!startPointer.value || !currentPointer.value) return {text: '', valid: false, error: 'empty'}
 
   // Guard: do not allow cross-sentence selection
-  if (startPointer.value[1] !== currentPointer.value[1]) return {text: '', valid: false, error: 'cross-sentence'}
+  if (startPointer.value[1] !== currentPointer.value[1]) {
+    const realStart = startPointer.value[0] <currentPointer.value[0]? startPointer.value : currentPointer.value
+    const realEnd = startPointer.value[0] <currentPointer.value[0]? currentPointer.value : startPointer.value
+
+    const firstSentenceChuck = props.listSentence[realStart[1]].split(' ').splice(realStart[2]).join(' ')
+    // console.log('first sentence',props.listSentence[realStart[1]].split(' ').splice(realStart[2]).join(' '))
+    const middleSentence = props.listSentence.slice(realStart[1] + 1, realEnd[1]).join(' ')
+    const lastSentenceChuck = props.listSentence[realEnd[1]].split(' ').splice(0, realEnd[2] + 1).join(' ')
+    const text = firstSentenceChuck + ' ' + middleSentence +  " "  + lastSentenceChuck
+    return {text: text, valid: false, error: 'cross-sentence'}
+  }
 
   const a = Math.min(startPointer.value[2], currentPointer.value[2])
   const b = Math.max(startPointer.value[2], currentPointer.value[2])
@@ -193,7 +189,7 @@ const selected = computed(() => {
   const listWordInSentence = sentence.split(' ')
   const selected_phrase = listWordInSentence.slice(a, b + 1)
   const cleaned_selected_phrase = selected_phrase.map( item => cleanWord(item))
-  if (selected_phrase.length > 8) return {text: '', valid: false, error: 'too-long'}
+  if (selected_phrase.length > 8) return {text: cleaned_selected_phrase.join(' '), valid: false, error: 'too-long'}
   return {text: cleaned_selected_phrase.join(' '), valid: true}
 })
 
@@ -267,7 +263,7 @@ const itemFirstAndLastOfPage = computed(() => {
 onMounted(async () => {
   // Ensure pagination is correct on first render
   await updateTotalPages()
-
+  emit('selected', selected.value)
   // Global listeners (remember to remove them on unmount)
   window.addEventListener('resize', updateTotalPages)
   window.addEventListener('pointerup', pointerUp)
@@ -300,7 +296,7 @@ onBeforeUnmount(() => {
 /* .status-4 { @apply underline decoration-dashed decoration-2 underline-offset-4 decoration-gray-500} */
 /* instead of underline */
 .status-4 {
-  @apply border-b border-dashed border-b-gray-300;
+  @apply border-b border-dashed border-b-gray-500;
 }
 
 .status-6 {
@@ -308,7 +304,7 @@ onBeforeUnmount(() => {
 }
 
 .word-item {
-  @apply flex rounded h-[30px] cursor-pointer px-2 items-center border border-transparent
+  @apply flex rounded h-[30px] cursor-pointer px-2 items-center 
 }
 </style>
 

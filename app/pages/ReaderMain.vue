@@ -1,14 +1,14 @@
 <template>
-    <div class="flex flex-col h-screen">
+    <div  class="flex flex-col h-screen">
         <HeaderLing />
-        <div class="flex flex-1 h-full min-h-0  pr-5">
+        <div v-if="!loading" class="flex flex-1 h-full min-h-0  pr-5">
             <div class="flex flex-1 flex-col">
                 <HeaderReader v-model:currentValue="current" v-model:totalValue="total"/>
                 <div ref="mainRef" class="flex-1 min-h-0 flex px-3 ">
                     <button @click="current = Math.max(1, current -1)" :class="(current === 1) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
                         <font-awesome icon="chevron-left" />
                     </button>
-                    <div class="flex-1 min-h-0">
+                    <div class="flex-1 min-h-0 ">
                         <Reader  
                         v-if="boxHeight > 0"
                         :lesson-data="lessondata"
@@ -22,15 +22,17 @@
                         @selected="onSelected"
                         @send-status-from-reader="currentPhraseData.status = $event"
                         />
+
+                        
                     </div>
-                    <button @click="current !== total? (current = Math.min(total, current + 1)): finishLesson()" 
+                    <button @click="current = Math.min(total, current + 1)" 
                     :class="(current === total) && ' hover:bg-transparent '" 
                     class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl ">
                         <!-- <font-awesome :icon="current !==total ? 'chevron-right' : 'fa-check'" /> -->
                         <font-awesome v-if="current !==total" icon="chevron-right" />
-                        <span v-else  class="h-10 w-10 hover:bg-gray-200 rounded-full">
+                        <button v-else @click.prevent.stop="finishLesson()" class="h-10 w-10 hover:bg-gray-200 rounded-full">
                             <font-awesome  icon="fa-check"  class="text-green-500"/>
-                        </span>
+                        </button>
                         
                     </button>
                    
@@ -39,6 +41,7 @@
                     @pointerdown.stop
                     @pointermove.stop
                     @pointerup.stop
+                    :youtube-data="youtubeData"
                 />
             </div>
 
@@ -48,9 +51,15 @@
                     @pointermove.stop
                     @pointerup.stop
                     v-model:sidebar-data="currentPhraseData"
+                    :valid-phrase="validCurrentPhrase"
                     @update-previous="handleUpdatePrevisous"
                 />
 
+        </div>
+    
+        <div v-else class="px-5 py-20 w-1/2  self-center ">
+            <LoadingProgressBar />
+            
         </div>
     </div>
 </template>
@@ -64,11 +73,12 @@ import FooterReader from '~/components/reading/FooterReader.vue';
 import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
-
+import LoadingProgressBar from '~/components/LoadingProgressBar.vue';
 const config = useRuntimeConfig()
 
 const mainRef = ref(null)
 const boxHeight = ref(0)
+const loading = ref(true)
 
 
 const current = ref(1)
@@ -84,7 +94,7 @@ const lessondata = ref( [])
 const listSentence = ref([])
 const core_data = ref([])
 const statusTagsMeanings = ref({})
-const audioURL = ref('')
+const youtubeData = ref({})
 
 
 
@@ -92,9 +102,10 @@ const route = useRoute()
 const lesson_name = computed(() => route.query.lessonName || 'Default lesson')
 const course_name = computed(() => route.query.courseName || 'Quick import')
 const getLesson = async () => {
-    console.log('lesson_name', lesson_name.value)
-    console.log('good luck')
-    const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
+    loading.value = true
+    
+    try {
+        const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
         method : "GET",
         query: {
             lesson_name : lesson_name.value,
@@ -103,12 +114,20 @@ const getLesson = async () => {
         credentials : 'include'
     })
 
-    console.log("print in if got data from backend")
+    
 
     lessondata.value = data.lesson_data ?? []
     listSentence.value = data.list_sentences ?? []
     statusTagsMeanings.value = data.Tags_Meanings ?? {}
     core_data.value = data.core_data?? []
+    youtubeData.value = data.youtube_data?? []
+    }
+
+    catch (error) {
+        console.error(error)
+    }
+    loading.value = false
+
 
     //   console.log("lessondata.value", lessondata.value[1])
     // audioURL.value = data.value.audios?.[0]?.audio_url
@@ -124,6 +143,7 @@ const currentPhraseData = ref({
     global_meanings: [],
     status: 6
 })
+const validCurrentPhrase = ref(true)
 
 
 watch(currentPhraseData, (newVal) => {
@@ -138,19 +158,19 @@ watch(currentPhraseData, (newVal) => {
         "status": newVal.status,
     }
 
-    
-
 }, {deep: true})
 
 
 
 const handleUpdatePrevisous = (data) => {
+
+    // console.log('data', data)
     statusTagsMeanings.value[data.phrase].your_meanings = data.your_meanings
     statusTagsMeanings.value[data.phrase].status = data.status
 }
 
 const onSelected = (data) => {
-  
+    // console.log("Selected is updated")
     currentPhraseData.value = {
         phrase : data.text,
         tags : statusTagsMeanings.value[data.text]?.tags?? [],
@@ -159,6 +179,10 @@ const onSelected = (data) => {
         global_meanings : statusTagsMeanings.value[data.text]?.global_meanings?? [],
         status : statusTagsMeanings.value[data.text]?.status?? 6,
     }
+
+    validCurrentPhrase.value  = data.valid
+
+
 } 
 
 
@@ -179,7 +203,13 @@ const finishLesson = async () => {
             credentials: "include"
         })
 
-        router.push('/HomepageLingQ')
+        router.push({
+            path: '/ReviewVocabs',
+            query: {        
+                courseName: course_name.value,
+                lessonName: lesson_name.value
+            }
+        })
    }
 
    catch(error) {
