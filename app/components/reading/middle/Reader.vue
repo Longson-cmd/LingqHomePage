@@ -148,18 +148,6 @@ const {
 const emitStatus = (keyboard) => {
   emit('sendStatusFromReader', keyboard)
 }
-const {changePageStatus,changePageStatusByKeyborad, moveNextPrevious} = useKeyboard(startPointer,currentPointer, prose, view, core_data, newStatusDict , lessondata, currentPage, totalPage,  emitStatus)
-
-
-watch( () => props.currentPhraseStatus,  (newVal) => {
-  changePageStatus(newVal)
-
-})
-/* =========================================================
-   Local UI State
-========================================================= */
-const popupCoordinates = ref({ x: 0, y: 0, downward: true })
-const currentSentence = ref('')
 
 /* =========================================================
    Derived State (Computed)
@@ -203,6 +191,21 @@ const selected = computed(() => {
 watch(selected, (newVal) => {
     emit('selected', newVal)
 })
+
+const {changePageStatus,changePageStatusByKeyborad, moveNextPrevious} = useKeyboard(startPointer,currentPointer, prose, view, core_data, newStatusDict , lessondata, currentPage, totalPage,  emitStatus, selected)
+
+
+watch( () => props.currentPhraseStatus,  (newVal) => {
+  changePageStatus(newVal)
+
+})
+/* =========================================================
+   Local UI State
+========================================================= */
+const popupCoordinates = ref({ x: 0, y: 0, downward: true })
+const currentSentence = ref('')
+
+
 
 
 /* =========================================================

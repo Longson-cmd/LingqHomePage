@@ -15,20 +15,8 @@
             @click="PreviousCourses">
                 <font-awesome icon="chevron-left" v-show="!isMobile && data.length > numberGrid && indexStart !== 0"/>
             </button>
-            <div v-if="mode === 'course'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                <CourseCard
-                v-for="(item , idx) in visibleData" :key="idx"
-                :course-img-url="item.imgUrl"
-                :number-lessons="item.numberLessons"
-                :course-name="item.courseName"
-                :number-new-words="item.numberNewWords"
-                :number-ling-qs="item.numberLingQs"
-                :number-known-words="item.numberKnownWords"
-                :new-words-percents="item.newWordsPercents"
-                @show-course-infos="emit('showCourseInfos', $event)"
-                />
-            </div>
-            <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+
+            <div v-if="mode === 'lesson'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 <LessonCard
                 v-for="(item , idx) in visibleData" :key="idx"
                 :lesson-img-url="item.imgUrl"
@@ -44,6 +32,20 @@
                 @show-course-infos="emit('showCourseInfos', $event)"
                 />
             </div>
+            <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                <CourseCard
+                v-for="(item , idx) in visibleData" :key="idx"
+                :course-img-url="item.imgUrl"
+                :number-lessons="item.numberLessons"
+                :course-name="item.courseName"
+                :number-new-words="item.numberNewWords"
+                :number-ling-qs="item.numberLingQs"
+                :number-known-words="item.numberKnownWords"
+                :new-words-percents="item.newWordsPercents"
+                @show-course-infos="emit('showCourseInfos', $event)"
+                />
+            </div>
+            
             <button 
             :disabled="indexStart === data.length - numberGrid || data.length <= numberGrid"
             class="w-[12px] md:w-[56px] flex items-center justify-center text-3xl hover:text-4xl "

@@ -52,8 +52,9 @@
                     @pointerup.stop
                     v-model:sidebar-data="currentPhraseData"
                     :valid-phrase="validCurrentPhrase"
-                    @update-previous="handleUpdatePrevisous"
+                    
                 />
+                <!-- @update-previous="handleUpdatePrevisous" -->
 
         </div>
     
@@ -147,9 +148,11 @@ const validCurrentPhrase = ref(true)
 
 
 watch(currentPhraseData, (newVal) => {
+  
+
     if (newVal.phrase.split(" ").length > 1 && newVal.status === 6) return
 
-    if (newVal.phrase.split(" ").length > 1 && newVal.status === 0) { delete statusTagsMeanings.value[newVal.phrase]}
+    if (newVal.phrase.split(" ").length > 1 && newVal.status === 0 || validCurrentPhrase.value === false) { delete statusTagsMeanings.value[newVal.phrase]}
     statusTagsMeanings.value[newVal.phrase] = {
         "tags": newVal.tags,
         "your_meanings": newVal.your_meanings,
@@ -162,12 +165,12 @@ watch(currentPhraseData, (newVal) => {
 
 
 
-const handleUpdatePrevisous = (data) => {
+// const handleUpdatePrevisous = (data) => {
 
-    // console.log('data', data)
-    statusTagsMeanings.value[data.phrase].your_meanings = data.your_meanings
-    statusTagsMeanings.value[data.phrase].status = data.status
-}
+//     // console.log('data', data)
+//     statusTagsMeanings.value[data.phrase].your_meanings = data.your_meanings?? []
+//     statusTagsMeanings.value[data.phrase].status = data.status ?? 1
+// }
 
 const onSelected = (data) => {
     // console.log("Selected is updated")
@@ -177,7 +180,7 @@ const onSelected = (data) => {
         your_meanings : statusTagsMeanings.value[data.text]?.your_meanings?? [],
         global_tags : statusTagsMeanings.value[data.text]?.global_tags?? [],
         global_meanings : statusTagsMeanings.value[data.text]?.global_meanings?? [],
-        status : statusTagsMeanings.value[data.text]?.status?? 6,
+        status : validCurrentPhrase.value ?  statusTagsMeanings.value[data.text]?.status?? 6 : 0,
     }
 
     validCurrentPhrase.value  = data.valid

@@ -2,7 +2,7 @@
 
 
 
-export function useKeyboard( startPointer,currentPointer, prose, view, core_data, newStatusDict , lessondata, currentPage, totalPage,  emitStatus)  {
+export function useKeyboard( startPointer,currentPointer, prose, view, core_data, newStatusDict , lessondata, currentPage, totalPage,  emitStatus, selected)  {
 
 
 const changePageStatus =  () => {
@@ -32,11 +32,15 @@ const changePageStatusByKeyborad = (e) => {
   if (!listKeys.includes(e.key)) return
 
   const newStatus = (e.key === 'x') ? 0 : Number(e.key)
+  if (!selected.value.valid) {
+    console.log('THIS IS AN INVALID ')
+    return
+  }
   emitStatus(newStatus)
-
-  
-  
   changePageStatus()
+
+  console.log('RUN changePageStatus WITH ,', selected.value.text)
+
  
   }
 const moveNextPrevious = (e) => {
