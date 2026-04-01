@@ -3,7 +3,13 @@
   <div class="px-3 py-5 md:px-[56px] bg-gray-50 flex gap-3 items-center flex-wrap">
     <button  @click="moveToOtherPage('library')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'library' ? 'bg-gray-200' : '']" >Library</button>
     <button  @click="moveToOtherPage('playlists')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'playlists' ? 'bg-gray-200' : '']">Playlists</button>
-    <button  @click="moveToOtherPage('vocabulary')" :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'vocabulary' ? 'bg-gray-200' : '']">Vocabulary</button>
+    <!-- nagvigate to Review page -->
+    <NuxtLink  
+    to="/ReviewVocabs"
+    @click="moveToOtherPage('vocabulary')" 
+    :class="['px-[14px] py-[6px] rounded-md text-center font-semibold', currentPage === 'vocabulary' ? 'bg-gray-200' : '']">
+      Vocabulary
+  </NuxtLink>
   </div>
   <div class="w-full pb-5 bg-gray-50 px-3 md:px-[56px] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 lg:gap-3">
     <div class="border  rounded-lg border-gray-300 w-full  lg:w-[250px] flex inline-block">

@@ -84,7 +84,7 @@ const {
   isDraging
 } = useEventDelegation(isOpenPopup)
 
-const {cleanWord} = useConvert()
+const {cleanWord, isValidWord} = useConvert()
 
 
 
@@ -189,6 +189,13 @@ const selected = computed(() => {
   const listWordInSentence = sentence.split(' ')
   const selected_phrase = listWordInSentence.slice(a, b + 1)
   const cleaned_selected_phrase = selected_phrase.map( item => cleanWord(item))
+
+  // check if all words of selected phrase are valid
+  if (!cleaned_selected_phrase.every(word => isValidWord(word))) {
+    return {text: cleaned_selected_phrase.join(' '), valid: false, error: 'invalid-word'}
+  }
+
+
   if (selected_phrase.length > 8) return {text: cleaned_selected_phrase.join(' '), valid: false, error: 'too-long'}
   return {text: cleaned_selected_phrase.join(' '), valid: true}
 })
@@ -307,4 +314,3 @@ onBeforeUnmount(() => {
   @apply flex rounded h-[30px] cursor-pointer px-2 items-center 
 }
 </style>
-

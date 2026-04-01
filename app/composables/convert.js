@@ -36,9 +36,15 @@ const cleanWord = (word)=> {
   return w;
 }
 
+// check if word only contains alphabets, or '-' or ''', and it has any alphabet in it.
+const isValidWord = (word) => {
+  return /^[a-zA-Z'-]+$/.test(word) && /[a-zA-Z]/.test(word);
+}
+
   return {
     minutesSeconds,
     seconds,
-    cleanWord
+    cleanWord,
+    isValidWord
   }
 }

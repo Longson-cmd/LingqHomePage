@@ -121,28 +121,6 @@ const config = useRuntimeConfig()
 
 const props = defineProps({
     sidebarData: {type:Object},
-    // sidebarData: {type : Object, default: () => ({
-    //         phrase: 'breakfast',
-    //          tags: [
-    //             "demo"
-    //         ],
-    //         your_meanings: [
-    //             "bữa sáng"
-    //         ],
-    //         global_tags: [
-    //             "v",
-    //             "n",
-    //             "s", 
-    //             'r'
-    //         ],
-    //         global_meanings: [
-    //             "bữa",
-    //             "sáng",
-    //             "ăn",
-    //             "điểm tâm"
-    //         ],
-    //         status: 1
-    //     })},
 
     validPhrase: {type: Boolean, default: false}
 })
@@ -222,7 +200,8 @@ watch(() => props.sidebarData, async (newVal, oldVal) => {
     if (
         oldVal.phrase !== newVal.phrase &&
         oldVal.status === 6 &&
-        oldVal.phrase.split(' ').length === 1
+        oldVal.phrase.split(' ').length === 1 &&
+        validPhrase.value === true
     ) {
         const translated = await onTranslate(oldVal.phrase)
 

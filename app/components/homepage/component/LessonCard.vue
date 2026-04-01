@@ -8,6 +8,7 @@
         }
         
     }"
+        @click="console.log('Link clicked')"
         :preserve-scroll="true"
         class=" z-10 mb-3 bg-white min-h-64 max-w-80 block border w-full rounded-2xl overflow-hidden shadow-md group shrink-0"
         :class="showUnder && 'border-gray-300'"> 

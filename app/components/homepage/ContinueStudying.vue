@@ -153,6 +153,7 @@ const changeMode = async (type) => {
         data.value = dataLessonCards.value
     }
     else if (type === "course") {
+        console.log("change to course mode")
         if (dataCourseCards.value.length === 0) await getCourseCardsData()
         data.value = dataCourseCards.value
     }
