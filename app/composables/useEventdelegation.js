@@ -17,7 +17,7 @@ const onPointerdown = (indexWord, indexSentence, indexWordInSentence, indexPara)
   startPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
   currentPointer.value = [indexWord, indexSentence, indexWordInSentence, indexPara]
 
-  // console.log('startPointer', startPointer.value[0])
+  console.log('startPointer', startPointer.value[0])
 }
 
 const onPointerEnter = (indexWord, indexSentence, indexWordInSentence, indexPara) => {

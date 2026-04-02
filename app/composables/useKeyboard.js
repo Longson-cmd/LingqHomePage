@@ -33,14 +33,10 @@ const changePageStatusByKeyborad = (e) => {
 
   const newStatus = (e.key === 'x') ? 0 : Number(e.key)
   if (!selected.value.valid) {
-    console.log('THIS IS AN INVALID ')
     return
   }
   emitStatus(newStatus)
   changePageStatus()
-
-  console.log('RUN changePageStatus WITH ,', selected.value.text)
-
  
   }
 const moveNextPrevious = (e) => {

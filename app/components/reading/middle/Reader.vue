@@ -173,6 +173,8 @@ const selected = computed(() => {
   const a = Math.min(startPointer.value[2], currentPointer.value[2])
   const b = Math.max(startPointer.value[2], currentPointer.value[2])
 
+  // console.log('')
+
   const sentence = props.listSentence[currentPointer.value[1]]
   const listWordInSentence = sentence.split(' ')
   const selected_phrase = listWordInSentence.slice(a, b + 1)

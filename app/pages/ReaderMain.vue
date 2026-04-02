@@ -136,15 +136,17 @@ const getLesson = async () => {
     //   : ''
 }
 
+const validCurrentPhrase = ref(true)
+
 const currentPhraseData = ref({
     phrase: 'breakfast',
     tags: ["demo"],
     your_meanings: [],
     global_tags : [],
     global_meanings: [],
-    status: 6
+    status: validCurrentPhrase.value ? 2 : 0,
 })
-const validCurrentPhrase = ref(true)
+
 
 
 watch(currentPhraseData, (newVal) => {
@@ -152,7 +154,7 @@ watch(currentPhraseData, (newVal) => {
 
     if (newVal.phrase.split(" ").length > 1 && newVal.status === 6) return
 
-    if (newVal.phrase.split(" ").length > 1 && newVal.status === 0 || validCurrentPhrase.value === false) { delete statusTagsMeanings.value[newVal.phrase]}
+    if (newVal.phrase.split(" ").length > 1 && newVal.status === 0 ) { delete statusTagsMeanings.value[newVal.phrase]}
     statusTagsMeanings.value[newVal.phrase] = {
         "tags": newVal.tags,
         "your_meanings": newVal.your_meanings,
@@ -173,7 +175,8 @@ watch(currentPhraseData, (newVal) => {
 // }
 
 const onSelected = (data) => {
-    // console.log("Selected is updated")
+
+    validCurrentPhrase.value  = data.valid
     currentPhraseData.value = {
         phrase : data.text,
         tags : statusTagsMeanings.value[data.text]?.tags?? [],
@@ -182,9 +185,6 @@ const onSelected = (data) => {
         global_meanings : statusTagsMeanings.value[data.text]?.global_meanings?? [],
         status : validCurrentPhrase.value ?  statusTagsMeanings.value[data.text]?.status?? 6 : 0,
     }
-
-    validCurrentPhrase.value  = data.valid
-
 
 } 
 

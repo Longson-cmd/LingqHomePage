@@ -25,15 +25,15 @@
         <img src="/icons/header/notifications.svg" alt="notifications" class="h-4 w-4 "/>
         <span>Notifications</span>
       </NuxtLink>
-      <NuxtLink to="settings" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
+      <NuxtLink to="" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
         <img src="/icons/header/settings.svg" alt="settings" class="h-4 w-4 "/>
         <span>Settings</span>
       </NuxtLink>
-      <NuxtLink to="contact" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
+      <NuxtLink to="" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
         <img src="/icons/header/contact.svg" alt="contact" />
         <span>Contact</span>
       </NuxtLink>
-      <NuxtLink to="lingapp" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
+      <NuxtLink to="/login" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
         <img src="/icons/header/logout.svg" alt="logout" class="h-4 w-4 ml-0.5"/>
         <span>Log out</span>
       </NuxtLink>
