@@ -90,6 +90,25 @@ const handleEmit = () => {
 :deep(input[type="range"]) {
   -webkit-appearance: none;      /* Remove default Chrome/Safari styling */
   appearance: none;              /* Remove default Firefox styling */
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+:deep(input[type="range"]:focus),
+:deep(input[type="range"]:focus-visible) {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Firefox keyboard focus artifacts on range */
+:deep(input[type="range"]::-moz-focus-outer) {
+  border: 0;
+}
+
+:deep(input[type="range"]:-moz-focusring) {
+  outline: none;
 }
 
 

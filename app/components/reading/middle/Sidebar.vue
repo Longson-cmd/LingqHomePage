@@ -121,28 +121,6 @@ const config = useRuntimeConfig()
 
 const props = defineProps({
     sidebarData: {type:Object},
-    // sidebarData: {type : Object, default: () => ({
-    //         phrase: 'breakfast',
-    //          tags: [
-    //             "demo"
-    //         ],
-    //         your_meanings: [
-    //             "bữa sáng"
-    //         ],
-    //         global_tags: [
-    //             "v",
-    //             "n",
-    //             "s", 
-    //             'r'
-    //         ],
-    //         global_meanings: [
-    //             "bữa",
-    //             "sáng",
-    //             "ăn",
-    //             "điểm tâm"
-    //         ],
-    //         status: 1
-    //     })},
 
     validPhrase: {type: Boolean, default: false}
 })
@@ -407,14 +385,14 @@ const onKeydown = async (e) => {
         focusTranslationIndex.value = findNewIndex(focusTranslationIndex.value - 1)
     }
 
-    if (e.key === 'ArrowLeft' ) {
+    if (e.key === 'ArrowLeft' && !(e.key === 'ArrowLeft' && e.shiftKey)) {
         setTimeout(() => {
             speakEnglish(currentPhraseData.value.phrase)
         }, 20) 
         
     }
 
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' && !(e.key === 'ArrowRight' && e.shiftKey)) {
         
         setTimeout(() => {
             speakEnglish(currentPhraseData.value.phrase)

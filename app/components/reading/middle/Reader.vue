@@ -127,12 +127,19 @@ const currentPage = computed({
   set: (v) => emit('update:currentValue', v)
 })
 
-watch(currentPage,  (newVal) => {
+// run changePageStatus only when currentPage and newStatusDict chanage, but scroller always run when currentPage change
+
+watch(currentPage, (newVal) => {
     scrollNewPage(newVal);
 
-    changePageStatus()
-
+    // changePageStatus()
 })
+
+watch([currentPage, newStatusDict], () => {
+  changePageStatus()
+})
+
+
 
 const totalPage = ref(1)
 

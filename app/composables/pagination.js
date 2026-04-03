@@ -45,14 +45,14 @@ const updateTotalPages = async () => {
     // console.log('totalPage ', totalPage.value)
     currentPage.value = Math.min( currentPage.value, totalPage.value)
 
-    proseEl.scrollTo({top: (currentPage.value -1) * view.value, behavior: 'smooth'})
+    proseEl.scrollTo({top: (currentPage.value -1) * view.value})
     sendPages()
 }
 
 const scrollNewPage = (n) => {
     const target = Math.min(totalPage.value, Math.max(1, n))
 
-    prose.value.scrollTo({top : (target -1 ) * view.value, behavior: "smooth"})
+    prose.value.scrollTo({top : (target -1 ) * view.value})
 }
 
 

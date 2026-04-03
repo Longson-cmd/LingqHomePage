@@ -5,7 +5,12 @@
             <div class="flex flex-1 flex-col">
                 <HeaderReader v-model:currentValue="current" v-model:totalValue="total"/>
                 <div ref="mainRef" class="flex-1 min-h-0 flex px-3 ">
-                    <button @click="current = Math.max(1, current -1)" :class="(current === 1) && 'transparent text-transparent pointer-events-none'" class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl">
+                    <button
+                        type="button"
+                        @click="current = Math.max(1, current -1); $event.currentTarget.blur()"
+                        :class="(current === 1) && 'transparent text-transparent pointer-events-none'"
+                        class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl"
+                    >
                         <font-awesome icon="chevron-left" />
                     </button>
                     <div class="flex-1 min-h-0 ">
@@ -25,15 +30,21 @@
 
                         
                     </div>
-                    <button @click="current = Math.min(total, current + 1)" 
-                    :class="(current === total) && ' hover:bg-transparent '" 
-                    class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl ">
-                        <!-- <font-awesome :icon="current !==total ? 'chevron-right' : 'fa-check'" /> -->
-                        <font-awesome v-if="current !==total" icon="chevron-right" />
-                        <button v-else @click.prevent.stop="finishLesson()" class="h-10 w-10 hover:bg-gray-200 rounded-full">
-                            <font-awesome  icon="fa-check"  class="text-green-500"/>
-                        </button>
-                        
+                    <button
+                        v-if="current !== total"
+                        type="button"
+                        @click="current = Math.min(total, current + 1); $event.currentTarget.blur()"
+                        class=" hover:bg-gray-300 px-2 my-20 text-2xl rounded-xl "
+                    >
+                        <font-awesome icon="chevron-right" />
+                    </button>
+                    <button
+                        v-else
+                        type="button"
+                        @click.prevent.stop="finishLesson(); $event.currentTarget.blur()"
+                        class="h-10 w-10 my-20 hover:bg-gray-200 rounded-full"
+                    >
+                        <font-awesome icon="fa-check" class="text-green-500"/>
                     </button>
                    
                 </div>

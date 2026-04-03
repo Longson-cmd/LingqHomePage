@@ -54,7 +54,8 @@ const moveNextPrevious = (e) => {
       currentPage.value = Math.min(currentPage.value + 1, totalPage.value)
     }
 
-    if (e.key === 'ArrowRight' ) {
+    // 
+    if (e.key === 'ArrowRight' && !(e.key === 'ArrowRight' && e.shiftKey)) {
 
       if (!currentPointer.value || !startPointer.value) return
       const wordIndex = currentPointer.value[0]
@@ -88,7 +89,7 @@ const moveNextPrevious = (e) => {
       // changePageStatus()
       
     }
-    if (e.key === 'ArrowLeft' ) {
+    if (e.key === 'ArrowLeft' && !(e.key === 'ArrowLeft' && e.shiftKey)) {
 
       if (!currentPointer.value || !startPointer.value) return
       const wordIndex = startPointer.value[0]
