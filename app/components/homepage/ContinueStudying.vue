@@ -1,5 +1,5 @@
 <template>
-    <div v-show="data.length !== 0" class="flex flex-col py-2 bg-gray-50">
+    <div v-if="data.length !== 0" class="flex flex-col py-2 bg-gray-50">
         <div class="flex items-center  flex-gap flex-col md:flex-row px-3 md:px-[56px] mb-2">
             <span class="font-semibold mr-3 self-start">Continue Studying <font-awesome icon='play' class="text-gray-300 text-sm"></font-awesome></span>
             <div class="flex gap-3 self-center">

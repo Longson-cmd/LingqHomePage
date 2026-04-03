@@ -13,8 +13,12 @@ const changePageStatus =  () => {
   const firstEl = Array.from(items).find(el => el.offsetTop >= scrollTop)
   const lastEl = Array.from(items).findLast(el => el.offsetTop < scrollBottom)
 
-  const indexParaStart = firstEl.dataset.pIdx 
-  const indexParaEnd = lastEl.dataset.pIdx
+  const indexParaStart = Number(firstEl?.dataset?.pIdx)
+  const indexParaEnd = Number(lastEl?.dataset?.pIdx)
+
+  if (!Number.isInteger(indexParaStart) || !Number.isInteger(indexParaEnd) || indexParaEnd < indexParaStart) {
+    return
+  }
 
   // console.log(" seven stauts in newStatusDict ", newStatusDict.value["seven"])
 

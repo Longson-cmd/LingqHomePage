@@ -129,11 +129,6 @@ const getLesson = async () => {
     }
     loading.value = false
 
-
-    //   console.log("lessondata.value", lessondata.value[1])
-    // audioURL.value = data.value.audios?.[0]?.audio_url
-    //   ? `http://127.0.0.1:8000${data.value.audios[0].audio_url}`
-    //   : ''
 }
 
 const validCurrentPhrase = ref(true)

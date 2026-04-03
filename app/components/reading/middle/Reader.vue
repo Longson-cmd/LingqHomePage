@@ -101,6 +101,11 @@ const props = defineProps({
   currentPhraseStatus :{type: Number }
 })
 const lessondata = ref(props.lessonData)
+
+// print lessondata 
+console.log("length of lessondata.value", lessondata.value.length)
+
+
 const core_data = props.coreData
 
 const newStatusDict = computed(() => {

@@ -11,8 +11,6 @@
       <ContinueStudying :new-lesson-data="newLessonData" @show-course-infos="showCourse" />
       <Contents v-for="(content, idx) in listContents" :key="idx" :content-name="content"
         @add-to-continuing="newLessonData = $event" @show-course-infos="showCourse" />
-
-
     </div>
   </div>
 

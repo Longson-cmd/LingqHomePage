@@ -55,9 +55,9 @@
                         </div>
                     </div>
                     
-                    <button @click="prevPage" :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
+                    <button type="button" @click="prevPage" @keydown.enter.prevent @keyup.enter.prevent :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
                         <span class="bg-[#0B1B32] h-8 hover:bg-black text-white px-3 py-1 rounded-lg">{{ currentPage }}/{{ totalPages }}</span>
-                    <button @click="nextPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
+                    <button type="button" @click="nextPage" @keydown.enter.prevent @keyup.enter.prevent :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
                 </div>
             </div>
     
@@ -81,9 +81,9 @@
             </div>
            
             <div v-if="isLoading === false && listVisibleData.length === pageSize" class="self-end flex items-center  h-8 gap-1">
-                     <button @click="prevPage" :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
+                     <button type="button" @click="prevPage" @keydown.enter.prevent @keyup.enter.prevent :disabled="hasPreviousPage  === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-left' class="text-blue-500"/></button>
                         <span class="bg-[#0B1B32] h-8 hover:bg-black text-white px-3 py-1 rounded-lg">{{ currentPage }}/{{ totalPages }}</span>
-                    <button @click="nextPage" :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
+                    <button type="button" @click="nextPage" @keydown.enter.prevent @keyup.enter.prevent :disabled="hasNextPage === false" class='p-1 rounded-md hover:bg-gray-200'><font-awesome icon='chevron-right' class="text-blue-500"/></button>
                 </div>
             </div>
     </div>

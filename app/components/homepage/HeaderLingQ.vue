@@ -21,7 +21,7 @@
 
 
     <div  v-if="isOpen" class="absolute w-full top-full mt-2  text-lg gap-1 md:hidden">
-      <NuxtLink to="notifications" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
+      <NuxtLink to="" class="w-full inline-flex hover:bg-gray-200 gap-2 px-2 py-3 h-12 items-center">
         <img src="/icons/header/notifications.svg" alt="notifications" class="h-4 w-4 "/>
         <span>Notifications</span>
       </NuxtLink>

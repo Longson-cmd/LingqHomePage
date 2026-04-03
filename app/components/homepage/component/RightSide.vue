@@ -63,14 +63,14 @@
       </button>
 
       <div v-if="openLanguages" class="absolute bg-white border rounded-2xl mt-3 w-72  text-sm px-2 py-1 flex flex-col gap-1 font-medium">
-        <NuxtLink to="/chinese" class="flex justify-between hover:bg-gray-200 py-2 px-1 rounded-lg">
+        <NuxtLink to="/" class="flex justify-between hover:bg-gray-200 py-2 px-1 rounded-lg">
           <div class="inline-flex gap-2">
             <img src="/images/China.png" alt="China flag" class="h-5 w-5 rounded-full"/>
             <span>Chinese</span>
           </div>
           <span >(7340)</span>
         </NuxtLink>
-        <NuxtLink to="/chinese" class="flex justify-between hover:bg-gray-200 py-2 px-1 rounded-lg">
+        <NuxtLink to="/" class="flex justify-between hover:bg-gray-200 py-2 px-1 rounded-lg">
           <div class="inline-flex gap-2">
             <img src="/images/France.png" alt="French flag" class="h-5 w-5 rounded-full"/>
             <span>France</span>
@@ -109,12 +109,12 @@
           <span>90</span>
         </button>
 
-        <NuxtLink to="/settings" class="flex w-full px-2 py-4 rounded-lg justify-start h-5 items-center gap-2 hover:bg-gray-200">
+        <NuxtLink to="" class="flex w-full px-2 py-4 rounded-lg justify-start h-5 items-center gap-2 hover:bg-gray-200">
            <img src="/icons/header/settings.svg" alt="settings" class="h-4"/>
            <span>Settings</span>
         </NuxtLink>
 
-        <NuxtLink to="/settings" class="flex w-full px-2 py-4 rounded-lg justify-start h-5 items-center gap-2 hover:bg-gray-200">
+        <NuxtLink to="" class="flex w-full px-2 py-4 rounded-lg justify-start h-5 items-center gap-2 hover:bg-gray-200">
            <img src="/icons/header/logout.svg" alt="notificaitons" class="h-4"/>
            <span>Log out</span>
         </NuxtLink>

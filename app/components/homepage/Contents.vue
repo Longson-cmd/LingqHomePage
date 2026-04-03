@@ -16,35 +16,37 @@
                 <font-awesome icon="chevron-left" v-show="!isMobile && data.length > numberGrid && indexStart !== 0"/>
             </button>
 
-            <div v-if="mode === 'lesson'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                <LessonCard
-                v-for="(item , idx) in visibleData" :key="idx"
-                :lesson-img-url="item.imgUrl"
-                :lesson-number="item.lessonNumber"
-                :lesson-name="item.lessonName"
-                :number-new-words="item.numberNewWords"
-                :number-ling-qs="item.numberLingQs"
-                :number-known-words="item.numberKnownWords"
-                :new-words-percents="item.newWordsPercents"
-                :continuing-lesson="false"
-                :builtin-lesson="item.builtinLesson ?? false"
-                @add-to-continuting="emit('addToContinuing', $event)"
-                @show-course-infos="emit('showCourseInfos', $event)"
-                />
-            </div>
-            <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                <CourseCard
-                v-for="(item , idx) in visibleData" :key="idx"
-                :course-img-url="item.imgUrl"
-                :number-lessons="item.numberLessons"
-                :course-name="item.courseName"
-                :number-new-words="item.numberNewWords"
-                :number-ling-qs="item.numberLingQs"
-                :number-known-words="item.numberKnownWords"
-                :new-words-percents="item.newWordsPercents"
-                @show-course-infos="emit('showCourseInfos', $event)"
-                />
-            </div>
+            <ClientOnly>
+                <div v-if="mode === 'lesson'" class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <LessonCard
+                    v-for="(item , idx) in visibleData" :key="idx"
+                    :lesson-img-url="item.imgUrl"
+                    :lesson-number="item.lessonNumber"
+                    :lesson-name="item.lessonName"
+                    :number-new-words="item.numberNewWords"
+                    :number-ling-qs="item.numberLingQs"
+                    :number-known-words="item.numberKnownWords"
+                    :new-words-percents="item.newWordsPercents"
+                    :continuing-lesson="false"
+                    :builtin-lesson="item.builtinLesson ?? false"
+                    @add-to-continuting="emit('addToContinuing', $event)"
+                    @show-course-infos="emit('showCourseInfos', $event)"
+                    />
+                </div>
+                <div v-else class=" w-full flex flex-row overflow-x-auto gap-x-2 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <CourseCard
+                    v-for="(item , idx) in visibleData" :key="idx"
+                    :course-img-url="item.imgUrl"
+                    :number-lessons="item.numberLessons"
+                    :course-name="item.courseName"
+                    :number-new-words="item.numberNewWords"
+                    :number-ling-qs="item.numberLingQs"
+                    :number-known-words="item.numberKnownWords"
+                    :new-words-percents="item.newWordsPercents"
+                    @show-course-infos="emit('showCourseInfos', $event)"
+                    />
+                </div>
+            </ClientOnly>
             
             <button 
             :disabled="indexStart === data.length - numberGrid || data.length <= numberGrid"
@@ -62,10 +64,11 @@ const config = useRuntimeConfig()
 
 import {ref, computed, watch} from 'vue'
 import { useBreakpoints } from '@vueuse/core';
-// import CourseCard from './homepage/component/CourseCard.vue';
-// import LessonCard from './homepage/component/LessonCard.vue';
+
 import CourseCard from './component/CourseCard.vue';
 import LessonCard from './component/LessonCard.vue';
+
+
 const {dataLessonCardsBuitin, dataCourseCardsBuiltin}  = useDataLessonCard()
 
 const props = defineProps({
