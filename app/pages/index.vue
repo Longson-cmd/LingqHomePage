@@ -39,7 +39,7 @@
 
       <span class="text-center text-sm">
         Don't have an account?
-        <NuxtLink to="/Signup" class="text-blue-500 hover:underline">Sign Up</NuxtLink>
+        <NuxtLink to="/signup" class="text-blue-500 hover:underline">Sign Up</NuxtLink>
       </span>
     </div>
   </div>

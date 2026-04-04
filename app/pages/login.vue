@@ -34,7 +34,7 @@
 
       <span class="text-center text-sm">
         Don't have an account?
-        <NuxtLink to="/Signup" class="text-blue-500 hover:underline">Sign Up</NuxtLink>
+        <NuxtLink to="/signup" class="text-blue-500 hover:underline">Sign Up</NuxtLink>
       </span>
     </div>
   </div>
@@ -56,7 +56,7 @@ const handleSubmit = async () => {
   errMessage.value = "";
 
   try {
-    await $fetch("http://localhost:8000/login/", {
+    await $fetch(`${config.public.apiBase}/login/`, {
       method: "POST",
       body: {
         email: email.value,
@@ -66,7 +66,7 @@ const handleSubmit = async () => {
     });
 
     alert("Login successfully!");
-    router.push("/HomePage");
+    router.push("/HomepageLingQ");
   } catch (error) {
     console.error("There is an error:", error);
     errMessage.value =

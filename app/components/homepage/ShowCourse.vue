@@ -188,18 +188,4 @@ const numberUniqueWords = computed(() => props.dataCourse.numberUniqueWords)
 </script>
 
 
-i want to switch from git v3 branch to main brach, and change all of of main branch to v3 branch, then push to remote repository. Here are the steps you can follow:
-1. First, make sure you have committed all your changes in the v3 branch. You can use the following commands to check the status and commit any changes:
-```bash
-git status
-git add .
-git commit -m "Your commit message"
-```
-2. Next, switch to the main branch using the following command:
-```bash
-git checkout main
-```
-3. Now, you need to merge the changes from the v3 branch into the main branch. You can do this using the following command:
-```bash
-git merge v3
-```
+
