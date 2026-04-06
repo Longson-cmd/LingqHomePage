@@ -43,10 +43,10 @@
 
       </div>
 
-
+<!-- 
       <div :style="{ height: remaining + 'px' }">
         <span>selected : {{selected.text}}</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- <div class="fixed inset-0 pointer-events-none z-10">

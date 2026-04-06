@@ -62,7 +62,7 @@
         <font-awesome icon="chevron-down"/>
       </button>
 
-      <div v-if="openLanguages" class="absolute bg-white border rounded-2xl mt-3 w-72  text-sm px-2 py-1 flex flex-col gap-1 font-medium">
+      <div v-if="openLanguages" class="absolute right-0 bg-white border rounded-2xl mt-3 w-72  text-sm px-2 py-1 flex flex-col gap-1 font-medium">
         <NuxtLink to="/" class="flex justify-between hover:bg-gray-200 py-2 px-1 rounded-lg">
           <div class="inline-flex gap-2">
             <img src="/images/China.png" alt="China flag" class="h-5 w-5 rounded-full"/>

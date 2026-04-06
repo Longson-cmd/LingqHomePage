@@ -42,7 +42,7 @@
                         v-else
                         type="button"
                         @click.prevent.stop="finishLesson(); $event.currentTarget.blur()"
-                        class="h-10 w-10 my-20 hover:bg-gray-200 rounded-full"
+                        class="self-center h-10 w-10 my-20 hover:bg-gray-200 rounded-full"
                     >
                         <font-awesome icon="fa-check" class="text-green-500"/>
                     </button>
@@ -196,7 +196,9 @@ const onSelected = (data) => {
 
 
 const router = useRouter()
+const {getCsrfToken} = useCsrf()
 const finishLesson = async () => {
+    loading.value = true
     
     const statusDict = {}
     const listKeys = Object.keys(statusTagsMeanings.value)
@@ -209,7 +211,10 @@ const finishLesson = async () => {
         await $fetch(`${config.public.apiBase}/finish_lesson/`, {
             method: "PUT", 
             body: statusDict,
-            credentials: "include"
+            credentials: "include",
+                headers: {
+                    "X-CSRFToken": getCsrfToken(),
+                }
         })
 
         router.push({
