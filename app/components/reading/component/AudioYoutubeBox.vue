@@ -139,6 +139,10 @@ onMounted( async () => {
     events: {
       onReady: () => {
         duration.value = player.getDuration ()
+
+        const startTime = props.youtubeData.youtube_start_time?? 0
+        player.seekTo(startTime, true)
+        player.pauseVideo()
       },
 
       onStateChange: handleStateChange

@@ -122,7 +122,7 @@ const deleteCourse = async () => {
 
     catch (error) {
         const errMessage = error?.data?.message?? "Can't delete this course"
-        console.log('errMessage', errMessage)
+       
         alert(errMessage)
     }
 }

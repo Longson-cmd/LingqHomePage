@@ -102,9 +102,6 @@ const props = defineProps({
 })
 const lessondata = ref(props.lessonData)
 
-// print lessondata 
-console.log("length of lessondata.value", lessondata.value.length)
-
 
 const core_data = props.coreData
 
@@ -175,7 +172,7 @@ const selected = computed(() => {
     const realEnd = startPointer.value[0] <currentPointer.value[0]? currentPointer.value : startPointer.value
 
     const firstSentenceChuck = props.listSentence[realStart[1]].split(' ').splice(realStart[2]).join(' ')
-    // console.log('first sentence',props.listSentence[realStart[1]].split(' ').splice(realStart[2]).join(' '))
+
     const middleSentence = props.listSentence.slice(realStart[1] + 1, realEnd[1]).join(' ')
     const lastSentenceChuck = props.listSentence[realEnd[1]].split(' ').splice(0, realEnd[2] + 1).join(' ')
     const text = firstSentenceChuck + ' ' + middleSentence +  " "  + lastSentenceChuck
@@ -185,7 +182,6 @@ const selected = computed(() => {
   const a = Math.min(startPointer.value[2], currentPointer.value[2])
   const b = Math.max(startPointer.value[2], currentPointer.value[2])
 
-  // console.log('')
 
   const sentence = props.listSentence[currentPointer.value[1]]
   const listWordInSentence = sentence.split(' ')
