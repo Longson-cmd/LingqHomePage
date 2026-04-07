@@ -218,6 +218,8 @@ const playAudio = () => {
 
 // this funtionc is needed because 'seekTo' tend to play youtube video
 const keepIsPlayingState = () => {
+    if (!player) return
+
     if (isPlaying.value) {
      player.playVideo()
     }
@@ -284,6 +286,9 @@ let startTop = 0
 
 
 const startDragging = (e) => {
+    if (!boxRef.value) return
+    if (isDragging.value) return
+
     isDragging.value = true
 
     startLeft = boxRef.value.getBoundingClientRect().left
@@ -301,8 +306,14 @@ const startDragging = (e) => {
 const handleDragging = (e) => {
 
     if (!isDragging.value) return
-    const w = boxRef.value.getBoundingClientRect().width 
-    const h = boxRef.value.getBoundingClientRect().height 
+    if (!boxRef.value) {
+      handlePointerUp()
+      return
+    }
+
+    const boxRect = boxRef.value.getBoundingClientRect()
+    const w = boxRect.width 
+    const h = boxRect.height 
 
     const newLeft = startLeft + e.clientX - startX
     const newTop = startTop + e.clientY - startY
@@ -318,7 +329,7 @@ const handlePointerUp = () => {
 
 
 onBeforeUnmount(() => {
-
+  handlePointerUp()
   stopTracking();
   player?.destroy?.()
   player = null
