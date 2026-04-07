@@ -89,10 +89,10 @@ const props = defineProps({
     youtubeData : {type : Object}
 })
 
-console.log('youtubeData', props.youtubeData)
+// console.log('youtubeData', props.youtubeData)
 
 const currentTime = ref(props.youtubeData.youtube_start_time?? 0)
-const duration = ref(props.youtubeData.youtube_duration?? 100)
+const duration = ref(900)
 const isPlaying = ref(false)
 const isUserSeeking = ref(false)
 const isLoop = ref(false)
