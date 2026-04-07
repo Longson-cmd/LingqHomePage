@@ -52,7 +52,7 @@ import {ref} from 'vue'
 import Spiner from './Spiner.vue';
 const config = useRuntimeConfig()
 const router = useRouter()
-const youtubeUrl = ref("")
+const youtubeUrl = ref("https://www.youtube.com/watch?v=d9NZS2P_Va4")
 
 const emit = defineEmits(["send-message"])
 
