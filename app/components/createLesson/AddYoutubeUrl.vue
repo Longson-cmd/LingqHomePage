@@ -24,7 +24,7 @@
 
 <script setup>
 import {ref} from 'vue'
-const youtubeUrl = ref("")
+const youtubeUrl = ref("https://www.youtube.com/watch?v=d9NZS2P_Va4")
 
 const emit = defineEmits(['sendYoutubeUrl', 'closeYoutubeUrlBox'])
 

@@ -121,7 +121,7 @@ const addNewCouse = (data) => {
 }
 
 const loading = ref(false)
-const youtubeUrl = ref("")
+const youtubeUrl = ref("https://www.youtube.com/watch?v=d9NZS2P_Va4")
 
 const idxCourse = ref(-1)
 const openSelectCourse = ref(false)

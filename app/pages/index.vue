@@ -83,3 +83,11 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
+
+<!-- ssh -i "C:\Users\PC\.ssh\lingq-key.pem" ec2-user@ec2-3-26-146-123.ap-southeast-2.compute.amazonaws.com -->
+<!-- export NUXT_PUBLIC_API_BASE="http://3.26.146.123" -->
+
+<!-- sudo ss -lntp | grep ':3000'
+kill 225842 -->
+<!-- nohup npm run dev -- --host 0.0.0.0 --port 3000 > ~/frontend.log 2>&1 & -->
