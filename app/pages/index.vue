@@ -72,7 +72,7 @@ const handleSubmit = async () => {
       credentials: "include",
     });
 
-    alert("Login successfully!");
+    // alert("Login successfully!");
     await navigateTo('/HomepageLingQ')
   } catch (error) {
     console.error("There is an error:", error);

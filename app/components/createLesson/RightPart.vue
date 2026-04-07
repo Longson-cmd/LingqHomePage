@@ -126,7 +126,7 @@ import { ref , watch} from 'vue'
 
 const { minutesSeconds, seconds } = useConvert()
 
-const youtubeUrl = ref("")
+const youtubeUrl = ref("https://www.youtube.com/watch?v=d9NZS2P_Va4")
 const openAddYoutubeUrl = ref(false)
 const inputYoutube = ref("")
 const showWarning = ref(false)
