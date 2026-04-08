@@ -121,7 +121,7 @@ const getLessonCardsData = async () => {
 const getCourseCardsData = async () => {
 
     try {
-        const dataBackend = await $fetch(`${config.public.apiBase}/get_data_courses_cards/`, {
+        const dataBackend = await $fetch(`/api/get_data_courses_cards/`, {
         method: "GET", 
         query: {
             page : courseCurrentPage.value
