@@ -48,11 +48,7 @@
 <script setup>
 
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
-const config = useRuntimeConfig()
-
-const router = useRouter();
 const email = ref("");
 const password = ref("");
 const errMessage = ref("");
@@ -63,7 +59,7 @@ const handleSubmit = async () => {
   errMessage.value = "";
 
   try {
-    await $fetch(`${config.public.apiBase}/login/`, {
+    await $fetch("/api/login/", {
       method: "POST",
       body: {
         email: email.value,
