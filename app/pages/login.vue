@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -56,7 +56,7 @@ const handleSubmit = async () => {
   errMessage.value = "";
 
   try {
-    await $fetch(`${config.public.apiBase}/login/`, {
+    await $fetch(`/api/login/`, {
       method: "POST",
       body: {
         email: email.value,
