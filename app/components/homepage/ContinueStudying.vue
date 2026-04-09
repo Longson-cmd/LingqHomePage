@@ -93,7 +93,7 @@ const emit = defineEmits(['showCourseInfos'])
 const getLessonCardsData = async () => {
 
     try {
-        const dataBackend = await $fetch(`${config.public.apiBase}/get_data_lessons_cards/`, {
+        const dataBackend = await $fetch(`/api/get_data_lessons_cards/`, {
         method: "GET", 
         query: {
             page : lessonCurrentPage.value
