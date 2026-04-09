@@ -13,7 +13,7 @@
         :class="showUnder && 'border-gray-300'"> 
         <!-- UPPER   -->
         <div class=" relative aspect-[3/2] border bg-cover bg-center "
-            :style="{ backgroundImage: `url(${lessonImgUrl || '/images/lesson.png'})` }">
+            :style="{ backgroundImage: `url(${normalizedLessonImgUrl})` }">
             <div
                 class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 via-black/40 to-black-30">
             </div>
@@ -104,7 +104,7 @@
 
 <script setup>
 
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 
 
 const showUnder = ref(false)
@@ -117,13 +117,39 @@ const props = defineProps({
     courseName : {type: String, default: "Quick import"},
     lessonNumber : {type: Number, default : 10},
     lessonName : {type:String, default: "Lesson name by default"},
-    numberNewWords : {tyle: Number, default: 8},
-    numberLingQs: {tyle: Number, default: 9},
-    numberKnownWords: {tyle: Number, default: 10},
-    newWordsPercents: {tyle:Number, default: 11},
+    numberNewWords : {type: Number, default: 8},
+    numberLingQs: {type: Number, default: 9},
+    numberKnownWords: {type: Number, default: 10},
+    newWordsPercents: {type:Number, default: 11},
     continuingLesson : {type: Boolean, default : false},
     builtinLesson: {type: Boolean, default: false}
 })
+
+
+const normalizedLessonImgUrl = computed(() => {
+  const input = props.lessonImgUrl
+  if (!input || typeof input !== 'string') return '/images/lesson.png'
+
+  // already relative media path
+  if (input.startsWith('/media/')) {
+    return `/api${input}`
+  }
+
+  // generic absolute URL (http/https) whose path is /media/...
+  if (input.startsWith('http://') || input.startsWith('https://')) {
+    try {
+      const u = new URL(input)
+      if (u.pathname.startsWith('/media/')) {
+        return `/api${u.pathname}${u.search}`
+      }
+    } catch {
+      // invalid URL string -> keep original
+    }
+  }
+
+  return input
+})
+
 
 
 
