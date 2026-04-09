@@ -86,7 +86,7 @@ import HeaderReader from '~/components/reading/HeaderReader.vue';
 import Sidebar from '~/components/reading/middle/Sidebar.vue';
 import Reader from '~/components/reading/middle/Reader.vue';
 import LoadingProgressBar from '~/components/LoadingProgressBar.vue';
-const config = useRuntimeConfig()
+
 
 const mainRef = ref(null)
 const boxHeight = ref(0)
@@ -117,7 +117,7 @@ const getLesson = async () => {
     loading.value = true
     
     try {
-        const data = await $fetch(`${config.public.apiBase}/get_lesson/`, {
+        const data = await $fetch(`/api/get_lesson/`, {
         method : "GET",
         query: {
             lesson_name : lesson_name.value,
@@ -208,7 +208,7 @@ const finishLesson = async () => {
   
 
    try {
-        await $fetch(`${config.public.apiBase}/finish_lesson/`, {
+        await $fetch(`/api/finish_lesson/`, {
             method: "PUT", 
             body: statusDict,
             credentials: "include",

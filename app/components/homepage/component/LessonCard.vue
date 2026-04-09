@@ -109,7 +109,7 @@ import {ref, computed} from 'vue'
 
 const showUnder = ref(false)
 const hoverPlusButton = ref(false)
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 
 
 const props = defineProps({
@@ -182,7 +182,7 @@ const removeFromContinuingLesson = () => {
 
 const deleteLesson = async() =>{
     try {
-        await $fetch(`${config.public.apiBase}/delete_lesson/`, {
+        await $fetch(`/api/delete_lesson/`, {
             method: 'POST',
             body: {
                 lesson_name : props.lessonName,

@@ -77,7 +77,7 @@ const handleFile = async (e) => {
   formData.append("lesson_name", "lesson_1")
 
   try {
-    const result = await $fetch("http://localhost:3000/upload", {
+    const result = await $fetch("api/upload", {
       method: "POST",
       body: formData
     })

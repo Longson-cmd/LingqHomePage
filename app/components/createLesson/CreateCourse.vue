@@ -78,7 +78,7 @@
 import Picture from '../UI/Picture.vue';
 // import Picture from './UI/Picture.vue'
 import {ref, onMounted, onBeforeUnmount} from 'vue'
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 const courseName = ref("")
 const courseDescription = ref("")
 const showWarning = ref(false)
@@ -117,7 +117,7 @@ const saveCourse = async () => {
     if (pictureFile.value) formData.append("course_picture", pictureFile.value)
 
     try {      
-        await $fetch(`${config.public.apiBase}/create_course/`, {
+        await $fetch(`/api/create_course/`, {
             method: "POST",
             body: formData,
             credentials: "include"

@@ -9,7 +9,7 @@
     class="px-8  block cursor-pointer">
         <div class="shadow-md border p-1 border-gray-300 flex flex-col md:flex-row rounded-2xl">
             <div class="relative rounded-2xl">
-                <img :src="lessonImgUrl" alt="lessonImgUrl" class="h-40 w-full md:w-40 rounded-2xl object-cover">
+                <img :src="normalizedLessonImgUrl" alt="lessonImgUrl" class="h-40 w-full md:w-40 rounded-2xl object-cover">
             </div>
 
             <div class="flex flex-col justify-center md:justify-between flex-1 px-3 pt-2">
@@ -76,6 +76,33 @@ const props = defineProps({
     audioDuration: {type: String, default: "10:10"},
     numberLike: {type: Number, default: 17}
 })
+
+const normalizedLessonImgUrl = computed(() => {
+  const input = props.lessonImgUrl
+  if (!input || typeof input !== 'string') return '/images/lesson.png'
+
+  // already relative media path
+  if (input.startsWith('/media/')) {
+    return `/api${input}`
+  }
+
+  // generic absolute URL (http/https) whose path is /media/...
+  if (input.startsWith('http://') || input.startsWith('https://')) {
+    try {
+      const u = new URL(input)
+      if (u.pathname.startsWith('/media/')) {
+        return `/api${u.pathname}${u.search}`
+      }
+    } catch {
+      // invalid URL string -> keep original
+    }
+  }
+
+  return input
+})
+
+
+
 
 
 const {

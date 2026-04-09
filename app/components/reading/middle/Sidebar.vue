@@ -116,7 +116,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue'
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 
 
 const props = defineProps({
@@ -141,7 +141,7 @@ const { getCsrfToken } = useCsrf()
 
 const syncPhrase = debounce(async(playLoad) => {
     try {
-        await $fetch(`${config.public.apiBase}/update_word/`, {
+        await $fetch(`/api/update_word/`, {
             method: "PUT",
             body: playLoad,
             credentials: "include",

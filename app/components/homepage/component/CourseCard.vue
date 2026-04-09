@@ -6,7 +6,7 @@
             :class="showUnder && 'border-gray-300'">
             <!-- UPPER   -->
             <div class=" relative aspect-[3/2] border bg-cover bg-center "
-                :style="{ backgroundImage: `url(${courseImgUrl || '/images/course.png'} )` }">
+                :style="{ backgroundImage: `url(${normalizedCourseImgUrl.value} )` }">
                 <div
                     class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/20 to-transparent">
                 </div>
@@ -94,11 +94,11 @@
 <script setup>
 
 import {ref} from 'vue'
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 const showUnder = ref(false)
 const showTrash = ref(false)
 const props = defineProps({
-    courseImgUrl : {tyle:String, default : '/images/course.png'},  
+    courseImgUrl : {type:String, default : '/images/course.png'},  
     numberLessons : {type: Number, default : 10},
     courseName : {type:String, default: "Lesson name by default"},
     numberNewWords : {type: Number, default: 8},
@@ -107,11 +107,37 @@ const props = defineProps({
     newWordsPercents: {type:Number, default: 11},
 })
 
+const normalizedCourseImgUrl = computed(() => {
+  const input = props.courseImgUrl
+  if (!input || typeof input !== 'string') return '/images/course.png'
+
+  // already relative media path
+  if (input.startsWith('/media/')) {
+    return `/api${input}`
+  }
+
+  // generic absolute URL (http/https) whose path is /media/...
+  if (input.startsWith('http://') || input.startsWith('https://')) {
+    try {
+      const u = new URL(input)
+      if (u.pathname.startsWith('/media/')) {
+        return `/api${u.pathname}${u.search}`
+      }
+    } catch {
+      // invalid URL string -> keep original
+    }
+  }
+
+  return input
+})
+
+
+
 const emit = defineEmits(['deleteCourse', 'showCourseInfos'])
 
 const deleteCourse = async () => {
     try {
-        const result =  await $fetch(`${config.public.apiBase}/delete_course/`, {
+        const result =  await $fetch(`/api/delete_course/`, {
             method : "DELETE",
             body: {course_name : props.courseName},
             credentials: "include"

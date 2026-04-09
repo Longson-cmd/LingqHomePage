@@ -50,7 +50,7 @@
 <script setup>
 import {ref} from 'vue'
 import Spiner from './Spiner.vue';
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 const router = useRouter()
 const youtubeUrl = ref("")
 
@@ -79,7 +79,7 @@ const createYoutubeLesson = async() => {
         'youtube_url' : youtubeUrl.value.trim()
     }
     try {
-        const result = await $fetch(`${config.public.apiBase}/create_youtube_lesson/`, {
+        const result = await $fetch(`/api/create_youtube_lesson/`, {
             method: 'POST',
             body: data ,
             credentials: 'include'

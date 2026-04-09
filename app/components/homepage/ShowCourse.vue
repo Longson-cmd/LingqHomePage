@@ -6,7 +6,7 @@
                 <button @click="emit('showCourseInfos', false)" class="absolute z-10 top-5 left-5 h-10 w-10 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 whitespace-nowrap shrink-0">
                     <font-awesome icon="times" class="text-xl"/>
                 </button>
-                <img :src="courseImgUrl || '/images/course.png'" alt="courePicture"
+                <img :src="normalizedCourseImgUrl || '/images/course.png'" alt="courePicture"
                 class="w-full h-full object-cover rounded-3xl "
                 >
                 <div class="absolute inset-0 bg-gradient-to-b from-black/0 to-black/50 "></div>
@@ -151,36 +151,29 @@ const numberTotalWords = computed(() => props.dataCourse.numberTotalWords)
 const numberUniqueWords = computed(() => props.dataCourse.numberUniqueWords)
 
 
-// const {
-//     courseImgUrl, numberLessons, courseName, 
-//     numberNewWords, numberLingQs, numberKnownWords, 
-//     newWordsPercents,
-//     numberTotalWords,numberUniqueWords} = toRefs(props.dataCourse)
+const normalizedCourseImgUrl = computed(() => {
+  const input = props.courseImgUrl
+  if (!input || typeof input !== 'string') return '/images/course.png'
 
+  // already relative media path
+  if (input.startsWith('/media/')) {
+    return `/api${input}`
+  }
 
-// const props = defineProps({
-//     courseImgUrl : {tyle:String, default : '/images/course.jpg'},  
-//     numberLessons : {type: Number, default : 10},
-//     courseName : {type:String, default: "Quick import"},
-//     numberNewWords : {type: Number, default: 8},
-//     numberLingQs: {type: Number, default: 9},
-//     numberKnownWords: {type: Number, default: 10},
-//     newWordsPercents: {type:Number, default: 11},
+  // generic absolute URL (http/https) whose path is /media/...
+  if (input.startsWith('http://') || input.startsWith('https://')) {
+    try {
+      const u = new URL(input)
+      if (u.pathname.startsWith('/media/')) {
+        return `/api${u.pathname}${u.search}`
+      }
+    } catch {
+      // invalid URL string -> keep original
+    }
+  }
 
-//     numberTotalWords: {type:Number, default : 25},
-//     numberUniqueWords : {type: Number, default : 5},
-//     level: {type:String, default: "Intermediate 1"},
-//     audioDuration: {type: String, default: "10:10"},
-//     numberLike: {type: Number, default: 17},
-//     authorAvatar: {typeof: Number, default : '/images/lesson.jpg'},
-//     author: {typeof: Number, default : 'Mr Steve'}
-// })
-
-// const {
-//     courseImgUrl, numberLessons, courseName, numberNewWords, numberLingQs, numberKnownWords, newWordsPercents,numberTotalWords,numberUniqueWords,
-//     level, audioDuration, numberLike, authorAvatar, author
-// } = toRefs(props)
-
+  return input
+})
 
 
 

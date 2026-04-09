@@ -64,7 +64,7 @@
 
 import { ref } from "vue"
 import Spiner from "./Spiner.vue"
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 
 
 const uploadFile = ref(null)
@@ -93,7 +93,7 @@ const handleFile = async (e) => {
   formData.append("file", uploadFile.value)
 
   try {
-    const result = await $fetch(`${config.public.apiBase}/upload_text/`, {
+    const result = await $fetch(`/api/upload_text/`, {
       method: "POST",
       body: formData,
       credentials: 'include'

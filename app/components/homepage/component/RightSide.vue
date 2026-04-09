@@ -172,12 +172,11 @@ const demoprogressCoreData = [
 const coreData = ref([])
 const progressData = ref([])
 
-const config = useRuntimeConfig()
 const getBackEndData = async() => {
   if (!props.showPropgress) return
   let dataBackend = null
   try {
-    dataBackend = await $fetch(`${config.public.apiBase}/get_progress_data/`, {
+    dataBackend = await $fetch(`/api/get_progress_data/`, {
     method: "GET",
     credentials: 'include'
     })
