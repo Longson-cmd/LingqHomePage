@@ -143,12 +143,12 @@ const toggleType = ref('words') // default show words, other option is 'phrases'
 import debounce from 'lodash/debounce'
 
 
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 
 const getDataBackend = async () => {
     isLoading.value = true
     try {
-        const data = await $fetch(`${config.public.apiBase}/get_list_words/`, {
+        const data = await $fetch(`/api/get_list_words/`, {
             method: "GET",
             query: {
                 type: toggleType.value,
@@ -202,7 +202,7 @@ const nextPage = () => {
 
 const syncPhrase = debounce(async(playLoad) => {
     try {
-        await $fetch(`${config.public.apiBase}/update_word/`, {
+        await $fetch(`/api/update_word/`, {
             method: "PUT",
             body: playLoad,
              credentials: "include"
