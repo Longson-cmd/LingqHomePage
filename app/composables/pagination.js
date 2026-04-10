@@ -33,11 +33,15 @@ const updateTotalPages = async () => {
     proseEl.style.height = view.value + 'px'
     await nextTick()
 
-    // console.log("view ", view.value )
+   
 
     const totalHeight = proseEl.scrollHeight
     const remainder = totalHeight % view.value
     remaining.value = remainder === 0 ? 0 : (view.value - remainder)
+
+    console.log('totalHeight ', totalHeight)
+    console.log('remaining ', remaining.value)
+    console.log('proseEl.clientHeight ', proseEl.style.height)
 
     totalPage.value = Math.max(Math.ceil(totalHeight / view.value), 1)
 
@@ -53,6 +57,8 @@ const scrollNewPage = (n) => {
     const target = Math.min(totalPage.value, Math.max(1, n))
 
     prose.value.scrollTo({top : (target -1 ) * view.value})
+
+    // console.log('Scrolled to page:', target, 'scrollTop:', (target -1 ) * view.value)
 }
 
 

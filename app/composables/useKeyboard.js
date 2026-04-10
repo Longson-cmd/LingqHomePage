@@ -13,6 +13,19 @@ const changePageStatus =  () => {
   const firstEl = Array.from(items).find(el => el.offsetTop >= scrollTop)
   const lastEl = Array.from(items).findLast(el => el.offsetTop < scrollBottom)
 
+  console.log('scrollTop', scrollTop, 'scrollBottom', scrollBottom, 'view.value', view.value)
+
+  // print text and sIdx of firstEl and lastEl
+  console.log("First element text:", firstEl?.textContent, "sIdx:", firstEl?.dataset?.sIdx);
+  console.log("Last element text:", lastEl?.textContent, "sIdx:", lastEl?.dataset?.sIdx);
+ 
+//   console.log({
+//   computedTop: (currentPage.value - 1) * view.value,
+//   actualTop: prose.value?.scrollTop,
+//   delta: (currentPage.value - 1) * view.value - (prose.value?.scrollTop ?? 0)
+// })
+  
+
   const indexParaStart = Number(firstEl?.dataset?.pIdx)
   const indexParaEnd = Number(lastEl?.dataset?.pIdx)
 
@@ -20,12 +33,11 @@ const changePageStatus =  () => {
     return
   }
 
-  // console.log(" seven stauts in newStatusDict ", newStatusDict.value["seven"])
 
   const {lessondataChunk} = useCreateLesson(core_data, newStatusDict, indexParaStart, indexParaEnd + 1)
   lessondata.value.splice(indexParaStart, indexParaEnd - indexParaStart + 1, ...lessondataChunk)
 
-  // console.log("chuck data length", lessondataChunk[1])
+
 }
 
 
