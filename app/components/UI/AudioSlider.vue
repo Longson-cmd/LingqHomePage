@@ -4,7 +4,7 @@
     <input 
     type="range"
     min="0"
-    :max="inputMax"
+    :max="maxValue"
     v-model="inputValue"
     step="1"
     @input="emitUpdate"
@@ -25,6 +25,14 @@ const props = defineProps({
 })
 const inputValue = ref(props.inputValue)
 
+// sync maxValue with duration in parent
+const maxValue = computed({
+  get: () => props.inputMax,
+  set: (newMax) => {
+    emit('update:inputMax', newMax)
+  }
+})
+
 
 watch(() => props.inputValue, (newVal) => {
   if (newVal !== inputValue.value) {
@@ -34,8 +42,11 @@ watch(() => props.inputValue, (newVal) => {
 
 
 const percent = computed(() => 
-    props.inputMax > 0 ? (inputValue.value / props.inputMax) * 100 : 0
+    maxValue.value > 0 ? (inputValue.value / maxValue.value) * 100 : 0
 )
+watchEffect(() => {
+  console.log('value=', inputValue.value, 'max=', maxValue.value, 'percent=', percent.value)
+})
 
 const emit = defineEmits(['update:inputValue'])
 const emitUpdate = () => {

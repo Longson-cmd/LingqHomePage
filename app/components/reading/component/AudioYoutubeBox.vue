@@ -1,6 +1,7 @@
 <template>
 
     <div 
+  
     ref = 'boxRef'
     class="fixed flex flex-col min-w-64 z-10 bg-white resize w-72 aspect-video border rounded-xl shadow-lg overflow-hidden"
     :style="{left : videoPosition.x + 'px', top : videoPosition.y + 'px'}"
@@ -35,7 +36,7 @@
               @mousedown="onSeekStart"
               @mouseup="onSeekEnd"
             >         
-                <AudioSlider :input-max="duration" v-model:input-value="currentTime"/>
+                <AudioSlider :key="duration"  :input-max="duration" v-model:input-value="currentTime"/>
                 <span class="flex text-sm justify-between px-2 ">
                     <span>{{minutesSeconds(Math.round(currentTime))}}</span>
                     <span>{{minutesSeconds(Math.round(duration))}} </span>
@@ -92,7 +93,20 @@ const props = defineProps({
 // console.log('youtubeData', props.youtubeData)
 
 const currentTime = ref(props.youtubeData.youtube_start_time?? 0)
-const duration = ref(900)
+const duration = ref(0)
+
+const waitForDuration = () => {
+  const t = setInterval(() => {
+    const d = Number(player?.getDuration?.() || 0)
+    if (d > 0) {
+      duration.value = d
+      clearInterval(t)
+    }
+  }, 200)
+}
+
+const isPlayRready = ref(false)
+
 const isPlaying = ref(false)
 const isUserSeeking = ref(false)
 const isLoop = ref(false)
@@ -137,8 +151,18 @@ onMounted( async () => {
     },
 
     events: {
-      onReady: () => {
-        duration.value = player.getDuration ()
+      onReady:  () => {
+
+        const id = props.youtubeData.youtube_id ?? ''
+        const start = props.youtubeData.youtube_start_time ?? 0
+
+        // Force metadata load without autoplay
+        player.cueVideoById({ videoId: id, startSeconds: start })
+
+         waitForDuration()
+
+        
+        isPlayRready.value = duration.value > 0
 
         const startTime = props.youtubeData.youtube_start_time?? 0
         player.seekTo(startTime, true)
@@ -308,6 +332,16 @@ const startDragging = (e) => {
 }
 
 const handleDragging = (e) => {
+
+
+  //   if (e.pointerType === 'mouse' && (e.buttons & 1) === 0) {
+  //     handlePointerUp(e)
+  //   return
+  // }
+    if (e.pointerType === 'mouse' && (e.buttons & 1) === 0) {
+      handlePointerUp(e)
+      return
+    }
 
     if (!isDragging.value) return
     if (!boxRef.value) {

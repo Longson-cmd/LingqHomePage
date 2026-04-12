@@ -7,23 +7,20 @@ export function useKeyboard( startPointer,currentPointer, prose, view, core_data
 
 const changePageStatus =  () => {
 
-  const scrollTop = (currentPage.value -1) * view.value
-  const scrollBottom  = scrollTop + view.value
+  let scrollTop = (currentPage.value -1) * view.value
+  let scrollBottom  = scrollTop + view.value
+
+  if (currentPage.value === totalPage.value - 1) scrollBottom += view.value
+  if (currentPage.value === totalPage.value) scrollTop  = Math.max(0, scrollTop - view.value)
+
   const items = prose.value.querySelectorAll(".word-item")
   const firstEl = Array.from(items).find(el => el.offsetTop >= scrollTop)
   const lastEl = Array.from(items).findLast(el => el.offsetTop < scrollBottom)
 
-  console.log('scrollTop', scrollTop, 'scrollBottom', scrollBottom, 'view.value', view.value)
+  // console.log('scrollTop', scrollTop, 'scrollBottom', scrollBottom, 'view.value', view.value)
 
-  // print text and sIdx of firstEl and lastEl
-  console.log("First element text:", firstEl?.textContent, "sIdx:", firstEl?.dataset?.sIdx);
-  console.log("Last element text:", lastEl?.textContent, "sIdx:", lastEl?.dataset?.sIdx);
- 
-//   console.log({
-//   computedTop: (currentPage.value - 1) * view.value,
-//   actualTop: prose.value?.scrollTop,
-//   delta: (currentPage.value - 1) * view.value - (prose.value?.scrollTop ?? 0)
-// })
+  // console.log("First element text:", firstEl?.textContent, "sIdx:", firstEl?.dataset?.sIdx);
+  // console.log("Last element text:", lastEl?.textContent, "sIdx:", lastEl?.dataset?.sIdx);
   
 
   const indexParaStart = Number(firstEl?.dataset?.pIdx)
