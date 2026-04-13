@@ -106,3 +106,14 @@ kill 225842 -->
 <!-- $env:NUXT_API_PROXY_BASE="http://3.26.146.123"
 $env:NUXT_PUBLIC_API_BASE="/api"
 npm run dev -->
+
+
+
+<!-- |  1 | test@example.com | test@example.com |        0 |            0 | 2026-04-12 09:30:14.021019 |
+|  2 | good@luck.com    | good@luck.com    |        0 |            0 | 2026-04-09 02:49:16.758013 |
+
+<!-- https://www.youtube.com/watch?v=N0gZFvpxNhQ -->
+ <!-- How to Evaluate Your Own Level of English - Watch this to Find Out (A1-C2) -->
+
+<!-- https://www.youtube.com/watch?v=fEY_fmLjHNc -->
+<!-- How's it Going? | Learn English Phrases | Small Talk -->

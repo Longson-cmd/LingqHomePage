@@ -91,7 +91,7 @@ import {ref, onMounted, onBeforeUnmount} from "vue"
 import CreateCourse from "~/components/createLesson/CreateCourse.vue";
 import LeftPart from "~/components/createLesson/LeftPart.vue";
 import RightPart from "~/components/createLesson/RightPart.vue";
-const config = useRuntimeConfig()
+// const config = useRuntimeConfig()
 
 const listCourse =ref( [
   {name: "Cafe avec Johan check truncate", url : "/images/avatar.jpg"},
@@ -101,7 +101,7 @@ const listCourse =ref( [
 ])
 
 const get_list_courses = async () => {
-  const result = await $fetch(`${config.public.apiBase}/get_list_courses/`, {
+  const result = await $fetch(`/api/get_list_courses/`, {
     method: "GET",
     credentials: 'include'
   })
@@ -163,7 +163,7 @@ const saveAndGenerate = async () => {
       if (lessonName.value.trim()) {
         data.lesson_name = lessonName.value.trim()
       }
-      const result = await $fetch(`${config.public.apiBase}/create_youtube_lesson/`, {
+      const result = await $fetch(`/api/create_youtube_lesson/`, {
         method: 'POST', 
         body: data,
         credentials: "include"
@@ -215,7 +215,7 @@ const saveAndGenerate = async () => {
   
   try {
     loading.value = true
-    const result = await $fetch(`${config.public.apiBase}/create_lesson_manually/`, {
+    const result = await $fetch(`/api/create_lesson_manually/`, {
       method: 'POST',
       body: formData,
       credentials: "include"
