@@ -89,7 +89,7 @@ const closeBox = () => {
 
 const createYoutubeLesson = async () => {
     if (!youtubeUrl.value.trim()) {
-        console.log('Please enter your youtube url')
+        // console.log('Please enter your youtube url')
         warning.value = true
         return
     }
