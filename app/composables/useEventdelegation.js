@@ -116,11 +116,30 @@ const handlePointerEnter = (e) => {
 
   if (!itemData) return
 
+  // onPointerEnter(
+  //   itemData.w_idx,
+  //   itemData.s_idx,
+  //   itemData.idx_w_in_s,
+  //   itemData.p_idx,
+  // )
+
+  // Word shape
+  if ('w_idx' in itemData) {
+    onPointerEnter(
+      itemData.w_idx,
+      itemData.s_idx,
+      itemData.idx_w_in_s,
+      itemData.p_idx,
+    )
+    return
+  }
+
+  // Phrase shape: use phrase end as current pointer
   onPointerEnter(
-    itemData.w_idx,
-    itemData.s_idx,
-    itemData.idx_w_in_s,
-    itemData.p_idx,
+    itemData.end_w_idx,
+    itemData.end_s_idx,
+    itemData.end_idx_w_in_s,
+    itemData.end_p_idx,
   )
 }
 

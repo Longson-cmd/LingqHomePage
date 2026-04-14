@@ -110,8 +110,18 @@ const statusTagsMeanings = ref({})
 const youtubeData = ref({})
 
 const route = useRoute()
-// const lesson_name = ref('How to Evaluate Your Own Level of English - Watch this to Find Out (A1-C2)')
-// const course_name = ref('default')
+
+watch(
+  () => [route.query.lessonName, route.query.courseName],
+  async ([newLesson, newCourse], [oldLesson, oldCourse]) => {
+    if (newLesson === oldLesson && newCourse === oldCourse) return
+    current.value = 1
+    total.value = 1
+    await getLesson()
+    await nextTick()
+    messure()
+  }
+)
 const lesson_name = computed(() => route.query.lessonName ?? 'How to Evaluate Your Own Level of English - Watch this to Find Out (A1-C2)')
 const course_name = computed(() => route.query.courseName ?? 'default')
 const getLesson = async () => {

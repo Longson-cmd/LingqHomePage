@@ -88,6 +88,10 @@ const closeBox = () => {
 }
 
 const createYoutubeLesson = async () => {
+    console.log(
+        'createYoutubeLesson called with url:',
+        youtubeUrl.value
+    )
     if (!youtubeUrl.value.trim()) {
         // console.log('Please enter your youtube url')
         warning.value = true
@@ -102,7 +106,7 @@ const createYoutubeLesson = async () => {
         'youtube_url' : youtubeUrl.value.trim()
     }
         try {
-            const result = await $fetch('/api/create_youtube_lesson/', {
+            const result = await $fetch(`/api/create_youtube_lesson/`, {
                 method: "POST",
                 body: data,
                 credentials: 'include'
@@ -112,12 +116,14 @@ const createYoutubeLesson = async () => {
             const course_name = result.course_name
 
             router.push({
-                path: 'FindingJob',
+                path: '/FindingJob',
                 query: {
                     lessonName: lesson_name,
                     courseName: course_name
                 }
             })
+
+            openImport.value = false
 
         }
         catch (error) {
@@ -126,18 +132,23 @@ const createYoutubeLesson = async () => {
     }
 
     else {
+        console.log('Using default lesson for testing')
         try{
             const lesson_name = 'How\'s it Going? | Learn English Phrases | Small Talk'
             const course_name = 'default'
 
             router.push({
-                path : 'FindingJob',
+                path : '/FindingJob',
                 query: {
                     lessonName: lesson_name,
                     courseName: course_name
                 }
             })
+
+            openImport.value = false
+
         }
+
 
         catch(error) {
             message.value = error?.data?.message?? 'Fail to create new lesson!'
