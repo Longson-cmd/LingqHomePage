@@ -14,12 +14,15 @@
                 placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 focus:shadow-lg"
                 placeholder="Add url 500 charaters max">
             </div>
-            <div class="flex gap-2 items-center justify-end p-4">
-                <button @click="closeBox" class="underline px-3 py-[6px] hover:bg-gray-200 rounded-md">Close</button>
-                <button :disabled="!youtubeUrl.trim()" @click="createYoutubeLesson" class="px-3 py-1 underline rounded-md hover:bg-gray-200">Import</button>
+            <div class="flex items-center justify-between pl-4">
+                <span :class="['italic', 'mt-2', warning ? 'text-red-600' : 'text-transparent']">Please enter your youtube url</span>
+                <div class="flex gap-2 items-center justify-end p-4">
+                    <button @click="closeBox" class="underline px-3 py-[6px] hover:bg-gray-200 rounded-md">Close</button>
+                    <button :disabled="!youtubeUrl.trim()" @click="createYoutubeLesson" class="px-3 py-1 underline rounded-md hover:bg-gray-200">Import</button>
+                </div>
             </div>
 
-            <span v-if="warning" class="text-red-600 italic mt-2">Please enter your youtube url</span>
+
         </div>
 
             <!-- IMPORTING -->
