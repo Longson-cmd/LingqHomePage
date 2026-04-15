@@ -8,7 +8,7 @@
           <button type="submit" class="w-full bg-black text-white  p-1 rounded-md">{{isLoading? "Loading ... " : "Sign Up"}}</button>
           <p class="text-red-600 text-center text-sm" v-if="errMessage">{{errMessage}}</p>
         </form>
-        <p class="text-sm w-full text-center">Areadly had an account? <NuxtLink class="text-blue-600" to="/login"> Login</NuxtLink></p>
+        <p class="text-sm w-full text-center">Areadly had an account? <NuxtLink class="text-blue-600" to="/"> Login</NuxtLink></p>
       </div>
     </div>
 </template>
