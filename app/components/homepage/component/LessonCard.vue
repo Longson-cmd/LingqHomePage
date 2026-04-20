@@ -126,29 +126,43 @@ const props = defineProps({
 })
 
 
+// Create a computed value named normalizedLessonImgUrl that recalculates when dependencies change
 const normalizedLessonImgUrl = computed(() => {
+  // Read the lessonImgUrl prop into a local variable
   const input = props.lessonImgUrl
+  // If input is missing or not a string, return a fallback image path
   if (!input || typeof input !== 'string') return '/images/lesson.png'
 
-  // already relative media path
+  // Comment: input is already a relative media path (example: /media/abc.jpg)
+  // Check if input starts with /media/
   if (input.startsWith('/media/')) {
+    // Prefix /api so it routes through your backend API path
     return `/api${input}`
   }
 
-  // generic absolute URL (http/https) whose path is /media/...
+  // Comment: input is a full URL (http/https), maybe like https://site.com/media/abc.jpg
+  // Check if input starts with http:// or https://
   if (input.startsWith('http://') || input.startsWith('https://')) {
+    // Try parsing the URL safely
     try {
+      // Create URL object from the input string
       const u = new URL(input)
+      // If the URL path begins with /media/, rewrite it to your /api media route and keep query params
       if (u.pathname.startsWith('/media/')) {
+        // Return /api + path + search query (if any)
         return `/api${u.pathname}${u.search}`
       }
+    // If URL parsing fails, handle it here
     } catch {
-      // invalid URL string -> keep original
+      // Comment: invalid URL string, so do nothing and fall through to return original input
     }
   }
 
+  // If none of the above matched, return the input as-is
   return input
+// End of computed function
 })
+
 
 
 
